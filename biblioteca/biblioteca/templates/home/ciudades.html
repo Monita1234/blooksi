@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Ciudades
+{% endblock %}
+
+{% block content %}
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="True">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"> Eliminar la ciudad</h3>
+		</div>
+		<div class="modal-body">
+		<p>¿Esta seguro que desea eliminar la ciudad con nombre <span id="modal_name"></span>?</p>
+
+		</div>
+		<div class="modal-footer">
+			<form method="POST" id="frmEliminar">
+				{% csrf_token %}
+				<input type="hidden" id="modal_idProducto" name="product_id">
+				<button class="btn" data-dismiss="modal" aria-hidden="True">Cerrar</button>
+				<button type="submit" class="btn btn-danger">Eliminar</button>
+			</form>	
+		</div>
+	</div>
+
+    <h3>Ciudades</h3>
+    
+	{% if user.is_authenticated %}
+
+		
+		<a class="btn btn-info" href="{% url 'vista_agregar_ciudad' %}"> <li class= "icon-plus"></li>Agregar Ciudad</a>
+		<br>
+		
+	{% endif %}
+
+   
+
+	{% if ciudades %}
+	<table class = "table table-hover" id="tabla_productos">
+		
+			
+		{% for p in ciudades %}
+
+			<tbody>
+				<tr id="tr{{p.id}}">
+					<td>  <h3> {{ p.nombre }} </h3>  </td>
+						{% if user.is_authenticated %}
+
+						    <td>
+									<a class = "btn btn-warning" href="/edit/ciudad/{{ p.id }}">  Editar </a>
+							</td>
+
+							
+							<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.nombre}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
+
+							<!-- Button to trigger modal -->
+							
+						{% endif %}
+
+				</tr>
+			</tbody>
+		{% endfor %}
+	</table>
+			
+	{% else %}
+		<h2>No existen ciudades :( </h2>
+	{% endif %}
+
+	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+{% endblock %}

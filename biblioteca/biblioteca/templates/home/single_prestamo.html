@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+ 
+{% block title %}
+	Prestamos
+{% endblock %}
+{% block content %}
+	
+			<h1>{{ prestamo.fecha_inicio }}</h1>
+
+			<p> <b> Fecha de entrega: {{ prestamo.fecha_prestamo }}</p> <!-- dom-22 marzo  -->
+			<p> <b> Fecha de devolucion: {{ prestamo.fecha_devolucion }}</p> <!-- dom-22 marzo  -->
+			<!-- <p> <b> Hora Prestamo: </b>{{ prestamo.hora }}</p> -->
+			<p> <b> Libro:</b> {{ prestamo.libro}}</p> 
+			<p> <b> Biblioteca:{{ prestamo.biblioteca }}</p>
+			<p> <b> Usuario:  {{ prestamo.usuario }}</p>
+			<p> <b> Identificacion:  {{ prestamo.usuario.identificacion }}</p>
+			<p> <b> Bibliotecario: {{ prestamo.bibliotecario }}</p>
+			
+			<p> <b> Estado del Prestamo:{{ prestamo.estado_prestamo }}</p>
+			{% if prestamo.estado_prestamo = "reservado" %}
+				<a href="/prestar/{{ prestamo.id }}"> Prestar </a>
+			{% endif %}
+
+			<p> <a class="btn btn-primary" href="/prestamos/"> Mostrar Prestamos </a> </p>
+			<p> <a class ="btn btn-warning" href="/edit/prestamo/{{ t.id }}">  Editar  </a> </p>
+{% endblock %}

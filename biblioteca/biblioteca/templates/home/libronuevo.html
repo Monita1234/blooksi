@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	libronuevo
+{% endblock %}
+	{% block content %}
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2015",
+      dateFormat: 'dd/mm/yy',
+      // You can put more options here.
+
+    });
+  });
+  </script>
+	
+	<h3><font face="Comic Sans MS" color="red">Por favor ingrese la fecha para buscar los libros</font></h3>
+	
+
+	<font align="center" face="Comic Sans Ms"><h3><form action="." method = "POST">
+		{% csrf_token %}
+			{{mensaje}}
+		{{ form.as_p }}
+		{% if user.is_authenticated %}
+		
+
+			{{mensaje}}
+		{% endif %}
+		<a class  = "btn btn-info" href="/libronuevo/{{ p.id}}">buscar </a>
+		<!--input type = "submit" value = "BUSCAR" /-->
+	
+
+	</form></h3></font>
+	{{ info }}
+	<img align="center" src="/media/images/gif1+ANCIANO+LEYENDO.gif"/>
+	<br>
+		<h4><font face="Comic Sans MS" color="red" align="center">LIBROS ENCONTRADOS</font></h4>
+
+	<!--con el sgte for aperece la lista de los libros  -->
+			
+			<h4>{{mensaje}}</h4>
+			
+	{% for l in nuevos %}
+		{{mensaje}}
+		{{ l.nombre_libro }}
+		<br>
+
+	{% endfor %}
+	{% endblock %}
+
+<!--input type="text" name="dia" size="2" maxlength="2" />/<input type="text" name="mes" size="2" maxlength="2" />/<input type="text" name="año" size="2" maxlength="4" /><br/>
+	<h1><font face="algerian">A</font></h1>
+	<input type="text" name="dia" size="2" maxlength="2" />/<input type="text" name="mes" size="2" maxlength="2" />/<input type="text" name="año" size="2" maxlength="4" /><br/>

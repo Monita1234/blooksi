@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Categorias
+{% endblock %}
+{% block content %}
+	<h3>Categorias</h3>
+	{% if user.is_authenticated %}
+		<a class = "btn btn-info" href="/add/categoria/{{ p.id }}"> <li class= "icon-plus"></li> Agregar Categoria </a>
+	{% endif %}
+	{% if categorias %}
+	<table class = "table table-hover">
+	
+		
+		{% for p in categorias %}
+			<tbody>
+				<tr>
+					<td><h3>{{p.nombre }}</h3>    </td>
+					<!--td><p><a class  = "btn btn-info" href="/categoria/{{ p.id}}"> Ver </a></td-->
+				{% if user.is_authenticated %}
+			        <td><a class = "btn btn-warning" href="/edit/categoria/{{ p.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+			        <td><a class = "btn btn-danger" href="/eliminar/categoria/{{ p.id }}"></li> Eliminar </a></td>
+
+			     {% endif %}
+			                          	  </p>
+			    </tr>
+			</tbody>
+
+		{% endfor %}
+	</table>
+			
+			 <br>
+			
+	{% else %}
+		<h2>No existen categorias :( </h2>
+	{% endif %}
+			<td><a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a></td>
+{% endblock %}

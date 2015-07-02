@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	<title> Editar Tipo De Usuario </title>
+{% endblock %}
+
+{% block content %}
+	<h1>Editar Tipo de Usuario</h1>
+	<form action="." method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input class="btn btn-success" type="submit" value="Guardar Cambios">
+		
+		<a class="btn btn-inverse" href="/tipos_usuarios/">Cancelar</a>
+	</form>
+	<br>
+
+	{{ info }}
+
+{% endblock %}
+

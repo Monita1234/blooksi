@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Lista de Reservas pendientes 
+{% endblock %}
+{% block content %}
+
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2015",
+      dateFormat: 'dd/mm/yy',
+      // You can put more options here.
+
+    });
+  });
+  </script>
+
+	<h3> Reservas Pendientes por Aprobar </h3> 
+
+	<br>
+	{% if reservas %}
+	<table class="table table-hover">
+		<tr> <td> <b>  Libro </b></td> </tr>
+
+		{% for t in reservas %}
+				<tbody>
+					<tr>
+						<td><p>{{ t.libro}}</td></p>
+						<td><p>{{ t.usuario}}</td></p>
+						<td><p>{{ t.fecha_prestamo}}</td></p>
+						{% if user.is_authenticated %}
+							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  prestamo del libro </a></td>
+							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  prestamo del libro </a></td>
+						{% endif %}
+						
+					</tr>
+				</tbody>
+			{% endfor %}
+			</table> 
+		
+		
+
+{% else %}
+		<h2> No existen Reservas por aprobar....</h2>
+	{% endif %}
+			
+			<a class ="btn btn-inverse" href="{% url 'vista_administrar' %}"> Regresar al Administrador</a>
+			
+{% endblock %}

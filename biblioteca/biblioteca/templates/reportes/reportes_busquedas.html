@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	reportes
+{% endblock %}
+
+	{% block content %}
+	<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2015",
+      dateFormat: 'dd/mm/yy',
+      // You can put more options here.
+
+    });
+  });
+  </script>
+
+<script>
+  $(function() {
+    $( "#datepicker1" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2015",
+      dateFormat: 'dd/mm/yy',
+      // You can put more options here.
+
+    });
+  });
+  </script>
+
+	  
+	<h3><center>Reportes de Busqueda</center></h3>
+	{% if info_enviado %}
+	    <div align="center" class ="alert alert-info">
+	      <p>Para generar el reporte Correctamente diligencie los campos a continuacion y presione la opcion Generar reporte</p>
+	    </div>
+	  	<form action="." method="POST" align="center">
+			{% csrf_token %}                                               
+			{{ form.as_p }}
+			<input type="submit" value="Generar Reporte" class = "btn btn-success"/>
+		</form>
+	{% endif %}
+	 <br>
+	{% if li %}
+		<a href= "{% url 'pdf_busquedas' %}" class="btn btn-success" download ="Generar_pdf"> Descargar en PDF</a> 
+		
+
+      <table class="table table-hover alert alert-info table-condensed">
+        <header>
+          <tr>
+            <th>Busqueda</th>
+            <th>Resultado</th>
+            <th>Contador</th>
+          </tr>
+        </header>
+      {% for pre, r in li  %}
+        <body align="justify">
+          <tr>
+            <td>{{ pre.busqueda }}</td>
+		    <td>{% if pre.resultados %}
+            		Si se encontro la busqueda
+            	{% else %}
+            		No se encontro la busqueda
+            	{% endif %}
+			</td>
+           <td>
+         		{{r}}
+           </td>
+           <!-- {% if user.is_authenticated %}
+              <td>
+                <a class="btn btn-info" href="/prestamo/{{pre.id}}"><li class="icon-search"></li> </a>
+              </td>
+            {% endif %}-->
+          </tr>
+        </body> 
+      	{% endfor %}
+      	</table>
+    {% else %}
+		{% if mensaje %}
+		    	<div class="alert alert-danger" class"alert fade in">
+	    			<strong>
+	     				{{ mensaje }}
+	     			</strong>
+	     		</div>
+	    {% endif %}
+
+	    {% if mensaje2 %}
+		    <div class="alert alert-danger" class"alert fade in">
+		    	<strong>
+		     	{{ mensaje2 }}
+		     	</strong>
+		     </div>
+	    {% endif %}
+	    <td><a class="btn btn-inverse" href="/reportes/">Regresar</a></td>
+    {% endif %}
+
+{% endblock %}
+  

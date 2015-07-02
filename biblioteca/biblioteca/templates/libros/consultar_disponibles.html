@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %} Buscar {% endblock %}
+{% block content %} 
+
+	
+<!-- LLamando al formulario  VERONICA DOMINGUEZ Y SOFIA ALVAREZ -->
+Ingrese el Titulo, Autor o Categoria a buscar
+	<form action="." method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+<button type = "submit" class = "btn btn-success" >Buscar </button>
+<a class = "btn btn-inverse" href="/administrar/"></li>  Cancelar </a>
+
+	</form>
+	{% if buscar1 or buscar2 or buscar3 %}
+
+
+			<table  class = "table table-hover ">
+				
+						<tr>
+
+					
+
+							{% if buscar1%}
+								{% for c in buscar1 %}
+									<theader>
+										<tbody>
+											<tr>
+												<th> Titulo </th>
+												<th> Autor </th>
+												<th> Categoria(s) </th>
+											</tr>
+										<tbody>
+									</theader> 
+									<td>{{c.nombre_libro}}</td>
+									<td>{{c.autor}}</td>
+									{% for l in c.categoria.all %} 	
+										<td>{{ l }}</td>
+									{% endfor %}
+								{% endfor %}
+							{% endif%}
+
+
+							<!--Para autor -->
+							{% if buscar3 %}							
+								<theader>
+									<tbody>
+										<tr>
+											<td><h4>Nombre</h4></td>
+											<td><h4>Editorial</h4></td>
+											<td><h4>Version</h4></td>
+										</tr>
+									</tbody>
+								</theader>
+								{% for a in buscar3 %} 
+									<td>{{a.nombre_libro}}</td>
+									<td>{{a.editorial}} </td>
+									<td>{{a.version}}</td>
+									{% for n in a.categoria.all %} 
+										<td>{{ n }}</td>
+									{% endfor %}
+
+									<td><a class = "btn" href= "#"> Reservar</a></td>				
+
+								
+
+								{% endfor %}
+							{% endif%}
+
+
+							<!--Para categorias -->
+							{% for z in buscar2 %} 
+
+								<td>{{z.nombre_libro}}</td>
+								
+
+								
+							{% endfor %}
+						</tr>
+					
+				</tbody>
+
+			</table>
+
+					<!--<a class = "btn btn-info" href="/libro/{{p.id}}"><li class="icon-search"></li> Ver </a>-->
+					
+						
+		</body>	
+		<h2>{{ msg }}</h2>
+	{% else %}
+		<h2>No se han encontrado registros </h2>
+
+	{% endif %}
+{% endblock %}
+
+
+				
+
+
+
+
+
+
+
+
+
+		

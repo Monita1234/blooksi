@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Bibliotecario
+{% endblock %}
+
+{% block content %}
+
+	<b>{{ bibliotecario.nombre }}</b>
+	<br>
+	<p><b>Nombre: </b>{{ bibliotecario.nombre}}</b>
+
+	<p><b>Apellidos: </b>{{ bibliotecario.apellidos}}</b>
+	
+	<p><b>Telefono: </b>{{ bibliotecario.telefono}}</b>
+	
+	<p><b>Direccion: </b>{{ bibliotecario.direcccion}}</b>
+	
+	<p>correo: <b>C</b>{{ bibliotecario.correo}}</b>
+	
+	<p><b>Ciudad: </b>{{ bibliotecario.ciudad}}</b> 
+	<br>
+
+	<a href="/bibliotecarios/">Mostrar la lista de Bibliotecarios</a>
+
+
+
+
+	
+{% endblock %}

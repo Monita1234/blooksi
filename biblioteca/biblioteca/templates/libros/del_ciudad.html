@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}	
+	Eliminar Ciudad
+{% endblock %}
+
+{% block content %}
+	<form action="." method="POST" >
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="btn btn-success"> Guardar </button>
+		
+	</form>
+	<br>
+	
+	{{ info }}
+	<a href="/ciudades/">Mostrar la lista de ciudades</a>
+{% endblock %}

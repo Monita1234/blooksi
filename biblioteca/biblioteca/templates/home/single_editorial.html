@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Editoriales
+{% endblock %}
+
+{% block content %}
+	<h3> Editorial: {{ editorial.nombre }}</h3>
+	<h4> Direccion: {{ editorial.direccion }}</h4>
+	<h4> Telefono: {{ editorial.telefono }}</h4>
+	<h4> Correo: {{ editorial.correo }}</h4>
+
+
+	{{ info }}
+	<a class="btn btn-primary" href="/editoriales/">Lista de editoriales</a>
+
+{% endblock %}

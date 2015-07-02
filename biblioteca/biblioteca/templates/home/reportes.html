@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} Reportes {% endblock %}
+{% block content %}
+	
+	<h3>Reportes</h3>
+	<div align="center">
+		<img alt="700x240" style="width: 700px; height: 240px;" src="/media/images/reportes.jpg">
+		<p>Seleccione una opcion para ver el reporte que necesita.</p>
+
+	</div>
+	<br>
+
+	<a class="btn btn-info" href="/reportes/libro_por_mes"><li class="icon-search"></li> Ver Reporte </a>
+	Lista de libros prestados en el mes 
+	<br>
+	<br>
+	<a class="btn btn-info" href="/reportes/usuarios_por_mes"><li class="icon-search"></li> Ver Reporte </a>
+	Lista de usuarios que hicieron prestamos de libros en el mes
+	<br>
+	<br>
+	<a class="btn btn-info" href="/reporte_busqueda"><li class="icon-search"></li> Ver Reporte </a>
+	Lista de reportes de busquedas
+	<br>
+	<br>
+	
+
+<p><a href="/" class="btn btn-primary 	">Regresar al Inicio</a></p>
+{% endblock %}

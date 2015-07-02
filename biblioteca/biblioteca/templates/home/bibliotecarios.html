@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Bibliotecarios
+{% endblock %}
+
+{% block content %}
+    <h3>Lista de Bibliotecarios</h3>
+
+{% if user.is_authenticated and user.is_superuser and user.is_staff %}
+	<p><a class="btn btn-info" href="{% url 'vista_registrar_bibliotecario' %}"><i class=" icon-user icon-white"></i> Registrar Bibliotecario</a></p>
+{% endif %}
+   
+
+	{% if bibliotecarios %}
+	<table class = "table table-hover">
+		<theader>
+			<tr>
+				<th>Bibliotecarios</th>
+			</tr>
+		</theader>			
+		{% for p in bibliotecarios %}
+			<tbody>
+				<tr>
+					<td>{{ p.nombre }}</td>
+					{% if user.is_authenticated %}
+						<td>
+								<a class = "btn btn-info" href="/bibliotecario/{{ p.id }}"> <li class= "icon-search"></li> Ver </a>
+						</td>
+						<td>
+						</td>
+						
+					    <td>
+								<a class = "btn btn-warning" href="/edit/usuario/{{ p.id }}"> <li class= "icon-pencil"></li>  Editar </a>
+						</td>
+						<td>
+								<a class = "btn btn-danger" href="/del/usuario/{{ p.id }}">  Eliminar </a>
+						</td>
+
+					{% endif %}
+
+				</tr>
+			</tbody>
+		{% endfor %}
+	</table>
+	{% else %}
+		<h2>No existen Bibliotecarios  :( </h2>
+
+	{% endif %}
+<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+
+{% endblock %}

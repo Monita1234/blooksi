@@ -1,0 +1,41 @@
+{% extends 'base.html' %} 
+
+{% block title %}
+	
+{% endblock %}
+{% block content %}
+	<h3>Biblioteca</h3>
+	<br>
+	{% if bibliotecas %}
+	<table class="table table-hover">
+			<theader>
+				<tr>
+					<th>Nombre de la biblioteca</th>
+				</tr>
+			</theader>
+		
+		{% for e in bibliotecas %}
+	
+		
+				<tbody>
+					<tr>
+						<td><p>{{ e.nombre}}</td></p>
+					
+
+						<td><a class ="btn btn-info" href="/biblioteca/{{ e.id }}"> <li class= "icon-search"></li> Ver mas detalles</a></td>
+						<!---<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ e.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+						<td><a class ="btn btn-danger" href="/eliminar/biblioteca/{{ e.id }}"/></li>Eliminar</a></td>-->
+					</tr>
+				</tbody>
+		{% endfor %}
+	</table>
+	
+	
+
+	{% else %}
+	<a <a class="btn btn-info"  href="/add/biblioteca/{{e.id}}"> <li class= "icon-plus"></li> Agregar Biblioteca</a></p>
+		<h2> No existen bibliotecas activas </h2>
+	{% endif %}
+	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+
+{% endblock %}

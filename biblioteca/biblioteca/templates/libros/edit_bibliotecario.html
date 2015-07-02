@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Editar Bibliotecario
+{% endblock %}
+
+{% block content %}
+	<form action="." method ="POST" enctype = "multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit"  class = "btn btn-success" value="Guardar Cambios">
+		
+	</form>
+	<br>
+	{{ info}}
+	<a href="/bibliotecarios/">Mostrar la lista de Bibliotecarios</a>
+
+{% endblock %} 

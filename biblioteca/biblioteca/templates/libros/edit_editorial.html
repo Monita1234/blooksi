@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Editar Biblioteca 
+{% endblock %}
+
+{% block content %}
+	<form action="." method="POST" enctype = "multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p}}
+		<input type="submit" class="btn btn-success" value="Guardar Cambios">
+		<input class="btn btn-danger" type="submit" value="Cancelar">
+	</form>
+	<br>
+
+	{{ info }}
+	<a href="/editoriales/">Mostrar Lista de Editoriales</a>
+{% endblock %} 

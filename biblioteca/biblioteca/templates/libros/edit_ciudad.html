@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Editar Ciudad
+{% endblock %}
+
+{% block content %}
+	<form action="." method ="POST" enctype = "multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" class = "btn btn-success" value="Guardar Cambios">
+		<a class = "btn btn-danger" href="/ciudades/{{ p.id }}">  Cancelar </a>
+		
+	</form>
+	<br>
+	{{ info}}
+	
+	<a class = "btn btn-inverse" href="/add/categoria/{{ p.id }}"></li>  Mostrar la lista de Ciudades </a>
+
+{% endblock %} 

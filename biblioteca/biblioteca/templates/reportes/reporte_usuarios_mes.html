@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %} Libros prestados por mes {% endblock %}
+{% block content %}
+
+
+
+<head>
+<style>
+.ui-datepicker-calendar {
+    display: none;
+    }
+</style>
+<script>
+  $(function() {
+    $( "#datepicker1 , #datepicker").datepicker({
+      changeMonth: true,
+      changeYear: false,
+      showButtonPanel: true,
+      dateFormat: 'dd/mm/yy',
+      gotoCurrent: true,
+      onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            $(this).datepicker('setDate', new Date(2015, month, 1));
+        }
+      // You can put more options here.
+
+    });
+  });
+  </script>
+</head>
+
+  
+    <h4><center> Ingrese La Fecha Para Generar Reporte de Usuarios que Prestaron Libros  {{ fecha|date:"N" }} </center></h4>
+    <form action="." method="POST">
+      {% csrf_token %}
+      {{ reporte_usuarios.as_p }}
+      <input type="submit" value ="Generar Reporte" class= "btn btn-success"/>
+    </form>
+    {% if usuarios %}
+       <a href="{% url 'generar_pdf_usuarios_mes' %}" class="btn btn-success" download ="reportes_de_usuarios_x_mes.pdf"> Generar a PDF</a>
+         
+      </a>
+    {% endif %}
+
+  {% if usuarios and mensaje %}
+
+    <h4><center> Usuarios que Prestaron Libros en el Mes de {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5>
+  
+    <table class="table table-hover alert alert-info table-condensed">
+      <caption><h4>{{ fecha|date:"N" }} </h4></caption>
+      <header>
+        <tr>
+          <th>Fecha de Prestamos</th>
+          <th>Usuario</th>
+          <th>Nombre del libro</th>
+          <th>Fecha de Devolucion</th>
+        </tr>
+      </header>
+    {% for i in usuarios %}
+      <body align="justify">
+        <tr>
+          <td>{{i.fecha_prestamo}}</td>
+          <td>{{i.usuario.nombre}}</td>
+          <td>{{i.libro.nombre_libro}}</td>
+          <td>{{i.fecha_devolucion}}</td>
+          {% if user.is_authenticated %}
+            <td>
+              <a class="btn btn-info" href="/usuario/{{i.usuario.id}}"><li class="icon-search"></li> Ver usuario</a>
+            </td>
+          {% endif %}
+        </tr>
+      </body> 
+    {% endfor %}
+    </table>
+
+
+
+  {% else %}
+    {% if mensaje %}
+
+        <h4> No se Encontraron Usuarios que Prestaron Libros en el Mes  {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5> </h4>
+    {% endif %}    
+
+    {% if error_fecha %}
+        <h4>
+            {{ error_fecha }}
+        </h4>
+    {% else %}
+    <!--<div aling="center" class="alert alert-info">-->
+        {% if error_vacio %}
+            <h4><center>        
+                {{ error_vacio }}
+            </h4></center> 
+        {% endif %}
+     
+
+    {% endif %}
+
+       
+    
+  {% endif %}
+
+<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+{% endblock %}

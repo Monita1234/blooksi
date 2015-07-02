@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Bibliotecas
+{% endblock %}
+{% block content %}
+<h3>Biblioteca</h3>
+	<br>
+	<h1>{{ biblioteca.nombre }}</h1>
+	<br>
+	<p><b>Nombre: </b> {{ biblioteca.nombre }}</p>
+	<p><b>Direccion: </b>{{ biblioteca.direccion }}</p>
+	<p><b>Telefono: </b>{{ biblioteca.telefono }}</p>
+	<p><b>Correo: </b>{{ biblioteca.correo }}</p>
+	<p><b>Reglamento: </b>{{ biblioteca.reglamento }}</p>
+
+	<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+	<a class="btn btn-inverse" href="/administrar/">Regresar</a>
+{%endblock%}

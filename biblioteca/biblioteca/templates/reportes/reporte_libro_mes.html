@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %} Libros prestados por mes {% endblock %}
+{% block content %}
+
+<head>
+<style>
+.ui-datepicker-calendar {
+    display: none;
+    }
+</style>
+<script>
+  $(function() {
+    $( "#datepicker1 , #datepicker").datepicker({
+      changeMonth: true,
+      changeYear: false,
+      showButtonPanel: true,
+      dateFormat: 'dd/mm/yy',
+      gotoCurrent: true,
+      onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            $(this).datepicker('setDate', new Date(2015, month, 1));
+        }
+      // You can put more options here.
+
+    });
+  });
+  </script>
+</head>
+
+  <h3>Por favor ingrese una fecha para realizar la busqueda </h3>
+
+    <form action="." method="POST">
+      {% csrf_token %}
+      {{ reporte_libro.as_p }}
+      <input type="submit" value ="Generar Reporte" class= "btn btn-success"/>
+    </form>
+
+    {% if prest_libro %}
+      <a href="{% url 'reporte_libros_prestados_mes_pdf' %}" class="btn btn-success" download ="reporte_libros_prestados_por_mes.pdf"> Generar a PDF</a>
+
+      <table class="table table-hover alert alert-info table-condensed">
+        <caption><h3>REPORTE DE LIBROS DEL MES DE {{ fecha_libro|date:"N" }} </h3></caption>
+        <header>
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha de Prestamo</th>
+            <th>Fecha de Devolucion</th>
+          </tr>
+        </header>
+      {% for pre in prest_libro %}
+        <body align="justify">
+          <tr>
+            <td>{{pre.libro.nombre_libro}}</td>
+            <td>{{pre.fecha_prestamo}}</td>
+            <td>{{pre.fecha_devolucion}} </td>
+
+            {% if user.is_authenticated %}
+              <td>
+                <a class="btn btn-info" href="/libro/{{pre.id}}"><li class="icon-search"></li> Ver Libro </a>
+              </td>
+            {% endif %}
+          </tr>
+        </body> 
+      {% endfor %}
+      </table>
+    
+
+    {% else %}
+
+      <h2>No se encontraron libros prestados en el mes de {{ fecha_libro|date:"N" }} del año x {{ fecha_libro|date:"Y" }} !!!</h2>
+    {% endif %}
+  <a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+{% endblock %}

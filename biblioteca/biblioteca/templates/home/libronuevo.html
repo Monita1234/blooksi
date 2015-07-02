@@ -16,8 +16,8 @@
     });
   });
   </script>
-	
-	<h3><font face="Comic Sans MS" color="red">Por favor ingrese la fecha para buscar los libros</font></h3>
+	<center>
+	<h3><a align="center"><font face="Arial "  color="black">Ingrese la fecha</font></a></h3>
 	
 
 	<font align="center" face="Comic Sans Ms"><h3><form action="." method = "POST">
@@ -37,7 +37,7 @@
 	{{ info }}
 	<img align="center" src="/media/images/gif1+ANCIANO+LEYENDO.gif"/>
 	<br>
-		<h4><font face="Comic Sans MS" color="red" align="center">LIBROS ENCONTRADOS</font></h4>
+		<h4><font face="Comic Sans MS" color="black" align="center">LIBROS ENCONTRADOS</font></h4>
 
 	<!--con el sgte for aperece la lista de los libros  -->
 			
@@ -47,7 +47,7 @@
 		{{mensaje}}
 		{{ l.nombre_libro }}
 		<br>
-
+	</center>
 	{% endfor %}
 	{% endblock %}
 

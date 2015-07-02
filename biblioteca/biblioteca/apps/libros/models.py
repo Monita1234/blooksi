@@ -121,7 +121,7 @@ class Biblioteca (models.Model):
 class Usuario (models.Model):
 
 	def url (self,filename):
-		ruta = "MultimediaData/Users/%s/%s"%(self.user.username, filename)
+		ruta = "MultimediaData/Users/%s/%s"%(self.user.username, str(filename))
 		return ruta
 
 	nombre         			 = 	models.CharField(max_length = 100)

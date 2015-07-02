@@ -26,7 +26,7 @@
 	</div>
 
 	<h3> Editoriales</h3>
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 		<a class ="btn btn-info" href="{% url 'vista_agregar_editorial' %}"> <li class= "icon-plus"></li> Agregar Editorial</a>
 	{% endif %}
 
@@ -42,7 +42,7 @@
 				<tr id="tr{{p.id}}">
 					<td>{{ p.nombre }}</td>
 					<td><a class="btn btn-info" href="/editorial/{{p.id}}"> <li class = "icon-search"></li> Ver </a></td>
-				{% if user.is_authenticated %}
+				{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 					<td><a class="btn btn-warning" href="/edit/editorial/{{p.id}}"><li class = "icon-pencil"></li> Editar</a></td>
 					<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.nombre}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
 				{% endif %}

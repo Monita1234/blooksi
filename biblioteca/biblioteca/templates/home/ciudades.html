@@ -27,7 +27,7 @@
 
     <h3>Ciudades</h3>
     
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 
 		
 		<a class="btn btn-info" href="{% url 'vista_agregar_ciudad' %}"> <li class= "icon-plus"></li>Agregar Ciudad</a>
@@ -46,7 +46,7 @@
 			<tbody>
 				<tr id="tr{{p.id}}">
 					<td>  <h3> {{ p.nombre }} </h3>  </td>
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 
 						    <td>
 									<a class = "btn btn-warning" href="/edit/ciudad/{{ p.id }}">  Editar </a>

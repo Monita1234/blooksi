@@ -52,7 +52,7 @@
 					<td>{{ p.ciudad }}</td>
 					
 					<td><a class="btn btn-info" href="/usuario/{{p.id}}" > Ver </a ></td>
-					{% if user.is_authenticated and user.is_staff %}
+					{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 					<td><a class="btn btn-warning" href="/edit/usuario/{{ p.id }}">  Editar</a></td>  
 					
 					<!-- Button to trigger modal -->

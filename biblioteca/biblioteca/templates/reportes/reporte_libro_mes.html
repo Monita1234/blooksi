@@ -26,18 +26,24 @@
   });
   </script>
 </head>
+  <div align="center">
+    <h3>Por favor ingrese una fecha para realizar la busqueda </h3>
+   </div>
+  <br>
+    <div align="center">
+        <h4>Para generar el reporte Correctamente seleccione el mes que desea consultar y presione la opcion Generar reporte</h4>
+    </div>
+  <br>
 
-  <h3>Por favor ingrese una fecha para realizar la busqueda </h3>
-
-    <form action="." method="POST">
+    <form action="." method="POST" align="center">
       {% csrf_token %}
       {{ reporte_libro.as_p }}
       <input type="submit" value ="Generar Reporte" class= "btn btn-success"/>
     </form>
 
     {% if prest_libro %}
-      <a href="{% url 'reporte_libros_prestados_mes_pdf' %}" class="btn btn-success" download ="reporte_libros_prestados_por_mes.pdf"> Generar a PDF</a>
-
+      <a href="{% url 'vista_reporte_libros_mes' %}" class="btn btn-success" download = "Reporte_Libros_prestados_por_mes.pdf" >Exportar reporte a PDF</a>
+    
       <table class="table table-hover alert alert-info table-condensed">
         <caption><h3>REPORTE DE LIBROS DEL MES DE {{ fecha_libro|date:"N" }} </h3></caption>
         <header>
@@ -56,7 +62,8 @@
 
             {% if user.is_authenticated %}
               <td>
-                <a class="btn btn-info" href="/libro/{{pre.id}}"><li class="icon-search"></li> Ver Libro </a>
+                <a class="btn btn-info" href="/libro/{{pre.libro.id}}"><li class="icon-search"></li> Ver Libro </a>
+                
               </td>
             {% endif %}
           </tr>
@@ -66,8 +73,14 @@
     
 
     {% else %}
+      {% if mensaje %}
+      <div align="center" class ="alert danger-info">
+        <p> No se encontraron reportes de libros prestados por mes {{ fecha_libro|date:"N" }} del año {{ fecha_libro|date:"Y" }}</p>
+      </div>
 
-      <h2>No se encontraron libros prestados en el mes de {{ fecha_libro|date:"N" }} del año x {{ fecha_libro|date:"Y" }} !!!</h2>
+      {% endif %}
+      
+
     {% endif %}
-  <a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+  
 {% endblock %}

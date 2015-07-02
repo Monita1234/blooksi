@@ -32,7 +32,7 @@
 				<p> <b>Ciudad: </b>{{ usuario.ciudad}}</p>
 				<p> <b>Telefono: </b>{{ usuario.telefono }}</p>
 				<p> <b>Direccion: </b>{{ usuario.direccion }}</center></p>
-			{% if user.is_authenticated and user.is_staff %}
+			{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 				<a class="btn btn-warning" href="/edit/usuario/{{ usuario.id }}">  Editar</a>
 			{% endif %}
 		

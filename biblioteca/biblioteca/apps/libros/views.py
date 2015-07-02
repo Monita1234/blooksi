@@ -404,6 +404,7 @@ def eliminar_categoria_view(request, id_prod):
 
 #bibliotecario
 def add_bibliotecario_view(request):
+	
 	if request.user.is_authenticated and request.user.is_staff:
 		info = "inicializando"
 		if request.method == "POST":
@@ -414,6 +415,7 @@ def add_bibliotecario_view(request):
 				add.save() # guarda la informacion
 			# guarda las relaciones ManyToMany
 				info = "Guardado Satisfactoriamente"
+				
 				return HttpResponseRedirect ('/bibliotecarios/')
 		else:
 			formulario = add_bibliotecario_form()
@@ -892,7 +894,7 @@ def register_view(request):
 		fecha_nac=""
 		if request.method == "POST":
 			form_a = RegisterForm(request.POST)
-			form_b = add_usuario_form(request.POST, prefix = "b")
+			form_b = add_usuario_form(request.POST,request.FILES, prefix = "b")
 			if form_b.is_valid() and form_a.is_valid():
 				usuario 		= form_a.cleaned_data['username']
 				email 			= form_a.cleaned_data['email']
@@ -904,7 +906,7 @@ def register_view(request):
 				if  form_b.cleaned_data['fecha_nac'] < now:
 
 					try:
-					
+						
 						u.save() #guarda el objeto
 						b = form_b.save(commit=False)
 						b.tipo_usuario = tipo_usuario
@@ -930,12 +932,11 @@ def register_view(request):
 		ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'mensaje':mensaje}	
 		return render_to_response ('home/register.html',ctx, context_instance= RequestContext(request))	
 		
-		
-
 
 
 #REGISTRAR BIBLIOTECARIO ---
 def register_bibliotecario_view(request):
+	m=True
 	if request.user.is_authenticated and request.user.is_staff:
 
 		now = date.today()
@@ -977,7 +978,6 @@ def register_bibliotecario_view(request):
 			return HttpResponseRedirect('/bibliotecarios/')
 	else:
 		return HttpResponseRedirect ('/')
-
 
 #VISTA DE BUSCAR LIBRO POR TITULO, CATEGORIA O AUTOR: CONSULTAR DISPONIBLES 
 def consultar_disponibles_view (request): 
@@ -1042,3 +1042,5 @@ def consultar_codigo_view(request):
 		return HttpResponseRedirect ('/')
 
 
+def info_view (request):
+	return render_to_response('home/info.html', context_instance = RequestContext(request))

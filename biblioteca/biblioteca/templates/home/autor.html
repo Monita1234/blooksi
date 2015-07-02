@@ -27,7 +27,7 @@
 
 
 	<h3> Autores </h3> 
-	{% if user.is_authenticated and user.is_staff %}
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 		<a class="btn btn-info"  href="/add/autor/"> <li class= "icon-plus"></li> Agregar Autor </a>
 	{% endif %}
 	<br>
@@ -42,7 +42,7 @@
 					<td>{{ p.nombre_autor }}</td>
 					<td><a class ="btn btn-info" href="/autor/{{ p.id }}">  <li class= "icon-search"></li> Ver</a></td>
 					
-				{% if user.is_authenticated and user.is_staff %}	
+				{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 					<td><a class ="btn btn-warning" href="/edit/autor/{{ p.id }}"> <li class= "icon-pencil"></li> Editar  </a></td>
 					<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.nombre_autor}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
 				{% endif %}

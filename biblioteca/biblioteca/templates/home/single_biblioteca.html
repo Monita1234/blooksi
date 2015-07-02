@@ -13,7 +13,8 @@
 	<p><b>Telefono: </b>{{ biblioteca.telefono }}</p>
 	<p><b>Correo: </b>{{ biblioteca.correo }}</p>
 	<p><b>Reglamento: </b>{{ biblioteca.reglamento }}</p>
-
-	<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+		<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+	{% endif %}	
 	<a class="btn btn-inverse" href="/administrar/">Regresar</a>
 {%endblock%}

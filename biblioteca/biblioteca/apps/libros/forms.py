@@ -93,7 +93,7 @@ class add_usuario_form(forms.ModelForm):
 	tipo_usuario = forms.ModelChoiceField(queryset = Tipo_Usuario.objects.exclude(nombre = 'bibliotecario'), required = True)
 	class Meta:
 		model   = Usuario 
-		exclude = {'user', 'tipo_usuario','estado',}
+		exclude = {'user', 'tipo_usuario','tiene_prestamo',}
 
 
 

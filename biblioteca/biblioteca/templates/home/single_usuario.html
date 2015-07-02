@@ -13,6 +13,11 @@
 		<br>
 		<div class="alert alert-warning ">
 			<h3> Usuario: </h3>
+			<p>  {% if usuario.tiene_libro = True %}
+									<b> Usuario con prestamo </b>
+								{% else %}
+									<b> Usuario sin prestamo </b>
+								{% endif %}</p>
 			<br>
 			<p>	<b>Nombre: </b> {{ usuario.nombre }}</p>
 			<p> <b>Apellidos: </b>{{ usuario.apellido }}</p>
@@ -24,17 +29,13 @@
 			<p> <b>Dirección: </b>{{ usuario.direccion }}</p>
 			<p> <b>Género: </b>{{ usuario.genero}}</p>
 			<p> <b>Tipo de usuario: </b>{{ usuario.tipo_usuario}}</p>
-			<p> <b>Prestamo: </b> </p><!--{{ usuario.tiene_prestamo }}</p-->
-			{% if usuario.tiene_libro = True %}
-				Si 
-			{% else %}
-				No
-			{% endif %}
+			
+								
 			
 		</div>
 		<a  class="btn btn-primary" href="/usuarios/">Usuarios</a>
 
-		{% if user.is_authenticated and user.is_staff %}
+		{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 			<a class="btn btn-warning" href="/edit/usuario/{{ usuario.id }}">  Editar</a>
 		{% endif %}
 {% endblock %}	

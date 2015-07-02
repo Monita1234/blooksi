@@ -31,11 +31,12 @@
 	</table>
 	
 	
-
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 	{% else %}
 	<a <a class="btn btn-info"  href="/add/biblioteca/{{e.id}}"> <li class= "icon-plus"></li> Agregar Biblioteca</a></p>
 		<h2> No existen bibliotecas activas </h2>
 	{% endif %}
+{% endif %}
 	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
 
 {% endblock %}

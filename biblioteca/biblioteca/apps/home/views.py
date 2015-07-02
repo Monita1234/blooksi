@@ -102,11 +102,29 @@ def single_editorial_view(request, id_editorial):
 
 #categoria
 def categorias_view (request):
+
+	if request.method=="POST":
+	
+		if "product_id" in request.POST:
+			try:
+				l = None
+				id_product = request.POST['product_id']
+				p = Categoria.objects.get(pk=id_product)
+				
+				if l == None:
+					p.delete()
+					#p.delete()
+					mensaje={"status":"True","product_id":id_product}
+				return HttpResponse(simplejson.dumps(mensaje),mimetype='application/json')
+			except:
+				mensaje={"status":"False"}
+				return HttpResponse(simplejson.dumps(mensaje),mimetype='application/json')
 	prod = Categoria.objects.filter()
 	ctx = {'categorias':prod}
 	return render_to_response('home/categorias.html',ctx, context_instance = RequestContext(request))
 
 def single_categoria_view (request, id_prod):
+	
 	prod = Categoria.objects.get(id = id_prod)
 	ctx = {'Categoria':prod,}
 	return render_to_response ('home/single_categoria.html',ctx, context_instance = RequestContext(request))

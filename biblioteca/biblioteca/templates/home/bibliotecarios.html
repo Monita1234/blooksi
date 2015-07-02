@@ -23,20 +23,20 @@
 			<tbody>
 				<tr>
 					<td>{{ p.nombre }}</td>
-					{% if user.is_authenticated %}
+					{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 						<td>
 								<a class = "btn btn-info" href="/bibliotecario/{{ p.id }}"> <li class= "icon-search"></li> Ver </a>
 						</td>
 						<td>
 						</td>
 						
-					    <td>
-								<a class = "btn btn-warning" href="/edit/usuario/{{ p.id }}"> <li class= "icon-pencil"></li>  Editar </a>
-						</td>
-						<td>
-								<a class = "btn btn-danger" href="/del/usuario/{{ p.id }}">  Eliminar </a>
-						</td>
-
+						    <td>
+									<a class = "btn btn-warning" href="/edit/usuario/{{ p.id }}"> <li class= "icon-pencil"></li>  Editar </a>
+							</td>
+							<td>
+									<a class = "btn btn-danger" href="/del/usuario/{{ p.id }}">  Eliminar </a>
+							</td>
+						
 					{% endif %}
 
 				</tr>

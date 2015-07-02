@@ -27,7 +27,7 @@
 	</div>
 
 	<h3>Libros</h3>
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 		<a <a class="btn btn-info"  href= "/add/libros/{{p.id}}"> <li class= "icon-plus"></li> Agregar libro</a> 
 	{% endif %}
 	{% if libros %}
@@ -54,7 +54,7 @@
 
 
 						<td> <a class ="btn btn-info" href="/libro/{{p.id}}"> <li class= "icon-search"></li> Ver </a> </td>
-					{% if user.is_authenticated %}
+					{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 						<td> <a class ="btn btn-warning" href= "/edit/libro/{{p.id}}"> <li class= "icon-pencil"></li> Editar </a> </td>
 						<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.nombre_libro}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
 						

@@ -25,7 +25,7 @@
 	</div>
 
 	<h3>Tipos De Usuarios</h3>
-	{% if user.is_authenticated and user.is_staff }
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 
 		<a <a class="btn btn-info"  href="/add/tipo-usuario/{{ t.id }}"> <li class="icon-plus"></li>Agregar Tipo de Usuario</a>
 	{% endif %}
@@ -45,7 +45,7 @@
 				<tr id="tr{{p.id}}">
 
 					<td><p>{{ p.nombre }}</td>
-					{% if user.is_authenticated and user.is_staff %}	
+					{% if user.is_authenticated and user.is_staff and user.is_superuser %}		
 						<td><a class="btn btn-warning" href="/edit/tipo-usuario/{{ p.id }}">  Editar</a></td>
 						<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.nombre}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
 					{% endif %}

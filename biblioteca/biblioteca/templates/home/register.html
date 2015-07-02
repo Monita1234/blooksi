@@ -21,7 +21,7 @@
 
 
 
-	<form action="." method = "POST">
+	<form action="." method = "POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form_a.as_p }}
 		{{ form_b.as_p }}

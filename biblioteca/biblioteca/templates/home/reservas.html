@@ -31,7 +31,7 @@
 						<td><p>{{ t.libro}}</td></p>
 						<td><p>{{ t.usuario}}</td></p>
 						<td><p>{{ t.fecha_prestamo}}</td></p>
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  prestamo del libro </a></td>
 							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  prestamo del libro </a></td>
 						{% endif %}

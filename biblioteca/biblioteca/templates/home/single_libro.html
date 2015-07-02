@@ -72,9 +72,10 @@
 							{% else %}
 								<h2> El libro No esta disponible </h2>
 							{% endif %}
+		{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 			<a class ="btn btn-warning" href= "/edit/libro/{{libro.id}}"> <li class= "icon-pencil"></li> Editar </a>
 			<a class ="btn btn-primary" href="/reservar/{{ libro.id }}"> Reservar Libro </a>
-			
+		{% endif %}	
 
 			<a class="btn btn-primary" href="/libros/">Lista de libros</a>
 			<!--td> <a class ="btn btn-success" href="/prestar/{{ libro.id }}"> Prestar Libro </a></p> </td>

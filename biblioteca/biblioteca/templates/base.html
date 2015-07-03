@@ -33,56 +33,68 @@
 			<a class = "brand" href = "{% url 'vista_principal' %}">BOOKSI </a>
 			<div class="nav-collapse collapse">
 				<ul class = "nav">
-					{% if user.is_authenticated %}
-						<li><a href="{% url 'vista_administrar'%}">ADMINISTRADOR</a></li>
+					{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+						<li><a href="{% url 'vista_administrar'%}">Administrador</a></li>
 					{% endif %}
-					<li><a href = "{% url 'vista_info' %}">CONTACTO </a></li>
-					<li><a href = "{% url 'vista_principal' %}"><i class="icon-list-alt icon-white"> </i> REGLAMENTO </a></li>
-				</ul>	
-				<ul class="nav pull-right">
-					{% if user.is_authenticated %}
-						<li><a class="navbar-text pull-right" href = "{% url 'vista_logout' %}">Cerrar Sesion</a></li>
-					{% else %}
-						<li><a class="navbar pull-right " href = "{% url 'vista_login' %}"><i class="icon-user icon-white"> </i> Iniciar Sesion</a></li>
-					{% endif %}
+					<li><a href = "{% url 'vista_info' %}">Contacto </a></li>
+					<li><a href = "/bibliotecas"><i class="icon-list-alt icon-white"> </i> Reglamento </a></li>
 				</ul>
 
+				<ul class="nav pull-right">
+					{% if user.is_authenticated %}
+						<li><a class="navbar pull-right" href = "{% url 'vista_logout' %}">Cerrar Sesion</a></li>
+					{% else %}
+						<li><a class="navbar pull-right" href = "{% url 'vista_login' %}"><i class="icon-user icon-white"> </i> Iniciar Sesion</a></li>
+					{% endif %}
+
+					{% if user.is_authenticated %}
+						<li>
+							Bienvenido {{ user.username }} 
+							{% if user.usuario.photo %}
+							<img class="navbar pull-right img-circle" src = "/media/{{ user.usuario.photo }}" width = "50px"  heigth = "50px"> 
+	           				{% endif %}
+
+						</li>	
+           			{% endif %}
+				</ul>
 			</div><!--/.nav-collapse -->
 
 
         </div>
     </div>
     </div>
-    <div id="myCarousel" class="carousel slide">
-  <!-- Carousel items -->
-  	<div class="carousel-inner">
-	    
-	   <div class="active item"> <center>
-	    	<img src="/media/images/fondo2.png">
-		    <div class="carousel-caption">
-		    	<h4>Caption 1</h4>
-		    </div></center>
-	    </div>
 
-	    <div class="item"> <center>
-	    	<img src="/media/images/fondo2.png">
-		    <div class="carousel-caption">
-		    	<h4>Caption 2</h4>
-		    </div></center>
-	    </div>
+	<div id="myCarousel" class="carousel slide">
+	  <!-- Carousel items -->
+	  	<div class="carousel-inner">
+		    
+		   <div class="active item"> <center>
+		    	<img src="/media/images/fondo1.png">
+			    <div class="carousel-caption">
+			    	<h4>Caption 1</h4>
+			    </div></center>
+		    </div>
 
-	    <div class="item"> <center>
-	    	<img src="/media/images/fondo2.png">
-		    <div class="carousel-caption">
-		    	<h4>Caption 3</h4>
-		    </div></center>
-	    </div>
-	    
-	</div>
-  <!-- Carousel nav -->
-  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-</div>	
+		    <div class="item"> <center>
+		    	<img src="/media/images/fondo2.png">
+			    <div class="carousel-caption">
+			    	<h4>Caption 2</h4>
+			    </div></center>
+		    </div>
+
+		    <div class="item"> <center>
+		    	<img src="/media/images/fondo3.png">
+			    <div class="carousel-caption">
+			    	<h4>Caption 3</h4>
+			    </div></center>
+		    </div>
+		    
+		</div>
+	  <!-- Carousel nav -->
+	  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+	  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+	</div>	
+	
 	<div class="container-fluid">
 			<div class="row-fluid">
 				<div class="span8">

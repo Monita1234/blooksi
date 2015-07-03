@@ -133,6 +133,26 @@ def single_categoria_view (request, id_prod):
 
 #bibliotecario
 def  bibliotecarios_view (request):
+	if request.method=="POST":
+	
+		if "product_id" in request.POST:
+			try:
+				l = None
+				id_usuario = request.POST['product_id']
+				p = Usuario.objects.get(pk=id_usuario)
+				u = User.objects.get (pk = p.user.id)
+				try:
+					l = Prestamo.objects.get(usuario__id = id_usuario, usuario__user__id = u.id)
+				except:
+					l = None
+				if l == None:
+					u.delete()
+					#p.delete()
+					mensaje={"status":"True","product_id":p.id}
+				return HttpResponse(simplejson.dumps(mensaje),mimetype='application/json')
+			except:
+				mensaje={"status":"False"}
+				return HttpResponse(simplejson.dumps(mensaje),mimetype='application/json')
 	biblio = Usuario.objects.filter(tipo_usuario__nombre = 'bibliotecario')
 	ctx = {'bibliotecarios': biblio}
 	return render_to_response ('home/bibliotecarios.html', ctx, context_instance = RequestContext(request))
@@ -280,7 +300,7 @@ def single_libro_view (request, id_prod):
 #biblioteca
 def bibliotecas_view (request):
 	b =Biblioteca.objects.filter()
-	ctx = {'bibliotecas': b }
+	ctx = {'biblioteca': b }
 	return render_to_response('home/biblioteca.html',ctx, context_instance = RequestContext(request))
 
 def single_biblioteca_view(request, id_biblioteca):

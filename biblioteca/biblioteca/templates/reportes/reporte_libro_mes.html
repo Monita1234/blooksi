@@ -42,7 +42,7 @@
     </form>
 
     {% if prest_libro %}
-      <a href="{% url 'vista_reporte_libros_mes' %}" class="btn btn-success" download = "Reporte_Libros_prestados_por_mes.pdf" >Exportar reporte a PDF</a>
+      <a href="{% url 'reporte_libros_prestados_mes_pdf' %}" class="btn btn-success" download = "Reporte_Libros_prestados_por_mes.pdf" >Descargar en PDF</a>
     
       <table class="table table-hover alert alert-info table-condensed">
         <caption><h3>REPORTE DE LIBROS DEL MES DE {{ fecha_libro|date:"N" }} </h3></caption>

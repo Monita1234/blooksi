@@ -111,10 +111,14 @@ class Biblioteca (models.Model):
 	direccion 	=models.CharField(max_length=200)
 	telefono	=models.CharField(max_length=200)
 	correo 		=models.CharField(max_length=200)
-	reglamento  =models.TextField(max_length=200)
+	mision		=models.TextField(max_length=200,null = True, blank = True)
+	vision		=models.TextField(max_length=200,null = True, blank = True)
+	reglamento  =models.TextField(max_length=1000)
+
 
 	def __unicode__ (self):
 		return self.nombre
+
 
 
 #Clase "Usuario" Mary ft Cesar

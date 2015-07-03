@@ -936,8 +936,8 @@ def register_view(request):
 
 #REGISTRAR BIBLIOTECARIO ---
 def register_bibliotecario_view(request):
-	m=True
 	if request.user.is_authenticated and request.user.is_staff:
+		m=True	
 
 		now = date.today()
 		if (request.user.is_authenticated() and request.user.is_staff and request.user.is_superuser):
@@ -963,8 +963,10 @@ def register_bibliotecario_view(request):
 						b.user= u 
 						b.save()
 					except:
+						pass
 						mensaje = "No se puede crear un bibliotecario porque no existe un tipo bibliotecario"
-					return HttpResponseRedirect('/bibliotecarios/')
+					ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+					return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
 					#return render_to_response('home/confirmacion.html',context_instance = RequestContext(request))
 				else:
 					info = "fallo"	
@@ -972,7 +974,7 @@ def register_bibliotecario_view(request):
 				form_a = RegisterForm()
 				form_b = add_bibliotecario_form(prefix = "b")
 			ctx = {'form_a':form_a, 'form_b':form_b, 'now':now}	
-			return render_to_response ('home/register.html',ctx, context_instance= RequestContext(request))	
+			return render_to_response ('home/register_b.html',ctx, context_instance= RequestContext(request))	
 
 		else: #por sino es super administrador
 			return HttpResponseRedirect('/bibliotecarios/')

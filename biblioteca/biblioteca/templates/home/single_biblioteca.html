@@ -4,17 +4,36 @@
 	Bibliotecas
 {% endblock %}
 {% block content %}
-<h3>Biblioteca</h3>
+
+<h4>Biblioteca{{ biblioteca.nombre }}</h4>
 	<br>
-	<h1>{{ biblioteca.nombre }}</h1>
-	<br>
-	<p><b>Nombre: </b> {{ biblioteca.nombre }}</p>
+	
 	<p><b>Direccion: </b>{{ biblioteca.direccion }}</p>
 	<p><b>Telefono: </b>{{ biblioteca.telefono }}</p>
 	<p><b>Correo: </b>{{ biblioteca.correo }}</p>
-	<p><b>Reglamento: </b>{{ biblioteca.reglamento }}</p>
-	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-		<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
-	{% endif %}	
-	<a class="btn btn-inverse" href="/administrar/">Regresar</a>
+	
+	{% if biblioteca.mision %}
+
+
+		<p><b>Mision: </b></p>
+			<p>{{ biblioteca.mision }}</p>
+
+	{% endif %}
+
+	{% if biblioteca.vision %}
+
+		<p><b>Vision: </b></p>
+			<p>{{ biblioteca.vision }}</p>
+	
+	{% endif %}
+
+		<p><b>Reglamento: </b></p>
+			<p>{{ biblioteca.reglamento }}</p>
+
+	<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+	<a class="btn btn-inverse" href="/administrador/">Regresar</a>
 {%endblock%}
+
+
+
+	

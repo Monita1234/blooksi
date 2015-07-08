@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'reportlab',
     'gunicorn',
-    #'psycopg2',
+    'psycopg2',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

@@ -9,3 +9,4 @@ static3==0.5.1
 virtualenv==1.11.6
 wsgiref==0.1.2
 reportlab==2.7
+psycopg2

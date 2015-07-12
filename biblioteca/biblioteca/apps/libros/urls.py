@@ -59,19 +59,21 @@ urlpatterns = patterns('biblioteca.apps.libros.views',
 		url(r'^edit/libro/(?P<id_prod>.*)/$', 'editar_libro_view', name = 'vista_editar_libros'),
 		url(r'^del/libro/(?P<id_prod>.*)/$', 'del_view', name= 'vista_eliminar_cosmetico'),
 
-		#bibliotaca
+		#biblioteca
 		url(r'^add/biblioteca/$','agregar_biblioteca_view', name ='vista_agregar_biblioteca'),
 		url(r'^edit/biblioteca/(?P<id_biblioteca>.*)/$','editar_biblioteca_view', name ='vista_editar_biblioteca'),
 		url(r'^eliminar/biblioteca/(?P<id_biblioteca>.*)/$','eliminar_biblioteca_view', name = 'vista_eliminar_biblioteca'),
 
 		#buscar
-		url(r'^buscar/$','add_buscar_view', name= 'vista_buscar'),
+		url(r'^buscar/$','add_buscar_view', name= 'vista_buscar'), 
+		url(r'^$','add_buscar_view', name= 'vista_principal'), 
 
 		url(r'^registro/$','register_view', name= 'vista_registro'),
 
 
 		#BUSCAR LIBRO POR TITULO, AUTOR O CATEGORIA
 		url(r'^consultar_disponibles/$','consultar_disponibles_view', name= 'vista_consultar_disponibles'),
+
 		url(r'^consultarlibrocodigo/$','consultar_codigo_view', name = 'vista_consultar_codigo'),
 		url(r'^consultas/$','consultas_view', name = 'vista_consultas'),
 

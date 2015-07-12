@@ -111,9 +111,11 @@ def reporte_libros_mes_view(request):
 
 def generar_pdf_libros_mes(request):
     print "Genero el PDF"
+    fecha_libro = b
     mes = 0
     anio = 0
     story=[]
+
     response = HttpResponse(content_type='application/pdf')
     pdf_name = "reporte_libro.pdf"  # llamado clientes
     # la linea 26 es por si deseas descargar el pdf a tu computadora
@@ -134,9 +136,9 @@ def generar_pdf_libros_mes(request):
     reporte_libro.append(imagen_logo)
     fecha_reporte = Paragraph("Fecha del reporte: "+str(date.today()), styles['Heading1'])
     reporte_libro.append(fecha_reporte)
-    header = Paragraph("Listado de Libros que Fueron prestados en el mes", styles['Normal'])
+    header = Paragraph("Reporte de libros prestados en el mes "+str(fecha_libro.month)+" del "+str(fecha_libro.year), styles['Normal'])
     reporte_libro.append(header)
-    headings = ('Nombre', 'Fecha devolución','Fecha Prestamo')
+    headings = ('Nombre', 'Fecha devolución','Fecha préstamo')
     
 
     #fecha_libro = reportes.cleaned_data['fecha_consulta']
@@ -158,6 +160,8 @@ def generar_pdf_libros_mes(request):
     ))
 
     #GRAFICA DE BARRAS
+
+    titulos = Paragraph("Gráfica comparativa de libros prestados en el mes "+str(fecha_libro.month)+" y el mes anterior a éste. ", estilo['title'])
     drawing = Drawing(400, 200)
     data = [(x1, y1)]
     bc = VerticalBarChart()
@@ -166,9 +170,10 @@ def generar_pdf_libros_mes(request):
     bc.height = 125
     bc.width = 300
     bc.data = data
-    bc.bars[0].fillColor = colors.yellow
+    bc.bars[0].fillColor = colors.blue
     bc.bars[1].fillColor = colors.red
     bc.strokeColor = colors.black
+    bc.fillColor = colors.silver
     bc.valueAxis.valueMin = 0
     bc.valueAxis.valueMax = y1+10
     try:
@@ -204,12 +209,19 @@ def generar_pdf_libros_mes(request):
     bc.barLabels.fontName = 'Helvetica'
     bc.barLabels.fontSize = 14
 
-    reporte_libro.append(drawing)
+    reporte_libro.append(Spacer(0, inch*.1))
+    reporte_libro.append(Spacer(0, inch*.1))
     reporte_libro.append(t)
+    reporte_libro.append(Spacer(0, inch*.1))
+    reporte_libro.append(Spacer(0, inch*.1))
+    reporte_libro.append(titulos)
+    
+    reporte_libro.append(drawing)
     doc.build(reporte_libro)
     response.write(buff.getvalue())
     buff.close()
     return response
+
 
 
 
@@ -254,9 +266,9 @@ def reporte_usuarios_mes_view(request):
                     
                     mensaje = "Exito!"
                 else:
-                    error_fecha = "Error! La Fecha Igresada no Puede Ser Mayor a la Fecha Actual"
+                    error_fecha = "Error! La fecha ingresada no puede ser mayor a la fecha actual"
             else:
-                error_vacio = "El Campo No Debe Estar Vacio"
+                error_vacio = "El campo no debe estar vacio"
 
 
         else:                                                                  
@@ -294,20 +306,26 @@ def generar_pdf_usuarios_mes(request):
     story.append(imagen_logo)
     reportes.append(imagen_logo)
 
-    header = Paragraph("Feha del reporte: "+str(date.today()), styles['Heading1'])
-    header2 = Paragraph("Reporte de los usuarios que prestaron libros en el mes "+str(fecha_usuarios), styles['Normal'])
+
+
+
+    header = Paragraph("Fecha del reporte: "+str(date.today()), styles['Heading1'])
+    header2 = Paragraph("Reporte de los usuarios que prestaron libros en el mes "+str(fecha_usuarios.month)+" del "+str(fecha_usuarios.year), styles['Normal'])
     salto_linea = Paragraph("\n\n", styles["Normal"])
+
+
+
 
 
     reportes.append(Spacer(1, 12))
     reportes.append(header)
-    reportes.append(Spacer(1, 12))
+    #reportes.append(Spacer(1, 12))
     reportes.append(header2)
     reportes.append(Spacer(1, 12))
 
 
     
-    headings = ('Fecha Prestamo', 'Usuario', 'Nombre del Libro', 'Fecha Devolucion')
+    headings = ('Fecha préstamo', 'Usuario', 'Nombre del libro', 'Fecha devolución')
     mes = x.month
     anio = x.year
     n = mes 
@@ -330,6 +348,8 @@ def generar_pdf_usuarios_mes(request):
 
 
     #GRAFICA DE BARRAS
+
+    titulo1 = Paragraph("Gráfica comparativa de usuarios que prestaron libros en el mes "+str(fecha_usuarios.month)+" y el mes anterior a éste. ", estilo['title'])
     drawing = Drawing(400, 200)
     data = [(u1, u2)]
     bc = VerticalBarChart()
@@ -338,9 +358,10 @@ def generar_pdf_usuarios_mes(request):
     bc.height = 125
     bc.width = 300
     bc.data = data
-    bc.bars[0].fillColor = colors.yellow
+    bc.bars[0].fillColor = colors.blue
     bc.bars[1].fillColor = colors.red
     bc.strokeColor = colors.black
+    bc.fillColor = colors.silver
     bc.valueAxis.valueMin = 0
     bc.valueAxis.valueMax = u2+10
     try:
@@ -351,7 +372,7 @@ def generar_pdf_usuarios_mes(request):
             bc.valueAxis.valueStep = o
 
     except:
-        "Nos se puede"
+        "No se puede"
 
 
     bc.categoryAxis.labels.boxAnchor = 'ne'
@@ -381,6 +402,9 @@ def generar_pdf_usuarios_mes(request):
 
 
     reportes.append(t)
+    reportes.append(Spacer(0, inch*.1))
+    reportes.append(Spacer(0, inch*.1))
+    reportes.append(titulo1)
     reportes.append(drawing)
     doc.build(reportes)
     response.write(buff.getvalue())
@@ -450,13 +474,13 @@ def reporte_busqueda_view(request):
 
 
                     else:
-                        mensaje="Error ! La Fecha Inicial  Ingresada No Puede Ser Mayor A La Fecha Final Para Generar Su Reporte "
+                        mensaje="Error ! La fecha inicial  ingresada no puede ser mayor a la fecha final para generar su reporte "
                 else:
-                    mensaje = "Error ! la Fecha Final Debe Ser Menor A La Fecha Actual Para Generar Su Reporte "
+                    mensaje = "Error ! La fecha final debe ser menor a la fecha actual para generar su reporte "
             else:
-                mensaje = "Error ! La Fecha Inicial Debe Ser Menor A La Fecha Actual Para Generar Su Reporte "
+                mensaje = "Error ! La fecha inicial debe ser menor a la fecha actual para generar su reporte "
         else:
-            mensaje2="Los Campos No Deben Estar Vacios Para Generar Su Reporte "
+            mensaje2="Los campos no deben estar vacios para generar su reporte "
         
 
             print "---------------", busqueda#.count()
@@ -481,13 +505,14 @@ x = date.today()
 def generar_pdf_busquedas_view(request):
     print "Genero el PDF"
     fecha_m = ""
-    
+    resultados=[]
     fecha_a = ""
     b=[]
     t=[]
     fecha_inicio = x
     fecha_final = y
     c=0
+    r=[]
     #story =[]
 
     
@@ -512,7 +537,7 @@ def generar_pdf_busquedas_view(request):
 
     imagen_logo=Image(os.path.realpath(fichero_imagen),width=400,height=100)
     reportes.append(imagen_logo)
-
+    
 
     header = Paragraph("Fecha del reporte: "+str(date.today()), styles['Heading1'])
     
@@ -529,6 +554,30 @@ def generar_pdf_busquedas_view(request):
     lista=[]
     t = Busqueda.objects.all()
     b = Busqueda.objects.filter(fecha__range=(fecha_inicio, fecha_final)).values('busqueda', 'resultados').distinct()
+
+
+
+    listar=[]
+    for r in b:
+        print "llllllllllllllllll",r,"\n"
+
+        if r['resultados'] == False:
+            r['resultados']="No se encontró"
+            listar.append(r)  
+        else:
+            r['resultados']="Se encontró"
+            listar.append(r)
+
+
+
+
+    print "lisygyujgyjgjhbjh", listar
+
+
+  
+
+
+
 
 #GRAFICAS BARRA
     total_busquedas=Busqueda.objects.all().count() #TOTAL BUSQUEDAS
@@ -568,8 +617,9 @@ def generar_pdf_busquedas_view(request):
     #allreportes = [ (i.busqueda, i.resultados) for i in Busqueda.objects.filter(fecha__range=(fecha_inicio, fecha_final)).values('busqueda', 'resultados').distinct()]
 
    # allreportes = [ i.values() for i in Busqueda.objects.filter(fecha__range=(fecha_inicio, fecha_final)).values('busqueda', 'resultados').distinct()]
+    b=listar
 
-    allreportes = [ i.values() for i in Busqueda.objects.filter(fecha__range=(fecha_inicio, fecha_final)).values('busqueda', 'resultados').distinct()]
+    allreportes = [ i.values() for i in b]
 
    
     print allreportes
@@ -587,7 +637,7 @@ def generar_pdf_busquedas_view(request):
 
 #GRAFICA DE BARRAS
 
-    titulo = Paragraph("Busquedas encontradas y no encontradas en el sistema", estilo['title'])
+    titulo = Paragraph("Búsquedas encontradas y no encontradas en el sistema", estilo['title'])
 
     drawing = Drawing(400, 200)
     data = [(si, no)]
@@ -597,10 +647,10 @@ def generar_pdf_busquedas_view(request):
     bc.height = 125
     bc.width = 300
     bc.data = data
-    bc.bars[0].fillColor = colors.green
-    bc.bars[1].fillColor = colors.red
-    bc.strokeColor = colors.red
-    bc.fillColor = colors.yellow
+    bc.bars[0].fillColor = colors.blue
+    bc.bars[1].fillColor = colors.black
+    bc.strokeColor = colors.black
+    bc.fillColor = colors.silver
     bc.valueAxis.valueMin = 0
     bc.valueAxis.valueMax = total_busquedas+30
     try:
@@ -634,7 +684,7 @@ def generar_pdf_busquedas_view(request):
 
     
 #GRAFICAS DE PASTEL
-    titulo2 = Paragraph("Busquedas encontradas y no encontradas en el sistema", estilo['title'])
+    titulo2 = Paragraph("Búsquedas y número de veces realizadas", estilo['title'])
 
     d = Drawing(400, 200)
     pc = Pie()
@@ -664,10 +714,10 @@ def generar_pdf_busquedas_view(request):
     legend = Legend() 
     legend.x               = 370
     legend.y               = 0
-    legend.dx              = 8 
-    legend.dy              = 8 
+    legend.dx              = 10 
+    legend.dy              = 10 
     legend.fontName        = 'Helvetica' 
-    legend.fontSize        = 7 
+    legend.fontSize        = 10 
     legend.boxAnchor       = 'n' 
     legend.columnMaximum   = 10 
     legend.strokeWidth     = 1 
@@ -683,7 +733,7 @@ def generar_pdf_busquedas_view(request):
     legend.subCols.rpad    = 30 
      
     #Insertemos nuestros propios colores
-    colores  = [colors.blue, colors.red, colors.green, colors.yellow, colors.pink, colors.pink, colors.pink, colors.pink, colors.pink]
+    colores  = [colors.blue, colors.red, colors.green, colors.yellow, colors.black, colors.white, colors.silver, colors.pink, colors.brown, colors.orange, colors.purple]
     for i, color in enumerate(colores): 
         pc.slices[i].fillColor = color
          

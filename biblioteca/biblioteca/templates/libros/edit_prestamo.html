@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-	Editar Biblioteca 
+	Editar préstamo 
 {% endblock %}
 {% block content %}
 
@@ -17,11 +17,11 @@
     });
   });
   </script>
-
-	<form action="." method="POST">
+  <center> <h4> Editar préstamo  </h4> </center>
+	<form action="." method="POST"align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
-		<button type="submit" class="btn btn-success">Guardar Cambios </button>
+		<button type="submit" class="btn btn-success">Guardar cambios </button>
 		<input class="btn btn-danger" type="reset" value="Limpiar">
 	</form>
 	{{ info}}

@@ -9,10 +9,10 @@
 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="True">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel"> Eliminar Editorial</h3>
+			<h3 id="myModalLabel"> Eliminar editorial</h3>
 		</div>
 		<div class="modal-body">
-		<p>¿Esta seguro que desea eliminar el editorial con nombre <span id="modal_name"></span>?</p>
+		<p>¿Está seguro que desea eliminar el editorial con nombre <span id="modal_name"></span>?</p>
 
 		</div>
 		<div class="modal-footer">
@@ -27,16 +27,13 @@
 
 	<h3> Editoriales</h3>
 	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-		<a class ="btn btn-info" href="{% url 'vista_agregar_editorial' %}"> <li class= "icon-plus"></li> Agregar Editorial</a>
+		<a class ="btn btn-info" href="{% url 'vista_agregar_editorial' %}"> <li class= "icon-plus"></li> Agregar editorial</a>
 	{% endif %}
 
 	<br>
 	{% if editoriales %}
 	<table class="table table-hover" id="tabla_productos">
-		<theader>
-			<th> Editorial  </th>
-		</theader>
-
+		
 		{% for p in editoriales %}
 			<tbody>
 				<tr id="tr{{p.id}}">
@@ -57,7 +54,7 @@
 	
 	
 	{% else %}
-		<h2> No Existen Editoriales </h2>
+		<h2> No existen editoriales </h2>
 	{% endif %}
 	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
 {% endblock %}

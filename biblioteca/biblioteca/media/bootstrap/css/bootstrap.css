@@ -3064,8 +3064,8 @@ table th[class*="span"],
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: rgba(198, 182, 200, 0.24);
-  border: 1px solid #e3e3e3;
+  background-color: rgba(208, 225, 255, 0.24);
+  border: 1px solid #99DEF7;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
@@ -3154,7 +3154,7 @@ button.close {
   *margin-left: .3em;
   font-size: 14px;
   line-height: 20px;
-  color: #333333;
+  /* color: #333333; */;
   text-align: center;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
@@ -3203,13 +3203,14 @@ button.close {
 }
 
 .btn:hover {
-  color: #333333;
+  color: #004774;
   text-decoration: none;
   background-position: 0 -15px;
-  -webkit-transition: background-position 0.1s linear;
+  /* -webkit-transition: background-position 0.1s linear; */
      -moz-transition: background-position 0.1s linear;
        -o-transition: background-position 0.1s linear;
-          transition: background-position 0.1s linear;
+          
+  /* transition: background-position 0.1s linear; */
 }
 
 .btn:focus {
@@ -3999,7 +4000,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #006F9D;
 }
 
 .nav-tabs > li {
@@ -4025,7 +4026,7 @@ input[type="submit"].btn.btn-mini {
   color: #555555;
   cursor: default;
   background-color: #ffffff;
-  border: 1px solid #ddd;
+  border: 1px solid #006F9D;
   border-bottom-color: transparent;
 }
 
@@ -4715,15 +4716,15 @@ input[type="submit"].btn.btn-mini {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
   background-image: -webkit-linear-gradient(top, #222222, #111111);
   background-image: -o-linear-gradient(top, #222222, #111111);
-  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-image: linear-gradient(to bottom, #004774, #004774);
   background-repeat: repeat-x;
-  border-color: #252525;
+  border-color: #077FC8;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
 }
 
 .navbar-inverse .brand,
 .navbar-inverse .nav > li > a {
-  color: #999999;
+  color: #E2E2E2;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -4733,7 +4734,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inverse .brand {
-  color: #999999;
+  color: #FFFFFF;
 }
 
 .navbar-inverse .navbar-text {
@@ -4837,7 +4838,7 @@ input[type="submit"].btn.btn-mini {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#151515), to(#040404));
   background-image: -webkit-linear-gradient(top, #151515, #040404);
   background-image: -o-linear-gradient(top, #151515, #040404);
-  background-image: linear-gradient(to bottom, #151515, #040404);
+  background-image: linear-gradient(to bottom, #0169AB, #004C7C);
   background-repeat: repeat-x;
   border-color: #040404 #040404 #000000;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -5970,9 +5971,9 @@ a.badge:hover {
   right: 0;
   bottom: 0;
   left: 0;
-  padding: 15px;
-  background: #333333;
-  background: rgba(0, 0, 0, 0.75);
+  padding: 2px;
+  background: #004774;
+  background: rgba(0, 71, 116, 0.51);
 }
 
 .carousel-caption h4,

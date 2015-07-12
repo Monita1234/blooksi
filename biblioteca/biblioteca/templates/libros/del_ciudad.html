@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}	
-	Eliminar Ciudad
+	Eliminar ciudad
 {% endblock %}
 
 {% block content %}
-	<form action="." method="POST" >
+	
+	<center> <h4> Eliminar ciudad </h4> </center>
+	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<button type="submit" class="btn btn-success"> Guardar </button>

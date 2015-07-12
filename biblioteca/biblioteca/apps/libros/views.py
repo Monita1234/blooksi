@@ -1,6 +1,4 @@
-
 #-*-coding: utf-8-*-
-# Vistas de la aplicacion libros
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from biblioteca.apps.libros.forms import *#add_prestamo_form, add_autor_form, delete_prestamo_form, edit_prestamo_form, edit_autor_form, add_editorial_form, add_categoria_form, add_bibliotecario_form, edit_bibliotecario_form, add_usuario_form, edit_usuario_form, add_ciudad_form, edit_ciudad_form, add_tipo_usuario_form, agregar_libro_form, agregar_biblioteca_form
@@ -17,10 +15,8 @@ from django.utils import simplejson
 
 def administrar_view (request):
 	return render_to_response('libros/administrar.html', context_instance = RequestContext(request))
-
 def consultas_view (request):
 	return render_to_response('libros/consultas.html', context_instance = RequestContext(request))
-
 
 # PASO 1 reservar siver para  Bibliotecario y para usuarios registrados
 def reservar_view(request,id_libro): #crear una reserva en estado RESERVADO
@@ -50,10 +46,9 @@ def reservar_view(request,id_libro): #crear una reserva en estado RESERVADO
 							add.usuario = Usuario.objects.get(user__id = request.user.id)
 							usu = add.usuario
 							if usu.tipo_usuario.nombre != "bibliotecario":
-								usu.estado = True
+								usu.tiene_prestamo = True
 								print "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-								usu.update()
-							
+								usu.save()
 					except:
 						info = "No se pudo guardar" # +++
 					if x.disponibilidad == True:
@@ -62,9 +57,18 @@ def reservar_view(request,id_libro): #crear una reserva en estado RESERVADO
 					else:
 						mensaje="El libro no esta disponible"
 					x.save()
-					add.save() # guarda la informacion
-					info = "Guardado Satisfactoriamente"
-					return HttpResponseRedirect ('/prestamos/')
+
+					#validacion de la fecha de fecha_devolucion no mayor a 3 dias
+					if   add.fecha_devolucion.day <= date.today().day + 3 :
+
+						add.save() # guarda la informacion
+						info = "Guardado satisfactoriamente"
+						if request.user.usuario.tipo_usuario != "bibliotecario":
+							return HttpResponseRedirect('/mis_reservas/')
+						else:
+							return HttpResponseRedirect ('/prestamos/')
+					else:
+						info="La devolución no debe ser mayor a 3 días"
 				else:
 					info="Error! La fecha de devolución ingresada no puede ser menor a la fecha actual "
 		else:
@@ -73,7 +77,6 @@ def reservar_view(request,id_libro): #crear una reserva en estado RESERVADO
 		return render_to_response('libros/add_prestamo.html', ctx, context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
 #PASO 2 aprobar el prestamo del libro LO REALIZA EL BIBLIOTECARIO
 def aprobar_prestamo_view (request, id_prestar):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -84,7 +87,6 @@ def aprobar_prestamo_view (request, id_prestar):
 		return HttpResponseRedirect('/prestamos/')
 	else:
 		return HttpResponseRedirect ('/')
-
 #PASO 3 puede servir par a los 2 usuarios que reservan BLIBLIOTECARIO y USUARIO REGISTRADO
 def cancelar_prestamo_view (request, id_prestar):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -97,13 +99,16 @@ def cancelar_prestamo_view (request, id_prestar):
 		li.disponibilidad = True
 		li.save()
 
+		usu = reservado.usuario
+		usu.tiene_prestamo = False
+		print "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+		usu.save()
 
 		#dev = cancelar prestamo
 		reservado.save()
 		return HttpResponseRedirect('/prestamos/')
 	else:
 		return HttpResponseRedirect ('/')
-
 #PASO 4 VISTA PARA RETORNAR  LIBRO EN EL CUAL CAMBIE EL ESTADO DEL LIBRO A DISPONIBLE
 def retornar_libro_view(request, id_prestar):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -114,11 +119,17 @@ def retornar_libro_view(request, id_prestar):
 		li = pres.libro#.disponibilidad = True
 		li.disponibilidad = True
 		li.save()
+
+		usu = pres.usuario
+		usu.tiene_prestamo = False
+		print "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+		usu.save()
+
+
 		pres.save()
 		return HttpResponseRedirect('/prestamos/')
 	else:
 		return HttpResponseRedirect ('/')
-
 #PRESTA EL LIBRO EL BIBLIOTECARIO
 def prestar_view(request, id_prestar):  #modificado el 17 de abril Funcion prestar
 	if request.user.is_authenticated and request.user.is_staff:
@@ -133,16 +144,14 @@ def prestar_view(request, id_prestar):  #modificado el 17 de abril Funcion prest
 				pres.save()
 				info = "Guardo Satisfactoriamente"
 			except:
-				print "no se pudo efectuar el prestamo"
+				print "No se pudo efectuar el préstamo"
 				return HttpResponseRedirect ('/prestamo/%s'%(pres.id))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
-
 #	ctx = {'form':formulario, 'informacion':info}
 #	return render_to_response('libros/edit_prestamo.html',ctx , context_instance = RequestContext(request))
+
+''' Fin bloque Reser'''
 
 def edit_prestamo_view(request, id_editprest):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -154,7 +163,7 @@ def edit_prestamo_view(request, id_editprest):
 				edit_prestamo = formulario.save(commit = False)
 				
 				edit_prestamo.save()
-				info = "Guardo Satisfactoriamente"
+				info = "Guardo satisfactoriamente"
 				return HttpResponseRedirect ('/prestamos/')
 
 		else:
@@ -164,22 +173,20 @@ def edit_prestamo_view(request, id_editprest):
 		return render_to_response('libros/edit_prestamo.html',ctx , context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
 def eliminar_prestamo_view(request, id_prest):
 	if request.user.is_authenticated and request.user.is_staff:
 
-		info = "el prestamo se elimino safisfactoriamente"
+		info = "El préstamo se elimino safisfactoriamente"
 		prest = Prestamo.objects.get(pk = id_prest)
 		try:
 			prest.delete()
 			return HttpResponseRedirect ('/prestamos/')
 
 		except:
-			info = "La prestamo no existe"
+			info = "La préstamo no existe"
 			return HttpResponseRedirect ('/prestamos/')
 	else:
 		return HttpResponseRedirect ('/')
-
 
 #autor
 def add_autor_view(request):
@@ -194,7 +201,7 @@ def add_autor_view(request):
 				add.save()
 				#formulario.save_m2m() # guarda la informacion
 				ctx = {'form':formulario, 'now':now, 'm':m}
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				#return HttpResponseRedirect ('/autores/')
 				return render_to_response('libros/add_autor.html', ctx, context_instance = RequestContext(request))
 		else:
@@ -203,9 +210,6 @@ def add_autor_view(request):
 		return render_to_response('libros/add_autor.html', ctx, context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-	
-
 def edit_autor_view(request, id_editautor):
 	if request.user.is_authenticated and request.user.is_staff:
 		info = ""
@@ -216,7 +220,7 @@ def edit_autor_view(request, id_editautor):
 				edit_autor = formulario.save(commit = False)
 				edit_autor.save()
 				formulario.save_m2m()
-				info = "Guardo Satisfactoriamente"
+				info = "Guardo satisfactoriamente"
 				return HttpResponseRedirect ('/autores/')
 
 		else:
@@ -226,9 +230,6 @@ def edit_autor_view(request, id_editautor):
 		return render_to_response('libros/edit_autor.html',ctx , context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 def eliminar_autor_view(request, id_aut):
 	if request.user.is_authenticated and request.user.is_staff:
 		info = ""
@@ -244,10 +245,10 @@ def eliminar_autor_view(request, id_aut):
 				autor.delete()
 				return HttpResponseRedirect('autores')
 			except:
-				info = "El Autor Que desea Eliminar No Existe"
+				info = "El autor que desea eliminar no existe"
 				return render_to_response ('/autores')
 		else:
-				info = "El Autor No Se Puede Eliminar ya que Existe Algun Libro que Este Relacionado"
+				info = "El autor no se puede eliminar ya que existe algun libro que este relacionado"
 				return HttpResponseRedirect ('/autores')
 	else:
 		return HttpResponseRedirect ('/')
@@ -268,9 +269,9 @@ def add_editorial_view(request):
 			if formulario.is_valid():
 				add = formulario.save(commit = False)
 				add.save()
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				ctx = {'form':formulario, 'now':now, 'm':m}
-				informacion = "Se Guardo Satisfactoriamente"
+				informacion = "Se guardo satisfactoriamente"
 				#return HttpResponseRedirect ('/editoriales/')
 				return render_to_response('libros/add_editorial.html', ctx,context_instance = RequestContext(request))
 		else:
@@ -281,7 +282,6 @@ def add_editorial_view(request):
 	else:
 
 		return HttpResponseRedirect ('/')
-
 def edit_editorial_view(request, id_editorial):
 	if request.user.is_authenticated and request.user.is_staff:
 		info =""
@@ -292,7 +292,7 @@ def edit_editorial_view(request, id_editorial):
 			if formulario.is_valid():
 				edit_editorial = formulario.save(commit = False)
 				edit_editorial.save()
-				info = " Guardado Satisfactoriamente"
+				info = " Guardado satisfactoriamente"
 				return HttpResponseRedirect ('/editoriales/')
 		else:
 			formulario = add_editorial_form(instance = editorial)
@@ -300,8 +300,6 @@ def edit_editorial_view(request, id_editorial):
 		return render_to_response('libros/edit_editorial.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-			
 def eliminar_editorial_view(request, id_editorial):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -321,16 +319,14 @@ def eliminar_editorial_view(request, id_editorial):
 				return HttpResponseRedirect('/editoriales/')
 
 			except:
-				info = "La Editorial Que desea Eliminar No Existe"
+				info = "La editorial que desea eliminar no existe"
 				return render_to_response ('/editoriales')
 		else:
 
-				info="La Editorial No Se Puede Eliminar ya que Existe Algun Libro que Este Relacionado"
+				info="La editorial no se puede eliminar ya que existe algun libro que este relacionado"
 				return HttpResponseRedirect('/editoriales/')
 	else:
 		return HttpResponseRedirect ('/')
-
-
 
 #categoria
 def add_categoria_view(request):
@@ -346,7 +342,7 @@ def add_categoria_view(request):
 				add = formulario.save (commit = False)
 				add.save()
 				ctx = {'form':formulario, 'now':now, 'm':m}
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				return render_to_response ('libros/agregar_categoria.html', ctx,context_instance =RequestContext(request))
 				
 		else:
@@ -355,12 +351,6 @@ def add_categoria_view(request):
 		return render_to_response ('libros/agregar_categoria.html', ctx,context_instance =RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-		
-
-	
-
 def editar_categoria_view (request, id_prod):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -371,7 +361,7 @@ def editar_categoria_view (request, id_prod):
 			if formulario.is_valid():
 				edit_prod = formulario.save(commit = False) 
 				edit_prod.save()
-				info ="Guardado Satisfactoriamente"
+				info ="Guardado satisfactoriamente"
 				return HttpResponseRedirect ('/categorias')
 		else:
 			formulario = add_categoria_form(instance = prod)
@@ -380,13 +370,10 @@ def editar_categoria_view (request, id_prod):
 		return render_to_response('libros/editar_categoria.html', ctx, context_instance= RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 def eliminar_categoria_view(request, id_prod):
 	if request.user.is_authenticated and request.user.is_staff:
 
-		info = "la categoria se elimino safisfactoriamente"
+		info = "La categoría se elimino safisfactoriamente"
 		prod = Categoria.objects.get(pk = id_prod)
 		
 		try:
@@ -394,13 +381,10 @@ def eliminar_categoria_view(request, id_prod):
 			return HttpResponseRedirect ('/categorias')
 
 		except:
-			info = "La categoria no existe"
+			info = "La categoría no existe"
 			return HttpResponseRedirect ('/categorias')
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 
 #bibliotecario
 def add_bibliotecario_view(request):
@@ -423,9 +407,6 @@ def add_bibliotecario_view(request):
 		return render_to_response('libros/add_bibliotecario.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 def edit_bibliotecario_view(request, id_biblio):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -445,8 +426,6 @@ def edit_bibliotecario_view(request, id_biblio):
 		return render_to_response('libros/edit_bibliotecario.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
 def del_bibliotecario_view(request, id_biblio):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -460,7 +439,6 @@ def del_bibliotecario_view(request, id_biblio):
 			return HttpResponseRedirect('/bibliotecarios')
 	else:
 		return HttpResponseRedirect ('/')
-
 
 #usuario
 def add_usuario_view(request):
@@ -480,39 +458,98 @@ def add_usuario_view(request):
 		return render_to_response('libros/add_usuario.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
 def edit_usuario_view(request, id_usua):
-	if request.user.is_authenticated and request.user.is_staff:
+	if request.user.is_authenticated :
 
+		now = date.today()
+		m=True
+		mensaje = ""
+		fecha_nac=""
 		info = ""
 		usua = Usuario.objects.get(pk = id_usua)
 	
 		if request.method == "POST":
-			formulario = add_usuario_form(request.POST, request.FILES, instance=usua)
+			if request.user.usuario.tipo_usuario.nombre == "bibliotecario":
+				x = date.today().year - 18
+				mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 18 años"
+				formulario = add_bibliotecario_form(request.POST, request.FILES, instance=usua)
+				tipo_usuario 	= formulario.cleaned_data['tipo_usuario']		
+			else:
+				x = date.today().year - 7
+				mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 7 años"		
+				formulario = add_usuario_form(request.POST, request.FILES, instance=usua)
 			formulario_user = edit_user_form(request.POST, instance = usua.user)
 			if formulario.is_valid() and formulario_user.is_valid():
-				edit_usua = formulario.save(commit = False)
-				#e_user = 	
-				#x = formulario_user.cleaned_data['password']
-				edit_usua.save()
-				usua.user.set_password(formulario_user.cleaned_data['clave'])
-				#formulario_user.set_password("123123")
-				formulario_user.save()
-				info = "Guardado Satisfactoriamente"
-				return HttpResponseRedirect('/usuarios/')
+				y = formulario.cleaned_data['fecha_nac']
+				if  y.year  <  x :
+					edit_usua = formulario.save(commit = False)
+					edit_usua.save()
+					usua.user.set_password(formulario_user.cleaned_data['clave'])
+					formulario_user.save()
+					info = "Guardado Satisfactoriamente"
+					return HttpResponseRedirect('/')
+			else:
+				mensaje = mensaje	
 		else:
-			formulario = add_usuario_form(instance = usua)
+			if request.user.usuario.tipo_usuario.nombre == "bibliotecario":
+				formulario = add_bibliotecario_form(instance = usua)	
+			else:
+				formulario = add_usuario_form(instance = usua)
 			formulario_user = edit_user_form(instance = usua.user)
-		ctx = {'form':formulario, 'informacion':info, 'form_user': formulario_user}
+		ctx = {'form':formulario, 'informacion':info, 'form_user': formulario_user,'now':now, 'mensaje':mensaje}
 		return render_to_response('libros/edit_usuario.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
 
+'''
+		if request.method == "POST":
+			
+			form_a = RegisterForm(request.POST)
+			form_b = add_usuario_form(request.POST,request.FILES, prefix = "b")
+			if form_b.is_valid() and form_a.is_valid():
+				usuario 		= form_a.cleaned_data['username']
+				email 			= form_a.cleaned_data['email']
+				password_one	= form_a.cleaned_data['password_one']
+				password_two 	= form_a.cleaned_data['password_two']
+				tipo_usuario 	= form_b.cleaned_data['tipo_usuario']
+				if  form_b.cleaned_data['fecha_nac'] < now:
+				
+					x = date.today()
+					y = form_b.cleaned_data['fecha_nac']
+					if  y.year  <  x.year - 7 : 
+						try:
+							u = User.objects.create_user(username = usuario,email = email, password = password_one)
+							u.save() #guarda el objeto
+							b = form_b.save(commit=False)
+							b.tipo_usuario = tipo_usuario
+							b.user= u 
+							b.save()
+						except:
+							pass
+						ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+						#return HttpResponseRedirect ('/registro')
+						return render_to_response('home/register.html/', ctx,context_instance = RequestContext(request))
+					else:
+						mensaje =" Lo sentimos pero no puedes registrarte por que debe ser mayor de 7 años"
+				else:
+					mensaje = "Error! La Fecha de nacimiento debe ser menor  a la fecha actual"	
+			else:
+
+				info = "fallo"
+
+		else:
+			form_a = RegisterForm()
+			form_b = add_usuario_form(prefix = "b")
+		ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'mensaje':mensaje}	
+		return render_to_response ('home/register.html',ctx, context_instance= RequestContext(request))	
+	
+'''
+
+
 
 
 def del_usuario_view(request,id_usua):	
-	info = "Se inicio proceso de eliminacion del Usuario"
+	info = "Se inicio proceso de eliminacion del usuario"
 	usua = Usuario.objects.get(pk = id_usua)
 	
 	try:
@@ -523,8 +560,6 @@ def del_usuario_view(request,id_usua):
 		info= "El Usuario que desea eliminar no existe"
 		#return render_to_response('home/usuario.html')
 		return HttpResponseRedirect ('/usuarios')
-
-
 
 #tipo_usuario
 def add_tipo_usuario_view(request):
@@ -538,7 +573,7 @@ def add_tipo_usuario_view(request):
 			if formulario.is_valid():
 				add = formulario.save(commit =False)
 				add.save() # guarda la informacion
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				ctx = {'form':formulario, 'now':now, 'm':m}
 				return render_to_response('libros/add_tipo.html', ctx,context_instance = RequestContext(request))
 		else:
@@ -548,9 +583,6 @@ def add_tipo_usuario_view(request):
 	
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 def edit_tipo_usuario_view(request, id_tipo):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -572,7 +604,6 @@ def edit_tipo_usuario_view(request, id_tipo):
 		return render_to_response('libros/edit_tipo.html',ctx , context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')	
-
 def eliminar_tipo_usuario_view(request, id_tipo):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -604,7 +635,7 @@ def add_ciudad_view(request):
 				add.save() # guarda la informacion
 
 			# guarda las relaciones ManyToMany
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				ctx = {'form':formulario, 'now':now, 'm':m}
 				#return HttpResponseRedirect ('/ciudades/')
 				return render_to_response('libros/add_ciudad.html', ctx,context_instance = RequestContext(request))
@@ -614,9 +645,6 @@ def add_ciudad_view(request):
 		return render_to_response('libros/add_ciudad.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
-
 def edit_ciudad_view(request, id_ciu):
 	if request.user.is_authenticated and request.user.is_staff:
 	
@@ -628,7 +656,7 @@ def edit_ciudad_view(request, id_ciu):
 				edit_ciu = formulario.save(commit = False)
 		
 				edit_ciu.save()
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				return HttpResponseRedirect('/ciudades/')
 		else:
 			formulario = add_ciudad_form(instance = ciu)
@@ -636,8 +664,6 @@ def edit_ciudad_view(request, id_ciu):
 		return render_to_response('libros/edit_ciudad.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
 def del_ciudad_view(request, id_ciu):
 	if request.user.is_authenticated and request.user.is_staff:
 
@@ -677,17 +703,13 @@ def agregar_libro_view (request):
 					info = "Guardado satisfactoriamente"
 					return render_to_response('libros/agregar_libro.html', ctx,context_instance = RequestContext(request))
 				else:
-					mensaje="Error ! La fecha de adquisicion ingresada no puede ser menor a la de publicacion "
+					mensaje="Error ! La fecha de adquisición ingresada no puede ser menor a la de publicación "
 		else:
 			formulario = agregar_libro_form()
 		ctx = {'form':formulario, 'informacion':info, 'mensaje': mensaje, 'now':now}
 		return render_to_response('libros/agregar_libro.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-		
-
-
 #Nuevo
 def editar_libro_view (request, id_prod):
 	if request.user.is_authenticated and request.user.is_staff:
@@ -710,13 +732,11 @@ def editar_libro_view (request, id_prod):
 		return render_to_response('libros/editar_libro.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
-
-
 #ELIMINAR LIBRO 
 def del_view (request, id_prod): #obteniendo el objeto a eliminar 
 	if request.user.is_authenticated and request.user.is_staff:
 	
-		info = "Se inicio el proceso de eliminacion"
+		info = "Se inicio el proceso de eliminación"
 		l = None # nul o vacio donde se puede almacenar un objeto
 		#opc2 = []
 		prod = Libro.objects.get(pk = id_prod)
@@ -736,69 +756,57 @@ def del_view (request, id_prod): #obteniendo el objeto a eliminar
 				info = "EL libro que desea eliminar no existe"
 				return HttpResponseRedirect ('/libros')
 		else: 
-				info = "El libro no se puede eliminar ya que existe algun prestamo asociado"		
+				info = "El libro no se puede eliminar ya que existe algun préstamo asociado"		
 				return HttpResponseRedirect ('/libros')
 	else:
 		return HttpResponseRedirect ('/')
 
 
 
+
 #biblioteca
 
 def agregar_biblioteca_view(request):
-	if request.user.is_authenticated and request.user.is_staff:
-		info ="inicializando"
-		if request.method == "POST":
-			formulario = agregar_biblioteca_form(request.POST)
-			if formulario.is_valid():
-				add = formulario.save(commit = False)
-				add.save()#guarda la informacion
-				info = "Guardo Satisfactoriamente"
-				return HttpResponseRedirect ('/biblioteca/%s'%add.id)
-		else:
-			formulario =agregar_biblioteca_form()
-		ctx = {'form':formulario,'informacion':info}
-		return render_to_response('libros/agregar_biblioteca.html',ctx,context_instance = RequestContext(request))
-
+	info ="inicializando"
+	if request.method == "POST":
+		formulario = agregar_biblioteca_form(request.POST)
+		if formulario.is_valid():
+			add = formulario.save(commit = False)
+			add.save()#guarda la informacion
+			info = "Guardo satisfactoriamente"
+			return HttpResponseRedirect ('/biblioteca/%s'%add.id)
 	else:
-		return HttpResponseRedirect ('/')
-
-
+		formulario =agregar_biblioteca_form()
+	ctx = {'form':formulario,'informacion':info}
+	return render_to_response('libros/agregar_biblioteca.html',ctx,context_instance = RequestContext(request))
 def editar_biblioteca_view(request,id_biblioteca):
-	if request.user.is_authenticated and request.user.is_staff:
-		info =""
-		biblioteca = Biblioteca.objects.get(pk =id_biblioteca)
-		if request.method == "POST":
-			formulario = agregar_biblioteca_form(request.POST, instance= biblioteca)
-			if formulario.is_valid():
-				edit_biblioteca= formulario.save(commit = False)
-				edit_biblioteca.save()
-				info = "Guardo Satisfactoriamente"
-				return HttpResponseRedirect ('/biblioteca/%s'% edit_biblioteca.id)
-		else:
+	info =""
+	biblioteca = Biblioteca.objects.get(pk =id_biblioteca)
 
-			formulario = agregar_biblioteca_form(instance = biblioteca)
-
-		ctx = {'form':formulario,'informacion':info}
-		return render_to_response('libros/editar_biblioteca.html',ctx,context_instance = RequestContext(request))
+	if request.method == "POST":
+		formulario = agregar_biblioteca_form(request.POST, instance= biblioteca)
+		if formulario.is_valid():
+			edit_biblioteca= formulario.save(commit = False)
+			edit_biblioteca.save()
+			info = "Guardo satisfactoriamente"
+			return HttpResponseRedirect ('/biblioteca/%s'% edit_biblioteca.id)
 	else:
-		return HttpResponseRedirect ('/')
 
+		formulario = agregar_biblioteca_form(instance = biblioteca)
 
-
+	ctx = {'form':formulario,'informacion':info}
+	return render_to_response('libros/editar_biblioteca.html',ctx,context_instance = RequestContext(request))
 def eliminar_biblioteca_view(request, id_biblioteca):
-	if request.user.is_authenticated and request.user.is_staff:
-		info = "la biblioteca se elimino Satisfactoriamente"
-		biblioteca = Biblioteca.objects.get(pk = id_biblioteca)
-		try:
-			biblioteca.delete()
-			return HttpResponseRedirect ('/bibliotecas')
-		except:
-			info = "la biblioteca no existe"
-			return render_to_response ('/bibliotecas')
-	else:
-		return HttpResponseRedirect ('/')
+	info = "La biblioteca se elimino satisfactoriamente"
+	biblioteca = Biblioteca.objects.get(pk = id_biblioteca)
 
+	try:
+		biblioteca.delete()
+		return HttpResponseRedirect ('/bibliotecas')
+
+	except:
+		info = "La biblioteca no existe"
+		return render_to_response ('/bibliotecas')
 
 
 #buscar
@@ -821,7 +829,7 @@ def add_buscar_view(request):
 				busqueda = formulario.cleaned_data['busqueda']
 				add = formulario.save(commit =False)
 				#add.save() # guarda la informacion
-				info = "Guardado Satisfactoriamente"
+				info = "Guardado satisfactoriamente"
 				#buscar
 				try:
 					editoriales = Libro.objects.filter(editorial__nombre__iexact = busqueda)
@@ -866,7 +874,7 @@ def consultar_usuario_id_view(request):
 					ide= formulario.cleaned_data['identificacion'] #guarda informacion ingresada del formulario
 					try:
 						usua=Usuario.objects.get(tipo_id=tipo_id,identificacion=ide)
-						mensaje = "Se encontro el Usuario con el Numero de Identificacion " + ide + " sus Datos son:"
+						mensaje = "Se encontro el usuario con el numero de identificación " + ide + " sus Datos son:"
 
 						#return HttpResponseRedirect('/usuario/%s'%usua.id)		
 					except:
@@ -889,10 +897,10 @@ def consultar_usuario_id_view(request):
 def register_view(request):
 		now = date.today()
 		m=True
-		
 		mensaje = ""
 		fecha_nac=""
 		if request.method == "POST":
+			
 			form_a = RegisterForm(request.POST)
 			form_b = add_usuario_form(request.POST,request.FILES, prefix = "b")
 			if form_b.is_valid() and form_a.is_valid():
@@ -901,30 +909,30 @@ def register_view(request):
 				password_one	= form_a.cleaned_data['password_one']
 				password_two 	= form_a.cleaned_data['password_two']
 				tipo_usuario 	= form_b.cleaned_data['tipo_usuario']
-				u = User.objects.create_user(username = usuario,email = email, password = password_one)
 
 				if  form_b.cleaned_data['fecha_nac'] < now:
-
-					try:
-						
-						u.save() #guarda el objeto
-						b = form_b.save(commit=False)
-						b.tipo_usuario = tipo_usuario
-						'''b.add_usuario_form = a
-						'''
-						b.user= u 
-						
-						b.save()
-					
-					except:
-						pass
-					ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
-					#return HttpResponseRedirect ('/registro')
-					return render_to_response('home/register.html/', ctx,context_instance = RequestContext(request))
+				
+					x = date.today()
+					y = form_b.cleaned_data['fecha_nac']
+					if  y.year  <  x.year - 7 : 
+						try:
+							u = User.objects.create_user(username = usuario,email = email, password = password_one)
+							u.save() #guarda el objeto
+							b = form_b.save(commit=False)
+							b.tipo_usuario = tipo_usuario
+							b.user= u 
+							b.save()
+						except:
+							pass
+						ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+						#return HttpResponseRedirect ('/registro')
+						return render_to_response('home/register.html/', ctx,context_instance = RequestContext(request))
+					else:
+						mensaje =" Lo sentimos, pero no puedes registrarte porque debes ser mayor de 7 años"
 				else:
-					mensaje = "Error! La Fecha de nacimiento debe ser menor  a la fecha actual"	
+					mensaje = "Error! La fecha de nacimiento debe ser menor  a la fecha actual"	
 			else:
-				info = "fallo"
+				info = "falló"
 
 		else:
 			form_a = RegisterForm()
@@ -936,44 +944,52 @@ def register_view(request):
 
 #REGISTRAR BIBLIOTECARIO ---
 def register_bibliotecario_view(request):
+	
 	if request.user.is_authenticated and request.user.is_staff:
-		m=True	
-
 		now = date.today()
+		m=True	
+		info = ""
+		fecha_nac=""
 		if (request.user.is_authenticated() and request.user.is_staff and request.user.is_superuser):
 			if request.method == "POST":
 				form_a = RegisterForm(request.POST)
-				form_b = add_bibliotecario_form(request.POST, prefix = "b")
+				form_b = add_bibliotecario_form(request.POST, request.FILES,  prefix = "b")
 				if form_b.is_valid() and form_a.is_valid():
 					usuario 		= form_a.cleaned_data['username']
 					email 			= form_a.cleaned_data['email']
 					password_one	= form_a.cleaned_data['password_one']
 					password_two 	= form_a.cleaned_data['password_two']
 
-					u = User.objects.create_user(username = usuario,email = email, password = password_one)
-					b = form_b.save(commit=False)
-					'''b.add_usuario_form = a
-					'''
-					try:
-						tipo = Tipo_Usuario.objects.get(nombre='bibliotecario')
-						b.tipo_usuario = tipo
-						u.is_staff = True
-						u.is_superuser = True
-						u.save() #guarda el objeto
-						b.user= u 
-						b.save()
-					except:
-						pass
-						mensaje = "No se puede crear un bibliotecario porque no existe un tipo bibliotecario"
-					ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
-					return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
-					#return render_to_response('home/confirmacion.html',context_instance = RequestContext(request))
+					if  form_b.cleaned_data['fecha_nac'] < now:
+						#evalua si la fecha ingresada es mayor de 18 años 
+						x = date.today()
+						y = form_b.cleaned_data['fecha_nac']
+						if  y.year  <=  x.year - 18: 
+							try:
+								u = User.objects.create_user(username = usuario,email = email, password = password_one)
+								b = form_b.save(commit=False)
+								tipo = Tipo_Usuario.objects.get(nombre='bibliotecario')
+								b.tipo_usuario = tipo
+								u.is_staff = True
+								u.is_superuser = True
+								u.save() #guarda el objeto USER
+								b.user = u 
+								b.save() #guarda el objeto USUARIO
+							except:
+								info = "No se puede crear un bibliotecario porque no existe un tipo bibliotecario"
+							ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+							return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
+							#return render_to_response('home/confirmacion.html',context_instance = RequestContext(request))
+						else:
+							info ="Lo sentimos pero no puedes registrar un bibliotecario menor de 18 años"	
+					else:
+						info = "Error! La Fecha de nacimiento debe ser menor  a la fecha actual"	
 				else:
 					info = "fallo"	
 			else:
 				form_a = RegisterForm()
 				form_b = add_bibliotecario_form(prefix = "b")
-			ctx = {'form_a':form_a, 'form_b':form_b, 'now':now}	
+			ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'info':info}	
 			return render_to_response ('home/register_b.html',ctx, context_instance= RequestContext(request))	
 
 		else: #por sino es super administrador
@@ -983,40 +999,42 @@ def register_bibliotecario_view(request):
 
 #VISTA DE BUSCAR LIBRO POR TITULO, CATEGORIA O AUTOR: CONSULTAR DISPONIBLES 
 def consultar_disponibles_view (request): 
-	if request.user.is_authenticated and request.user.is_staff:
-		busqueda1 = []
-		busqueda2 = []
-		busqueda3 = []
-		lista_cat = []
-		formulario = buscar_form(request.POST)
-		if request.method =="POST":
-			if formulario.is_valid():
-				c = formulario.cleaned_data ['busqueda']
-				#print c
+	busqueda1 = []
+	busqueda2 = []
+	busqueda3 = []
+	lista_cat = []
+	mensaje_error = False
+	formulario = buscar_form(request.POST)
+	if request.method =="POST":
+		if formulario.is_valid():
+			c = formulario.cleaned_data ['busqueda']
+			#print c
 
-	#Aqui se esta utilizando un query 
-				try:
-					busqueda1 = Libro.objects.filter(nombre_libro__icontains = c, disponibilidad = True)# La palabra icontains se utiliza
-					# para que encuentre a cualquier objeto que contenga la palabra q se guarda en la variable busqueda
-					busqueda3 = Libro.objects.filter(autor__nombre__icontains	= c, disponibilidad = True)
-					busqueda2 = Categoria.objects.get(nombre__icontains=c)# busqueda cuando hay una relacion de muchos a muchos 
-					lista_cat = Libro.objects.filter(categoria = busqueda2, disponibilidad = True)
-					print "se encontro  %s"%(c) 
-				except:
-					print "no se encontro nada %s"%(c) 
-		#Funcion contains se refiere a sacar un nombre o titulo que contenga lo que se le esta pidiendo. 
-		#c.lower () se utilizan para minusculas
-		# Formulario vacio para obtener la informacion
-		else:
-			formulario = buscar_form()
-		#c.upper() se utilizan para mayusculas
-		# en esta parte a la variable ctx se le pasa lo que hay en el formulario y lo que se quiere buscar
-		mensaje = "La busqueda ha sido exitosa"
-		ctx = {'form': formulario, 'buscar1': busqueda1, 'buscar2': lista_cat, 'buscar3': busqueda3, 'msg':mensaje }
-		return render_to_response('libros/consultar_disponibles.html',ctx,context_instance=RequestContext(request))
-
+			#Aqui se esta utilizando un query 
+			try:
+				busqueda1 = Libro.objects.filter(nombre_libro__icontains = c, disponibilidad = True)# La palabra icontains se utiliza
+				# para que encuentre a cualquier objeto que contenga la palabra q se guarda en la variable busqueda
+				busqueda3 = Libro.objects.filter(autor__nombre__icontains	= c, disponibilidad = True)
+				busqueda2 = Categoria.objects.get(nombre__icontains=c)# busqueda cuando hay una relacion de muchos a muchos 
+				lista_cat = Libro.objects.filter(categoria = busqueda2, disponibilidad = True)
+				print "se encontro  %s"%(c) 
+			except:
+				print "QQQQQQQQQQQQQQQQQQQQQQQ", busqueda1, busqueda2, lista_cat
+				if busqueda1 and busqueda2 and lista_cat:
+					pass
+				else:
+					mensaje_error = True
+	#Funcion contains se refiere a sacar un nombre o titulo que contenga lo que se le esta pidiendo. 
+	#c.lower () se utilizan para minusculas
+	# Formulario vacio para obtener la informacion
 	else:
-		return HttpResponseRedirect ('/')
+		formulario = buscar_form()
+	#c.upper() se utilizan para mayusculas
+	# en esta parte a la variable ctx se le pasa lo que hay en el formulario y lo que se quiere buscar
+	mensaje = "La busqueda ha sido exitosa"
+	ctx = {'form': formulario, 'buscar1': busqueda1, 'buscar2': lista_cat, 'buscar3': busqueda3, 'msg':mensaje, 'mensaje_error':mensaje_error, }
+	return render_to_response('libros/consultar_disponibles.html',ctx,context_instance=RequestContext(request))
+
 
 
 def consultar_codigo_view(request):

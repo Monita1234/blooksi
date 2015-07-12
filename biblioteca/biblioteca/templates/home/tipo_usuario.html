@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Lista  De Usuarios 
+	Lista de usuarios 
 {% endblock %}
 
 {% block content %}
@@ -24,19 +24,14 @@
 		</div>
 	</div>
 
-	<h3>Tipos De Usuarios</h3>
+	<h3>Tipos de usuarios</h3>
 	{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 
-		<a <a class="btn btn-info"  href="/add/tipo-usuario/{{ t.id }}"> <li class="icon-plus"></li>Agregar Tipo de Usuario</a>
+		<a <a class="btn btn-info"  href="/add/tipo-usuario/{{ t.id }}"> <li class="icon-plus"></li>Agregar tipo de usuario</a>
 	{% endif %}
 	<br>
 	{% if tipos_usuarios %}
 	<table class= "table table-hover" id="tabla_productos">
-		<theader>
-			
-				<th>Tipos De Usuario</th>
-			
-		</theader>
 	
 		{% for p in tipos_usuarios %}
 		
@@ -65,13 +60,13 @@
 	
 
 	</table>
-	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar A El Menu Administrador </a>
+	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar al menú del administrador </a>
 	<br>
-	<a class = "btn btn-inverse" href="/usuarios/"></li>  Regresar A El Menu Usuarios </a>
+	<a class = "btn btn-inverse" href="/usuarios/"></li>  Ir al menú usuarios </a>
 		
 
 	{% else %}
-		<h2>No Existen Tipos De Usuarios :(</h2>
+		<h2>No existen tipos de usuarios</h2>
 
 	{% endif %}
 {% endblock %}

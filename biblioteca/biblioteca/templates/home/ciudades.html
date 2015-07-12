@@ -12,7 +12,7 @@
 			<h3 id="myModalLabel"> Eliminar la ciudad</h3>
 		</div>
 		<div class="modal-body">
-		<p>¿Esta seguro que desea eliminar la ciudad con nombre <span id="modal_name"></span>?</p>
+		<p>¿Está seguro que desea eliminar la ciudad con nombre <span id="modal_name"></span>?</p>
 
 		</div>
 		<div class="modal-footer">
@@ -25,12 +25,12 @@
 		</div>
 	</div>
 
-    <h3>Ciudades</h3>
+    <h4>Ciudades</h4>
     
 	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 
 		
-		<a class="btn btn-info" href="{% url 'vista_agregar_ciudad' %}"> <li class= "icon-plus"></li>Agregar Ciudad</a>
+		<a class="btn btn-info" href="{% url 'vista_agregar_ciudad' %}"> <li class= "icon-plus"></li>Agregar ciudad</a>
 		<br>
 		
 	{% endif %}
@@ -45,7 +45,7 @@
 
 			<tbody>
 				<tr id="tr{{p.id}}">
-					<td>  <h3> {{ p.nombre }} </h3>  </td>
+					<td>  <p> {{ p.nombre }} </p>  </td>
 						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 
 						    <td>
@@ -65,7 +65,7 @@
 	</table>
 			
 	{% else %}
-		<h2>No existen ciudades :( </h2>
+		<h2>No existen ciudades</h2>
 	{% endif %}
 
 	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>

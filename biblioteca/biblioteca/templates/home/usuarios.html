@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}
 	 Usuarios
 {% endblock %}
@@ -33,7 +32,7 @@
 
 	<h3> Usuarios</h3>
 	{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-		<a class="btn btn-primary" href="{% url 'vista_registro' %}">Agregar un Nuevo Usuario</a>
+		<a class="btn btn-primary" href="{% url 'vista_registro' %}">Agregar un njuevo usuario</a>
 	{% endif %}
 
 	{% if usuarios %} 
@@ -41,7 +40,8 @@
 			<theader>
 				<th>Usuario</th>
 				<th>Tipo de Usuario</th>
-				<th>Ciudad</th>
+				<th>Identificación</th>
+				
 			</theader>
 
 		{% for p in usuarios %}
@@ -49,8 +49,7 @@
 				<tr id="tr{{p.id}}">
 					<td>{{ p.user }}   </td>
 					<td>{{ p.tipo_usuario}} </td>
-					<td>{{ p.ciudad }}</td>
-					
+					<td>{{ p.identificacion}} </td>
 					<td><a class="btn btn-info" href="/usuario/{{p.id}}" > Ver </a ></td>
 					{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 					<td><a class="btn btn-warning" href="/edit/usuario/{{ p.id }}">  Editar</a></td>  
@@ -69,9 +68,3 @@
 	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
 
 {% endblock %} 
-
-
-
-
-
-	

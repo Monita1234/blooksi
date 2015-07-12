@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('biblioteca.apps.home.views',
-	url(r'^$','index_view', name = 'vista_principal'),
+	#url(r'^$','index_view', name = 'vista_principal'),
 	
 	
 	url(r'^libronuevo/$','libronuevo_view', name = 'vista_libronuevo'),
@@ -14,6 +14,8 @@ urlpatterns = patterns('biblioteca.apps.home.views',
 	url(r'^prestamos/$','prestamos_view', name = 'vista_prestamos'),
 	url(r'^prestamo/(?P<id_editprest>.*)/$', 'single_prestamo_view', name = 'vista_single_prestamo'),
 	url(r'^reservas/$','reservas_view',name = 'vista_reservas'),
+	
+	url(r'^mis_reservas/$','mis_reservas_view',name = 'vista_mis_reservas'),
 	
 	#autores
 	url(r'^autores/$','autores_view', name = 'vista_autores'),
@@ -51,7 +53,10 @@ urlpatterns = patterns('biblioteca.apps.home.views',
 	#biblioteca
 	url(r'^bibliotecas/$','bibliotecas_view', name ='vista_bibliotecas'),
 	url(r'^biblioteca/(?P<id_biblioteca>.*)/$','single_biblioteca_view', name ='vista_single_biblioteca'),
+	
+	#Webservices JSON y XML
+	url(r'^ws/libro/$','ws_libro_view', name = 'ws_libro_url'),
 
-
+	url(r'^contacto/$', 'contacto_view', name = 'vista_contacto'),
 
 	)

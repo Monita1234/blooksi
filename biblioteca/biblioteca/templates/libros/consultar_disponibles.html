@@ -4,93 +4,137 @@
 
 	
 <!-- LLamando al formulario  VERONICA DOMINGUEZ Y SOFIA ALVAREZ -->
-Ingrese el Titulo, Autor o Categoria a buscar
+Ingrese el título, autor o categoría a buscar
 	<form action="." method="POST">
 		{% csrf_token %}
 		{{ form.as_p }}
 <button type = "submit" class = "btn btn-success" >Buscar </button>
-<a class = "btn btn-inverse" href="/administrar/"></li>  Cancelar </a>
-
 	</form>
+	
 	{% if buscar1 or buscar2 or buscar3 %}
 
 
-			<table  class = "table table-hover ">
-				
-						<tr>
 
-					
+			
 
 							{% if buscar1%}
-								{% for c in buscar1 %}
-									<theader>
-										<tbody>
+							<h4>Se encontraron los siguientes libros relacionados con el título ingresado</h4>
+							<table  class = "table table-hover ">
+								
+									<tbody>
+										<theader>
 											<tr>
-												<th> Titulo </th>
+												<th> Título </th>
 												<th> Autor </th>
-												<th> Categoria(s) </th>
+											
+												<th> Categoría(s) </th>
 											</tr>
-										<tbody>
-									</theader> 
-									<td>{{c.nombre_libro}}</td>
-									<td>{{c.autor}}</td>
-									{% for l in c.categoria.all %} 	
-										<td>{{ l }}</td>
-									{% endfor %}
-								{% endfor %}
-							{% endif%}
+										</theader> 
+										
+								
+											{% for c in buscar1 %}
+												
+												<tr><td>{{c.nombre_libro}}</td>
+												<td>{{c.autor}}</td>
+												
+												{% for l in c.categoria.all %} 	
+													<td>{{ l }}</n></td>
+												{% endfor %}
+												<td><a class ="btn btn-primary" href="/reservar/{{ c.id }}"> Reservar libro </a></td>
+												</tr>
+											{% endfor %}
+										{% endif%}
+									<tbody>
+							</table>
 
 
 							<!--Para autor -->
-							{% if buscar3 %}							
-								<theader>
-									<tbody>
-										<tr>
-											<td><h4>Nombre</h4></td>
-											<td><h4>Editorial</h4></td>
-											<td><h4>Version</h4></td>
-										</tr>
-									</tbody>
-								</theader>
-								{% for a in buscar3 %} 
-									<td>{{a.nombre_libro}}</td>
-									<td>{{a.editorial}} </td>
-									<td>{{a.version}}</td>
-									{% for n in a.categoria.all %} 
-										<td>{{ n }}</td>
-									{% endfor %}
+									{% if buscar3 %}
+										<h4>Se encontraron los siguientes libros relacionados con el nombre del autor ingresado</h4>
 
-									<td><a class = "btn" href= "#"> Reservar</a></td>				
+										<table  class = "table table-hover ">
+											<tbody>						
+													<theader>
+														
+															<tr>
+																<td><h4>Nombre</h4></td>
+															
+																<td><h4>Categoría(s)</h4></td>
+															</tr>
+														
+													</theader>
+													{% for a in buscar3 %} 
+														<tr><td>{{a.nombre_libro}}</td>
+														
+														{% for n in a.categoria.all %} 
+															<td>{{ n }}</td>
+														{% endfor %}
+														<td><a class ="btn btn-primary" href="/reservar/{{ a.id }}"> Reservar libro </a></td>
 
-								
-
-								{% endfor %}
-							{% endif%}
+														</tr>				
+													{% endfor %}
+											</tbody>
+										</table>
+									{% endif%}
 
 
 							<!--Para categorias -->
-							{% for z in buscar2 %} 
+											{% if buscar2 %}
+												<h4>Se encontraron los siguientes libros relacionados con la categoría ingresada</h4>
+												<table  class = "table table-hover ">
+													<tbody>
+														<theader>
+															
+																<tr>
+																	<td><h4>Nombre</h4></td>
+																	<td><h4>Autor</h4></td>
+																	
+																	<td><h4>Categoría(s)</h4></td>
+																</tr>
+															
+														</theader>
+													{% for z in buscar2 %} 
 
-								<td>{{z.nombre_libro}}</td>
-								
 
-								
-							{% endfor %}
-						</tr>
+														<tr><td>{{z.nombre_libro}}</td>
+														<td>{{z.autor}}</td>
+														<td>{{z.editorial}}</td>
+														
+														{% for b in z.categoria.all %} 
+																<td>{{ b }}</td>
+															{% endfor %}
+														<td><td><a class ="btn btn-primary" href="/reservar/{{ z.id }}"> Reservar libro </a></td></td>
+														</tr>
+													{% endfor %}
+													</tbody>
+												</table>
+											{% endif %}
+									
+
 					
-				</tbody>
-
-			</table>
 
 					<!--<a class = "btn btn-info" href="/libro/{{p.id}}"><li class="icon-search"></li> Ver </a>-->
+			
 					
-						
-		</body>	
-		<h2>{{ msg }}</h2>
+		
 	{% else %}
-		<h2>No se han encontrado registros </h2>
+		{% if mensaje  %}
+
+			
+				<div class="alert alert-danger" class "alert fade in">
+					<button type="button " class="close" data-dismiss="alert">&times;</button>
+				
+					<strong>
+				
+						<center>{{ mensaje }}</center>
+					</strong>
+				</div>
+		
+		{% endif %}		
 
 	{% endif %}
+	
+		
 {% endblock %}
 
 

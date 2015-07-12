@@ -13,26 +13,27 @@
 					<center>
 					<h3>{{ libro.nombre_libro }}</h3>
 					<br>
-
+					{% if libro.imagen %} 
+						<img src = "/media/{{ libro.imagen }}" width = "200px" alt="La imagen no está disponible" heigth = "80px"> </center>
+					{% endif %}
   
-					 <img src = "/media/{{ libro.imagen }}" width = "200px" alt="la imagen no está disponible" heigth = "80px"> </center>
 				</theader>
 					<tbody>
 						<tr>
 							<td><h4>Autor</h4><p>		{{ libro.autor }}</p></td>
-							<td><b>codigo				<br>{{ libro.codigo }}</td>
-							<td><b>Fecha de adquisicion </b><br>{{ libro.fecha_adquisicion }}</td>
+							<td><b>Código				<br>{{ libro.codigo }}</td>
+							<td><b>Fecha de adquisición </b><br>{{ libro.fecha_adquisicion }}</td>
 
 								
 							<tr>	
-								<td><h4>Categoria</h4>
+								<td><h4>Categoría</h4>
 								{% for c in libro.categoria.all %} 
 									
 										{{ c }}
 
 								{% endfor %}</td>
-								<td><p><b>Version </b>				<br>{{ libro.version }}</p></td>
-								<td><b>Fecha de publicacion</b>		<br>{{ libro.fecha_publicacion }}</td>
+								<td><p><b>Versión </b>				<br>{{ libro.version }}</p></td>
+								<td><b>Fecha de publicación</b>		<br>{{ libro.fecha_publicacion }}</td>
 							</tr>
 								
 							<br>
@@ -40,7 +41,7 @@
 						</tr>
 							<tr>
 								<td><p><b>Editorial </b>			<br>{{ libro.editorial }}</td>
-								<td><b>Paginas </b>					<br>{{ libro.paginas }}</td>
+								<td><b>Páginas </b>					<br>{{ libro.paginas }}</td>
 								<td><p><b>Tomo </b> 				<br>{{ libro.tomo }}</td>
 							</tr>
 							<tr>	
@@ -53,13 +54,7 @@
 									No
 								{% endif %}
 								</p> </td>
-								<td> <b> Observacion: 				<br>{{ libro.observacion }}</td>
-
-
-		
-		
-
-		
+								<td> <b> Observación: 				<br>{{ libro.observacion }}</td>
 
 
 							<tr>
@@ -70,19 +65,16 @@
 
 							{% if libro.disponibilidad = True %}  <!-- SI LIBRO ESTA EN "TRUE", permite el prestamo del libro, sino... -->
 							{% else %}
-								<h2> El libro No esta disponible </h2>
+								<h2> El libro no está disponible </h2>
 							{% endif %}
 		{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
 			<a class ="btn btn-warning" href= "/edit/libro/{{libro.id}}"> <li class= "icon-pencil"></li> Editar </a>
-			<a class ="btn btn-primary" href="/reservar/{{ libro.id }}"> Reservar Libro </a>
+			<a class ="btn btn-primary" href="/reservar/{{ libro.id }}"> Reservar libro </a>
 		{% endif %}	
 
 			<a class="btn btn-primary" href="/libros/">Lista de libros</a>
-			<!--td> <a class ="btn btn-success" href="/prestar/{{ libro.id }}"> Prestar Libro </a></p> </td>
-							
-
-			
-
+		
+		
 {% endblock %}
 
 

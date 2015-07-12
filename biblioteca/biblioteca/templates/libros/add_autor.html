@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Agregar Autor
+	Agregar autor
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
     $( "#datepicker" ).datepicker({
       changeMonth: true,
       changeYear: true,
-      yearRange: "1900:2015",
+      yearRange: "1500:2070",
       dateFormat: 'dd/mm/yy',
       // You can put more options here.
 
@@ -19,8 +19,8 @@
   });
   </script>
   
-
-  <form action="." method="POST">
+<center><h4> Agregar autor </h4> </center>
+  <form action="." method="POST" align="center">
     {% csrf_token %}
     {{ form.as_p}}
     <input class="btn btn-success" type="submit" value="Guardar">

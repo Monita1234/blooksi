@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Libros prestados por mes {% endblock %}
+{% block title %} Reporte de usuarios que prestaron libros en el mes {% endblock %}
 {% block content %}
 
 
@@ -28,32 +28,37 @@
   });
   </script>
 </head>
+  <div align="center">
+    <h3>Reporte de Usuarios por mes </h3>
+   </div>
+  <div align="center" class ="alert alert-info">
+    <h4><center> Para generar el reporte correctamente seleccione el mes que desea consultar y presione el botón generar reporte  {{ fecha|date:"N" }} </center></h4>
+    <center>
+  </div>
 
-  
-    <h4><center> Ingrese La Fecha Para Generar Reporte de Usuarios que Prestaron Libros  {{ fecha|date:"N" }} </center></h4>
-    <form action="." method="POST">
+    <form action="." method="POST" align="center">
       {% csrf_token %}
       {{ reporte_usuarios.as_p }}
       <input type="submit" value ="Generar Reporte" class= "btn btn-success"/>
     </form>
     {% if usuarios %}
-       <a href="{% url 'generar_pdf_usuarios_mes' %}" class="btn btn-success" download ="reportes_de_usuarios_x_mes.pdf"> Generar a PDF</a>
-         
+       <a href="{% url 'generar_pdf_usuarios_mes' %}" class="btn btn-success" download ="reportes_de_usuarios_x_mes.pdf"> Descargar en PDF</a>
+         </center>
       </a>
     {% endif %}
 
   {% if usuarios and mensaje %}
 
-    <h4><center> Usuarios que Prestaron Libros en el Mes de {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5>
+    <h4><center> Usuarios que prestaron libros en el mes de {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5>
   
     <table class="table table-hover alert alert-info table-condensed">
       <caption><h4>{{ fecha|date:"N" }} </h4></caption>
       <header>
         <tr>
-          <th>Fecha de Prestamos</th>
+          <th>Fecha de préstamos</th>
           <th>Usuario</th>
           <th>Nombre del libro</th>
-          <th>Fecha de Devolucion</th>
+          <th>Fecha de devolución</th>
         </tr>
       </header>
     {% for i in usuarios %}
@@ -77,20 +82,25 @@
 
   {% else %}
     {% if mensaje %}
-
-        <h4> No se Encontraron Usuarios que Prestaron Libros en el Mes  {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5> </h4>
+      <div class="alert alert-danger" class"alert fade in">
+        <h4> No se encontraron usuarios que prestaron libros en el mes  {{ fecha_usuarios|date:"N" }} del Año  {{ fecha_usuarios|date:"Y"}} </center></h5> </h4>
+      </div>
     {% endif %}    
 
     {% if error_fecha %}
+      <div class="alert alert-danger" class"alert fade in">
         <h4>
             {{ error_fecha }}
         </h4>
+      </div>
     {% else %}
     <!--<div aling="center" class="alert alert-info">-->
         {% if error_vacio %}
+          <div class="alert alert-danger" class"alert fade in">
             <h4><center>        
                 {{ error_vacio }}
             </h4></center> 
+          </div>
         {% endif %}
      
 

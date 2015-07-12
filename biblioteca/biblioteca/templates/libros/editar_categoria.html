@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}
-	Editar libro
+	Editar categoría
 {% endblock %}
 {% block content %}
 	
-	<form action="." method ="POST">
+	<center> <h4> Editar categoría </h4> </center>
+	<form action="." method ="POST"align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" class="btn btn-success" value="Guardar Cambios">
 		<a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" href = "/categorias/{{p.id}}">Cancelar</a>
 	</form>
 	</form>
-	<a href="/categorias/">Mostrar la lista de Categorias</a>
+	<a href="/categorias/">Mostrar la lista de categorías</a>
 	
 	{{ info }}
 {% endblock %}  

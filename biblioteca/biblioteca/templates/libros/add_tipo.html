@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Agregar Tipo De Usuario 
+	Agregar tipo de usuario 
 
 {% endblock %}
 
 {% block content %}
-	<h1>Agregar Tipo de Usuario</h1>
-	<form action="." method="POST">
+	<center> <h4>Agregar tipo de usuario</h4> </center>
+	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input class="btn btn-success" type="submit" value="Guardar">
@@ -23,7 +23,7 @@
       
       </div>
       <div class="modal-body">
-        <p>El Tipo de Usuario se ha agregado satisfactoriamente   </p>
+        <p>El tipo de usuario se ha agregado satisfactoriamente   </p>
       </div>
       <div class="modal-footer">
         <a class="btn btn-info" href="{% url 'vista_tipos_usuarios' %}">Aceptar</a>

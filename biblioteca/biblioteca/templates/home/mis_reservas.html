@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Lista de reservas pendientes 
+{% endblock %}
+{% block content %}
+
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2015",
+      dateFormat: 'dd/mm/yy',
+      // You can put more options here.
+
+    });
+  });
+  </script>
+
+	<h3> Mis reservas </h3> 
+
+	<br>
+	{% if reservas %}
+	<table class="table table-hover">
+		<tr> 
+			<td> <b>  Libro </b></td> 
+			<td> <b>  Usuario </b></td> 
+			<td> <b>  Fecha de préstamo </b></td> 
+			<td> <b>  Fecha de devolución </b></td> 
+			<td> <b>  Estado del préstamo </b></td> 
+
+
+		</tr>
+
+		{% for t in reservas %}
+				<tbody>
+					<tr>
+						<td><p>{{ t.libro}}</td></p>
+						<td><p>{{ t.usuario}}</td></p>
+						<td><p>{{ t.fecha_prestamo}}</td></p>
+						<td><p>{{ t.fecha_devolucion}}</td></p>
+						<td><p>{{ t.estado_prestamo}}</td></p>
+						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  préstamo del libro </a></td>
+							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  préstamo del libro </a></td>
+						{% endif %}
+						
+					</tr>
+				</tbody>
+			{% endfor %}
+			</table> 
+		
+		
+
+{% else %}
+		<h2> No tengo reservas....</h2>
+	{% endif %}
+			
+			<a class ="btn btn-inverse" href="/"> Regresar al inicio</a>
+			
+{% endblock %}

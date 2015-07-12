@@ -4,48 +4,36 @@
 	
 {% endblock %}
 {% block content %}
-	<h3>Biblioteca</h3>
+	<h1>Biblioteca</h1>
 	<br>
-	{% if biblioteca %}
-		{% for b in biblioteca %} 
-			<h4>Biblioteca{{ b.nombre }}</h4>
-			<br>
-			
-			<p><b>Direccion: </b>{{ b.direccion }}</p>
-			<p><b>Telefono: </b>{{ b.telefono }}</p>
-			<p><b>Correo: </b>{{ b.correo }}</p>
-			
-			{% if b.mision %}
-
-
-				<p><b>Mision: </b></p>
-					<p>{{ b.mision }}</p>
-
-			{% endif %}
-
-			{% if b.vision %}
-
-				<p><b>Vision: </b></p>
-					<p>{{ b.vision }}</p>
-			
-			{% endif %}
-
-				<p><b>Reglamento: </b></p>
-					<p>{{ b.reglamento }}</p>
-
-			{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-				<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ b.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
-			{% endif %}
-			
-		{% endfor %}
-	{% else %}
-
-		{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-			<a <a class="btn btn-info"  href="/add/biblioteca/{{e.id}}"> <li class= "icon-plus"></li> Agregar Biblioteca</a></p>
-			<h2> No existen bibliotecas activas </h2>
-		{% endif %}
+	{% if bibliotecas %}
+	<table class="table table-hover">
+			<theader>
+				<tr>
+					<th>Nombre de la biblioteca</th>
+				</tr>
+			</theader>
+		
+		{% for e in bibliotecas %}
 	
-	{% endif %}
-	<a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>
+		
+				<tbody>
+					<tr>
+						<td><p>{{ e.nombre}}</td></p>
+					
 
+						<td><a class ="btn btn-info" href="/biblioteca/{{ e.id }}"> <li class= "icon-search"></li> Ver mas detalles</a></td>
+						<!---<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ e.id }}"> <li class= "icon-pencil"></li> Editar </a></td>-->
+						<!--td><a class ="btn btn-danger" href="/eliminar/biblioteca/{{ e.id }}"/></li>Eliminar</a></td-->
+					</tr>
+				</tbody>
+		{% endfor %}
+	</table>
+	
+	
+
+	{% else %}
+	<a <a class="btn btn-info"  href="/add/biblioteca/{{e.id}}"> <li class= "icon-plus"></li> Agregar biblioteca</a></p>
+		<h2> No existen bibliotecas activas</h2>
+	{% endif %}
 {% endblock %}

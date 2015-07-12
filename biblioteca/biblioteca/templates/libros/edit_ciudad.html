@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Editar Ciudad
+	Editar ciudad
 {% endblock %}
 
 {% block content %}
+	<center> <h4> Editar ciudad </h4> </center>
 	<form action="." method ="POST" enctype = "multipart/form-data">
 		{% csrf_token %}
 		{{ form.as_p }}
@@ -15,6 +16,6 @@
 	<br>
 	{{ info}}
 	
-	<a class = "btn btn-inverse" href="/add/categoria/{{ p.id }}"></li>  Mostrar la lista de Ciudades </a>
+	<a class = "btn btn-inverse" href="/add/categoria/{{ p.id }}"></li>  Mostrar la lista de ciudades </a>
 
 {% endblock %} 

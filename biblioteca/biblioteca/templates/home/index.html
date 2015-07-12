@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+	<link rel="shortcut icon" href="media/images/logo.png" type="image/png" />
 
 {% block title %}
     Bienvenidos
 {% endblock %}
 {% block content %}
+        <center><a class = "btn btn-info"  href= "{% url 'vista_buscar'%}" > Buscar </a></center>
+        <br>
+        <center> <a class = "btn btn-info" href= "{% url 'vista_libronuevo'%}" > Últimos libros </a>
+{% endblock %}
  
 
  
-        <center><a class = "btn btn-info"  href= "{% url 'vista_buscar'%}" > Buscar </a></center>
-        <br>
-        <center> <a class = "btn btn-info" href= "{% url 'vista_libronuevo'%}" > Ultimos libros </a>
-{% endblock %}

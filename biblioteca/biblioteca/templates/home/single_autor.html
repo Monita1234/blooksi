@@ -5,16 +5,11 @@
 {% endblock %}
 {% block content %}
 
-	<h3> <b>Autor</b> </h3>
-	<p> <b>Nombre de autor:</b>{{ autor.nombre_autor }}</p>
+	<center> <h4> Autor </h4> </center>
+	<h4> <p> <b>Nombre de autor:</b>{{ autor.nombre_autor }}</p>
 	<p> <b>Nacionalidad:</b>{{ autor.nacionalidad }}</p>
-	<p> <b>Fecha de Nacimiento:</b>{{ autor.fecha_nacimiento }}</p>
-	<p> <b>Categorias:</b>
-		{% for c in autor.categoria.all %} 
-			 {{ c }} - 
-		{% endfor %}
-	</p>
+	<p> <b>Fecha de nacimiento:</b>{{ autor.fecha_nacimiento }}</p> </h4>
 
-<a class="btn btn-primary" href="/autores/">Lista De Autores </a>
+<a class="btn btn-primary" href="/autores/">Lista de autores </a>
 
 {% endblock %}

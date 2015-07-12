@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Agregar Ciudad
+	Agregar ciudad
 {% endblock %}
 
 {% block content %}
-	<form action="." method="POST" >
+<center> <h4> Agregar ciudad </h4> </center>
+	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input class="btn btn-success" type="submit" value="Guardar">

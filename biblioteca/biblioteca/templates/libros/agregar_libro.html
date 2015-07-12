@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Agregar Libro
+	Agregar libro
 {% endblock %}
 {% block content %}
 
@@ -11,7 +11,7 @@
     $( "#datepicker" ).datepicker({
       changeMonth: true,
       changeYear: true,
-      yearRange: "1900:2015",
+      yearRange: "1500:2070",
       dateFormat: 'dd/mm/yy',
       // You can put more options here.
 
@@ -31,8 +31,8 @@
     });
   });
   </script>
-
-  <form action="." method = "POST" enctype="multipart/form-data">
+  <center> <h4> Agregar libro </h4>  </center>
+  <form action="." method = "POST" enctype="multipart/form-data" align="center">
     {% csrf_token %}
     {{ form.as_p}}
     <input class="btn btn-success" type="submit" value="Guardar">

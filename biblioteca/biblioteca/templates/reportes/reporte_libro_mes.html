@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Libros prestados por mes {% endblock %}
+{% block title %} Reporte de libros préstados por mes {% endblock %}
 {% block content %}
 
 <head>
@@ -27,11 +27,11 @@
   </script>
 </head>
   <div align="center">
-    <h3>Por favor ingrese una fecha para realizar la busqueda </h3>
+    <h3>Reporte de libros por mes </h3>
    </div>
   <br>
-    <div align="center">
-        <h4>Para generar el reporte Correctamente seleccione el mes que desea consultar y presione la opcion Generar reporte</h4>
+    <div align="center" class ="alert alert-info">
+        <h4>Para generar el reporte correctamente seleccione el mes que desea consultar y presione el botón generar reporte</h4>
     </div>
   <br>
 
@@ -45,12 +45,12 @@
       <a href="{% url 'reporte_libros_prestados_mes_pdf' %}" class="btn btn-success" download = "Reporte_Libros_prestados_por_mes.pdf" >Descargar en PDF</a>
     
       <table class="table table-hover alert alert-info table-condensed">
-        <caption><h3>REPORTE DE LIBROS DEL MES DE {{ fecha_libro|date:"N" }} </h3></caption>
+        <caption><h3>Reporte de libros del mes de {{ fecha_libro|date:"N" }} </h3></caption>
         <header>
           <tr>
             <th>Nombre</th>
-            <th>Fecha de Prestamo</th>
-            <th>Fecha de Devolucion</th>
+            <th>Fecha de préstamo</th>
+            <th>Fecha de devolución</th>
           </tr>
         </header>
       {% for pre in prest_libro %}
@@ -62,7 +62,7 @@
 
             {% if user.is_authenticated %}
               <td>
-                <a class="btn btn-info" href="/libro/{{pre.libro.id}}"><li class="icon-search"></li> Ver Libro </a>
+                <a class="btn btn-info" href="/libro/{{pre.libro.id}}"><li class="icon-search"></li> Ver libro </a>
                 
               </td>
             {% endif %}
@@ -74,13 +74,13 @@
 
     {% else %}
       {% if mensaje %}
-      <div align="center" class ="alert danger-info">
-        <p> No se encontraron reportes de libros prestados por mes {{ fecha_libro|date:"N" }} del año {{ fecha_libro|date:"Y" }}</p>
+      <div class="alert alert-info ">
+        <p> No se encontraron reportes de libros préstados por mes {{ fecha_libro|date:"N" }} del año {{ fecha_libro|date:"Y" }}</p>
       </div>
 
       {% endif %}
       
 
     {% endif %}
-  
+  <td><a class="btn btn-inverse" href="/administrar/">Regresar</a></td>
 {% endblock %}

@@ -78,7 +78,7 @@ class add_bibliotecario_form(forms.ModelForm):
 
 	class Meta:
 		model   = Usuario
-		exclude = {'user','tipo_usuario','estado','tiene_prestamo'}
+		exclude = {'user','tipo_usuario','tiene_prestamo'}
 
 		#se excluye el status por que en el modelo lo ponemos default=True
 
@@ -93,8 +93,7 @@ class add_usuario_form(forms.ModelForm):
 	tipo_usuario = forms.ModelChoiceField(queryset = Tipo_Usuario.objects.exclude(nombre = 'bibliotecario'), required = True)
 	class Meta:
 		model   = Usuario 
-		exclude = {'user', 'tipo_usuario','tiene_prestamo','tiene_prestamo'}
-
+		exclude = {'user', 'tipo_usuario', 'tiene_prestamo',}
 
 
 #tipo_usuario
@@ -177,6 +176,6 @@ class add_buscar_form(forms.ModelForm):
 
 		exclude = {'resultados'}
 
+#BUSCAR LIBRO POR TITULO, AUTOR O CATEGORIAS vero y sofi
 class buscar_form(forms.Form):
 	busqueda	= forms.CharField(widget = forms.TextInput())
-

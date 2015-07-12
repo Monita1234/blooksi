@@ -6,11 +6,11 @@
 
 
 {% block content %}
-<h5><center> Ingrese la Identificacion del Usuario que desea buscar:</center></h5>
+	<h4><center> Ingrese la identificación del usuario que desea buscar:</center></h4>
 	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{form.as_p}}
-		<button type="submit" class="btn btn-success" >Consultar Usuario</button>
+		<button type="submit" class="btn btn-success" >Consultar usuario</button>
 	</form>
 
 	
@@ -55,6 +55,6 @@
 		
 		{% endif %}
 	{% endif %}
-	<a class="btn btn-primary" href="{% url 'vista_administrar' %}">Regresar al menu anterior</a>
+	<a class="btn btn-primary" href="{% url 'vista_administrar' %}">Regresar</a>
 	
 {% endblock %}

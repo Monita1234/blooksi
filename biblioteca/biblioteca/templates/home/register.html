@@ -20,17 +20,30 @@
 </script>
 
 
+		<center> <h4> Registro de usuario </h4> </center>
+{% if mensaje %}
 
-	<form action="." method = "POST" enctype="multipart/form-data">
-		{% csrf_token %}
-		{{ form_a.as_p }}
-		{{ form_b.as_p }}
-		
-		
-		<input class="btn btn-success" type="submit" value="Registrar" >
-		<input  type="reset" value="Limpiar">
-		<a class="btn btn-danger" href="{% url 'vista_usuarios' %}">Cancelar</a>
-	</form>	
+  <div class="alert alert-danger" class = "alert fade in">
+    <strong>
+      {{ mensaje }}
+    </strong>
+  </div>
+{% endif %}
+		<form action="." method = "POST" enctype="multipart/form-data">
+			<div class= "alert alert-info">
+				{% csrf_token %}
+
+				{{ form_a.as_p }}
+				{{ form_b.as_p }}
+				
+				
+				<input class="btn btn-success" type="submit" value="Registrar" >
+				<input  type="reset" value="Limpiar">
+
+				<a class="btn btn-danger" href="{% url 'vista_usuarios' %}">Cancelar</a>
+			</div>
+		</form>	
+
 
 
 
@@ -47,10 +60,10 @@
 			
 			</div>
 			<div class="modal-body">
-				<p>El Usuario se ha agregado satisfactoriamente   </p>
+				<p>El usuario se ha agregado satisfactoriamente   </p>
 			</div>
 			<div class="modal-footer">
-				<a class="btn btn-info" href="{% url 'vista_usuarios' %}">Aceptar</a>
+				<a class="btn btn-info" href="{% url 'vista_login' %}">Aceptar</a>
 				
 			</div>
 		</div>
@@ -67,18 +80,14 @@ function cargar()
 }
 </script>
 
-
-{% if mensaje %}
+{% if mensaje2 %}
 
   <div class="alert alert-danger" class = "alert fade in">
     <strong>
-      {{ mensaje }}
+      {{ mensaje2 }}
     </strong>
   </div>
 {% endif %}
-
-
-
 
 
 

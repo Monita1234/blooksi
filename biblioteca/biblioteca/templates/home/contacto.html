@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Contactanos
+{% endblock %}
+
+{% block content %}
+	<center>{% if info_enviado %}
+		<h2>Gracias por enviar un comentario, nos pondremos en contacto</h2>
+		<br>
+		<h3>la informacion enviada fue la siguiente </h3>
+		<p><b>Email usado:</b> {{ email }}</p>
+		<p><b>Titulo usado:</b> {{ title }}</p>
+		<p><b>Texto citado:</b> </p><br> {{ text }}
+	{% else %}
+
+	<form action="." method = "POST">
+		<div class="alert alert-info "><p>Por favor contactenos para resolver sus inquietudes y en un plazo de  24 horas nos pondremos en contacto con usted. </p>
+		<p>Muchas Gracias</p></div>
+		{% csrf_token %}
+		{{ form.as_p }}
+		
+		<input class = "btn btn-warning" type = "submit" value = "Enviar"/>
+	</form>
+	{% endif %}
+</center>
+{% endblock %}

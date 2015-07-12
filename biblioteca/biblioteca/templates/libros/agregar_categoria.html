@@ -2,10 +2,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Lista de Categorias
+	Agregar categoría
 {% endblock %}
 {% block content %}
-	<form action="." method="POST">
+	<center> <h4> Agregar categoría </h4>  </center>
+	<form action="." method="POST"align="center">
 		{% csrf_token %}
 		{{ form.as_p}}
 		<input class="btn btn-success" type="submit" value="Guardar">
@@ -26,7 +27,7 @@
 			
 			</div>
 			<div class="modal-body">
-				<p>La categoria  se ha agregado satisfactoriamente   </p>
+				<p>La categoría  se ha agregado satisfactoriamente   </p>
 			</div>
 			<div class="modal-footer">
 				<a class="btn btn-info" href="{% url 'vista_categorias' %}">Aceptar</a>

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Ingrese codigo del libro 
+	Ingrese código del libro 
 {% endblock %}
 <br>
 
 <br>
 {% block content %}
-<h3> Ingrese el codigo del libro	</h4>
-	<form action="." method = "POST" >
+	<center> <h4> Ingrese el código del libro </h4> </center>
+	<form action="." method = "POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 	

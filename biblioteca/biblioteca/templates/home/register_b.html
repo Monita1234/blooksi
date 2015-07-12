@@ -18,10 +18,20 @@
     });
   });
 </script>
+	<center><h4> Registro de bibliotecario </h4> </center>
 
+{% if mensaje %}
 
+  <div class="alert alert-danger" class = "alert fade in">
+    <strong>
+      {{ mensaje }}
+    </strong>
+  </div>
+{% endif %}
 
 	<form action="." method = "POST" enctype="multipart/form-data">
+	<!--p><b>Los campos marcados con (*) son obligatorios </b></p-->
+
 		{% csrf_token %}
 		{{ form_a.as_p }}
 		{{ form_b.as_p }}
@@ -31,8 +41,6 @@
 		<input  type="reset" value="Limpiar">
 		<a class="btn btn-danger" href="{% url 'vista_bibliotecarios' %}">Cancelar</a>
 	</form>	
-
-
 
 
 	<!-- Button to trigger modal -->
@@ -68,14 +76,6 @@ function cargar()
 </script>
 
 
-{% if mensaje %}
-
-  <div class="alert alert-danger" class = "alert fade in">
-    <strong>
-      {{ mensaje }}
-    </strong>
-  </div>
-{% endif %}
 
 
 

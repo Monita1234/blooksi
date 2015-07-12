@@ -5,11 +5,23 @@ from biblioteca.apps.libros.models import *#Prestamo, Autor, Editorial, Categori
 from datetime import date
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout, authenticate
-from biblioteca.apps.home.forms import libronuevo_form,Login_form
+from biblioteca.apps.home.forms import *#libronuevo_form,Login_form
 import django
 
-from django.utils import simplejson
+from biblioteca.apps.libros.models import Libro
+from django.core import serializers
 
+from django.utils import simplejson
+from django.core.mail import EmailMultiAlternatives
+
+from django.http import Http404
+
+def detail(request, poll_id):
+    try:
+        poll = Poll.objects.get(pk=poll_id)
+    except Poll.DoesNotExist:
+        raise Http404
+    return render(request, 'home/404.html', {'poll': poll})
 
 def index_view (request):
 	return render_to_response('home/index.html', context_instance = RequestContext(request))
@@ -17,19 +29,20 @@ def index_view (request):
 def administrar_view (request):
 	return render_to_response('libros/administrar.html', context_instance = RequestContext(request))
 def reservas_view (request):
-	reservas = Prestamo.objects.filter(estado_prestamo="Reservado")
+	reservas = Prestamo.objects.filter(estado_prestamo="Reservado").order_by('-id')
 	ctx = {'reservas' :reservas}
 	return render_to_response ('home/reservas.html', ctx, context_instance = RequestContext(request))
 
+#Reservas de los usuarios registrados
+def mis_reservas_view (request):
+	reservas = Prestamo.objects.filter(usuario__user = request.user).order_by('-id')
+	ctx = {'reservas' :reservas}
+	return render_to_response('home/mis_reservas.html', ctx, context_instance = RequestContext(request))
 
 
-def single_autor_view(request, id_editautor):
-	editautor = Autor.objects.get(id = id_editautor)
-	ctx = {'autor':editautor}
-	return render_to_response('home/single_autor.html',ctx,context_instance = RequestContext(request))
 
 def prestamos_view(request):
-	tipo = Prestamo.objects.filter()
+	tipo = Prestamo.objects.filter().order_by('-id')
 	ctx = {'prestamos' :tipo}
 	return render_to_response ('home/prestamos.html', ctx, context_instance = RequestContext(request))
 
@@ -64,7 +77,13 @@ def editoriales_view(request):
 	ctx = {'editoriales' :lista_e}
 	return render_to_response ('home/editoriales.html', ctx, context_instance = RequestContext(request))
 
-	#autor
+def single_editorial_view(request, id_editorial):
+	editorial = Editorial.objects.get(id = id_editorial)
+	ctx = {'editorial':editorial}
+	return render_to_response('home/single_editorial.html',ctx, context_instance = RequestContext(request))
+	
+
+#autor
 def autores_view(request):
 	if request.method=="POST":
 	
@@ -89,16 +108,11 @@ def autores_view(request):
 	ctx = {'autores' :lista_a}
 	return render_to_response ('home/autor.html', ctx, context_instance = RequestContext(request))
 
+def single_autor_view(request, id_editautor):
+	editautor = Autor.objects.get(id = id_editautor)
+	ctx = {'autor':editautor}
+	return render_to_response('home/single_autor.html',ctx,context_instance = RequestContext(request))
 
-
-
-	
-	
-
-def single_editorial_view(request, id_editorial):
-	editorial = Editorial.objects.get(id = id_editorial)
-	ctx = {'editorial':editorial}
-	return render_to_response('home/single_editorial.html',ctx, context_instance = RequestContext(request))
 
 #categoria
 def categorias_view (request):
@@ -296,11 +310,11 @@ def single_libro_view (request, id_prod):
 	#cat = prod.categoria.all()
 	ctx = {'libro':prod}# 'categoria': cat}
 	return render_to_response('home/single_libro.html',ctx, context_instance = RequestContext(request))
-
+	
 #biblioteca
 def bibliotecas_view (request):
 	b =Biblioteca.objects.filter()
-	ctx = {'biblioteca': b }
+	ctx = {'bibliotecas': b }
 	return render_to_response('home/biblioteca.html',ctx, context_instance = RequestContext(request))
 
 def single_biblioteca_view(request, id_biblioteca):
@@ -359,4 +373,36 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return HttpResponseRedirect('/')
+
+def ws_libro_view(request):
+		data = serializers.serialize("json",Libro.objects.filter())
+		return HttpResponse(data, mimetype = 'application/json')
+
+
+#contacto
+def contacto_view(request):
+	info_enviado = False #Definir si se envio la informacion o no se envio
+	email = ""
+	title = ""
+	text  = ""
+	
+	if request.method == "POST": # evalua si el metodo fue POST
+		formulario = contact_form(request.POST) #instancia del formulario con los datos ingresados
+		if formulario.is_valid(): #evalua si el formulario es valido
+			info_enviado = True #la informacion se envio correctamente
+			email = formulario.cleaned_data['correo'] # copia el correo ingresado en email
+			title = formulario.cleaned_data['titulo'] # copia el titulo ingresado en title
+			text  = formulario.cleaned_data['texto']  # copia el texto ingresado en text
+			''' Bloque configuracion de envio por GMAIL'''
+			to_admin = 'jmbonilla97@misena.edu.co'
+			html_content = "Informacion recibida de %s <br> ---Mensaje--- <br> %s"%(email,text)
+			msg = EmailMultiAlternatives('correo de contacto', html_content, 'from@server.com',[to_admin])
+			msg.attach_alternative(html_content,'text/html') #definimos el contenido como HTML
+			msg.send() #enviamos el correo
+			'''Fin del Bloque'''
+	else: #si no fie POST entonces fue el metodo GET mostrara un formulario vacio
+		formulario = contact_form()
+	ctx = {'form':formulario, 'email':email, "title":title, "text":text, "info_enviado":info_enviado}
+	return render_to_response('home/contacto.html',ctx,context_instance = RequestContext(request))
+
 

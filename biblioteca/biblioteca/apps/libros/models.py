@@ -1,6 +1,8 @@
+ #!/usr/bin/python
+ # -*- coding: utf-8 -*-
+
 from django.db import models
 from django.contrib.auth.models import User
-#-*-coding: utf-8-*-
 
 tipo_id = (
 	('cedula', 'cedula'),
@@ -43,10 +45,7 @@ estado = (
 #Clase "Editorial" Las Primas
 class Editorial (models.Model):
 	nombre 		= models.CharField(max_length=200)
-	direccion 	= models.CharField(max_length=200)
-	telefono 	= models.CharField(max_length=200)
-	correo 		= models.CharField(max_length=200)
-
+	web		 	= models.CharField(max_length=200)
 	def __unicode__ (self):
 		return self.nombre
 
@@ -64,7 +63,6 @@ class Autor (models.Model):
 	nombre_autor			=	models.CharField(max_length= 100)
 	nacionalidad			=	models.CharField(max_length= 100)
 	fecha_nacimiento		=	models.DateField()
-	categoria				=	models.ManyToManyField(Categoria, null = True, blank = True)
 	def __unicode__ (self):
 		return self.nombre_autor
 
@@ -77,29 +75,27 @@ class Ciudad (models.Model):
 		return self.nombre
 
 
-# cuando una clase depende de otra esta se coloca al final, 
-# como en este caso; la clase libro depende de la clase categoria 
 #Clase "libro" Verito ft Sofi
 class Libro (models.Model): 
 	def url (self,filename): 
 		ruta = "MultimediaData/Libro/%s/%s"%(self.nombre_libro, str(filename))
 		return ruta
 
-	nombre_libro	= models.CharField(max_length = 200)
-	autor			= models.ForeignKey(Autor)#Las llaves foraneas no deben ser nulas
-	imagen			= models.ImageField(upload_to = url, null = True, blank = True)
-	categoria		= models.ManyToManyField(Categoria, null = True, blank = True)
-	editorial		= models.ForeignKey(Editorial, on_delete = models.PROTECT) 
-	paginas			= models.IntegerField()
-	version			= models.CharField(max_length = 10)
-	tomo			= models.IntegerField()
-	codigo			= models.CharField(max_length = 200, unique = True)# Con el atributo de unique el codigo se define como unico por lo que NO permitira ingresar un libro con el mismo codigo.
-	isbn			= models.CharField(max_length = 200, null = True, blank = True)
-	estado			= models.CharField(max_length = 200, choices = estado)
-	disponibilidad  = models.BooleanField()
-	observacion		= models.TextField(max_length= 400, null = True, blank = True)
-	fecha_publicacion	= models.DateField()
-	fecha_adquisicion	= models.DateField()
+	nombre_libro		=	models.CharField(max_length = 200)
+	autor				= 	models.ForeignKey(Autor)#Las llaves foraneas no deben ser nulas
+	imagen				= 	models.ImageField(upload_to = url, null = True, blank = True)
+	categoria			= 	models.ManyToManyField(Categoria, null = True, blank = True)
+	editorial			= 	models.ForeignKey(Editorial, on_delete = models.PROTECT) 
+	paginas				= 	models.IntegerField()
+	version				= 	models.CharField(max_length = 10)
+	tomo				= 	models.IntegerField()
+	codigo				= 	models.CharField(max_length = 200, unique = True)# Con el atributo de unique el codigo se define como unico por lo que NO permitira ingresar un libro con el mismo codigo.
+	isbn				= 	models.CharField(max_length = 200, null = True, blank = True)
+	estado				= 	models.CharField(max_length = 200, choices = estado)
+	disponibilidad  	= 	models.BooleanField()
+	observacion			= 	models.TextField(max_length= 400, null = True, blank = True)
+	fecha_publicacion	= 	models.DateField()# OJO CON LA ORTOGRAFIA TILDES ETC
+	fecha_adquisicion	= 	models.DateField()
 	
 
 	def __unicode__(self):
@@ -145,7 +141,7 @@ class Usuario (models.Model):
 	def __unicode__ (self):
 		return self.nombre 
 
-#Clase "Bibliotecario" Stefy ft Gomez 
+#Clase "Bibliotecario" Stefy ft Angie 
 class Bibliotecario (models.Model):
 	nombre 			= models.CharField(max_length = 200)
 	apellidos		= models.CharField(max_length = 200)
@@ -161,12 +157,12 @@ class Bibliotecario (models.Model):
 
 #clase "Prestamo" Poto, George
 class Prestamo (models.Model):
-	fecha_prestamo 	=  models.DateField(auto_now =True) # 
-	fecha_devolucion=  models.DateField() 
-	libro 			=  models.ForeignKey(Libro)#
-	bibliotecario   =  models.CharField(max_length=100 , null = True, blank = True) 
-	usuario 		=  models.ForeignKey(Usuario)# captura  usuario que reservo el libro 
-	estado_prestamo =  models.CharField(max_length = 200, choices = estado_prestamo)#
+	fecha_prestamo 		=  models.DateField(auto_now =True) # 
+	fecha_devolucion	=  models.DateField() 
+	libro 				=  models.ForeignKey(Libro)#
+	bibliotecario   	=  models.CharField(max_length=100 , null = True, blank = True) 
+	usuario 			=  models.ForeignKey(Usuario)# captura  usuario que reservo el libro 
+	estado_prestamo 	=  models.CharField(max_length = 200, choices = estado_prestamo)#
 	
 	def __unicode__ (self):
 		return self.libro.nombre_libro 

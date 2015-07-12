@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Lista de Editoriales
+	Agregar editorial
 {% endblock %}
 {% block content %}
-	<form action="." method="POST">
+	<center> <h4> Agregar editorial </h4>  </center>
+	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p}}
 		<input class="btn btn-success" type="submit" value="Guardar">
@@ -25,7 +26,7 @@
 			
 			</div>
 			<div class="modal-body">
-				<p>El Editorial se ha agregado satisfactoriamente   </p>
+				<p>La editorial se ha agregado satisfactoriamente   </p>
 			</div>
 			<div class="modal-footer">
 				<a class="btn btn-info" href="{% url 'vista_editoriales' %}">Aceptar</a>

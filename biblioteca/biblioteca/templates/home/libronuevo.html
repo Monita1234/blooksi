@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-
+<link rel="shortcut icon" href="media/images/logo.png" type="image/png" />
 {% block title %}
-	libronuevo
+	Libros Nuevos
 {% endblock %}
+<link rel="shortcut icon" href="media/images/logo.png" type="image/png" />
 	{% block content %}
 <script>
   $(function() {
@@ -22,22 +23,22 @@
 
 	<font align="center" face="Comic Sans Ms"><h3><form action="." method = "POST">
 		{% csrf_token %}
-			{{mensaje}}
+			
 		{{ form.as_p }}
 		{% if user.is_authenticated %}
 		
 
-			{{mensaje}}
+			
 		{% endif %}
-		<a class  = "btn btn-info" href="/libronuevo/{{ p.id}}">buscar </a>
-		<!--input type = "submit" value = "BUSCAR" /-->
+		<!--a class  = "btn btn-info" href="/libronuevo/{{ p.id}}">buscar </a-->
+		<input type = "submit" class  = "btn btn-info" value = "BUSCAR" />
 	
 
 	</form></h3></font>
 	{{ info }}
 	<img align="center" src="/media/images/gif1+ANCIANO+LEYENDO.gif"/>
 	<br>
-		<h4><font face="Comic Sans MS" color="black" align="center">LIBROS ENCONTRADOS</font></h4>
+		<h4><font face="Comic Sans MS" color="black" align="center">Libros encontrados</font></h4>
 
 	<!--con el sgte for aperece la lista de los libros  -->
 			
@@ -47,8 +48,9 @@
 		{{mensaje}}
 		{{ l.nombre_libro }}
 		<br>
-	</center>
+	
 	{% endfor %}
+	</center>
 	{% endblock %}
 
 <!--input type="text" name="dia" size="2" maxlength="2" />/<input type="text" name="mes" size="2" maxlength="2" />/<input type="text" name="año" size="2" maxlength="4" /><br/>

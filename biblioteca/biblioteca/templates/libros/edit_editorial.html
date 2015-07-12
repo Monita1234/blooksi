@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Editar Biblioteca 
+	Editar editorial
 {% endblock %}
 
 {% block content %}
-	<form action="." method="POST" enctype = "multipart/form-data">
+	<center><h4> Editar editorial</h4> </center>
+	<form action="." method="POST" enctype = "multipart/form-data"  align="center">
 		{% csrf_token %}
 		{{ form.as_p}}
 		<input type="submit" class="btn btn-success" value="Guardar Cambios">
@@ -14,5 +15,5 @@
 	<br>
 
 	{{ info }}
-	<a href="/editoriales/">Mostrar Lista de Editoriales</a>
+	<a href="/editoriales/">Mostrar Lista de editoriales</a>
 {% endblock %} 

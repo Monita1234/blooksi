@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	reportes
+	Reportes busquedas
 {% endblock %}
 
 	{% block content %}
@@ -35,7 +35,7 @@
 	<h3><center>Reportes de Busqueda</center></h3>
 	{% if info_enviado %}
 	    <div align="center" class ="alert alert-info">
-	      <p>Para generar el reporte Correctamente diligencie los campos a continuacion y presione la opcion Generar reporte</p>
+	      </h4><p>Para generar el reporte correctamente diligencie los campos a continuación y presione la opción generar reporte</p></h4>
 	    </div>
 	  	<form action="." method="POST" align="center">
 			{% csrf_token %}                                               
@@ -53,7 +53,7 @@
           <tr>
             <th>Busqueda</th>
             <th>Resultado</th>
-            <th>Contador</th>
+            <th>N° de veces buscado </th>
           </tr>
         </header>
       {% for pre, r in li  %}
@@ -80,9 +80,10 @@
       	</table>
     {% else %}
 		{% if mensaje %}
-		    	<div class="alert alert-danger" class"alert fade in">
-	    			<strong>
-	     				{{ mensaje }}
+		    	<div class="alert alert-info">
+	    			
+            <strong>
+	     				<h4>{{ mensaje }}</h4>
 	     			</strong>
 	     		</div>
 	    {% endif %}
@@ -90,11 +91,11 @@
 	    {% if mensaje2 %}
 		    <div class="alert alert-danger" class"alert fade in">
 		    	<strong>
-		     	{{ mensaje2 }}
+		     	<h4>{{ mensaje2 }}</h4>
 		     	</strong>
 		     </div>
 	    {% endif %}
-	    <td><a class="btn btn-inverse" href="/reportes/">Regresar</a></td>
+	    <td><a class="btn btn-inverse" href="/administrar/">Regresar</a></td>
     {% endif %}
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Lista de Reservas pendientes 
+	Lista de reservas pendientes 
 {% endblock %}
 {% block content %}
 
@@ -18,12 +18,18 @@
   });
   </script>
 
-	<h3> Reservas Pendientes por Aprobar </h3> 
+	<h3> Reservas pendientes por aprobar </h3> 
 
 	<br>
 	{% if reservas %}
 	<table class="table table-hover">
-		<tr> <td> <b>  Libro </b></td> </tr>
+		<tr> 
+			<td> <b>  Libro </b></td> 
+			<td> <b>  Usuario </b></td> 
+			<td> <b>  Fecha de Préstamo </b></td> 
+
+
+		</tr>
 
 		{% for t in reservas %}
 				<tbody>
@@ -32,8 +38,8 @@
 						<td><p>{{ t.usuario}}</td></p>
 						<td><p>{{ t.fecha_prestamo}}</td></p>
 						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  prestamo del libro </a></td>
-							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  prestamo del libro </a></td>
+							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  préstamo del libro </a></td>
+							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  préstamo del libro </a></td>
 						{% endif %}
 						
 					</tr>
@@ -44,9 +50,9 @@
 		
 
 {% else %}
-		<h2> No existen Reservas por aprobar....</h2>
+		<h2> No existen reservas por aprobar.</h2>
 	{% endif %}
 			
-			<a class ="btn btn-inverse" href="{% url 'vista_administrar' %}"> Regresar al Administrador</a>
+			<a class ="btn btn-inverse" href="{% url 'vista_administrar' %}"> Regresar al administrador</a>
 			
 {% endblock %}

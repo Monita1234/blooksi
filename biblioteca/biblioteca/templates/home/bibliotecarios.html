@@ -12,7 +12,7 @@
 							<h3 id="myModalLabel"> Eliminar bibliotecario </h3>
 						</div>
 						<div class="modal-body">
-						<p>¿Esta seguro que desea eliminar el bibliotecario  con nombre <span id="modal_name"></span>?</p>
+						<p>¿Está seguro que desea eliminar el bibliotecario  con nombre <span id="modal_name"></span>?</p>
 
 						</div>
 						<div class="modal-footer">
@@ -24,10 +24,10 @@
 							</form>	
 						</div>
 					</div>
-    <h3>Lista de Bibliotecarios</h3>
+    <h3>Lista de bibliotecarios</h3>
 
 {% if user.is_authenticated and user.is_superuser and user.is_staff %}
-	<p><a class="btn btn-info" href="{% url 'vista_registrar_bibliotecario' %}"><i class=" icon-user icon-white"></i> Registrar Bibliotecario</a></p>
+	<p><a class="btn btn-info" href="{% url 'vista_registrar_bibliotecario' %}"><i class=" icon-user icon-white"></i> Registrar bibliotecario</a></p>
 {% endif %}
    
 
@@ -61,7 +61,7 @@
 		{% endfor %}
 	</table>
 	{% else %}
-		<h2>No existen Bibliotecarios  :( </h2>
+		<h2>No existen bibliotecarios</h2>
 
 	{% endif %}
 <a class = "btn btn-inverse" href="/administrar/"></li>  Regresar </a>

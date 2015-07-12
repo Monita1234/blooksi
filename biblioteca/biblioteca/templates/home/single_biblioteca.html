@@ -4,35 +4,41 @@
 	Bibliotecas
 {% endblock %}
 {% block content %}
+<div class= "alert alert-info">
+	<center> <h4>Biblioteca </h4> </center>
+		{{ biblioteca.nombre }}</h1>
+		<br>
+		
+		<p><b>Dirección: </b>{{ biblioteca.direccion }}</p>
+		<p><b>Teléfono: </b>{{ biblioteca.telefono }}</p>
+		<p><b>Correo: </b>{{ biblioteca.correo }}</p>
+		
+		{% if biblioteca.mision %}
 
-<h4>Biblioteca{{ biblioteca.nombre }}</h4>
-	<br>
-	
-	<p><b>Direccion: </b>{{ biblioteca.direccion }}</p>
-	<p><b>Telefono: </b>{{ biblioteca.telefono }}</p>
-	<p><b>Correo: </b>{{ biblioteca.correo }}</p>
-	
-	{% if biblioteca.mision %}
 
+			<p><b>Misión: </b></p>
+				<p>{{ biblioteca.mision }}</p>
 
-		<p><b>Mision: </b></p>
-			<p>{{ biblioteca.mision }}</p>
+		{% endif %}
 
-	{% endif %}
+		{% if biblioteca.vision %}
 
-	{% if biblioteca.vision %}
+			<p><b>Visión: </b></p>
+				<p>{{ biblioteca.vision }}</p>
+		
+		{% endif %}
 
-		<p><b>Vision: </b></p>
-			<p>{{ biblioteca.vision }}</p>
-	
-	{% endif %}
+			<p><b>Reglamento: </b></p>
+				<p>{{ biblioteca.reglamento }}</p>
 
-		<p><b>Reglamento: </b></p>
-			<p>{{ biblioteca.reglamento }}</p>
-
-	<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
-	<a class="btn btn-inverse" href="/administrador/">Regresar</a>
+	{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
+		<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
+		
+	{% endif %}	
+	<a class="btn btn-inverse" href="/administrar/">Regresar</a>
+</div>
 {%endblock%}
+
 
 
 

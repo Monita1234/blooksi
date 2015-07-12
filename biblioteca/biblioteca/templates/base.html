@@ -1,7 +1,10 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
+	<link rel="shortcut icon" href="media/images/logo.png" type="image/png" />
 	<title>{% block title %} Bienvenidos {% endblock %} </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="media/images/logo.png" type="image/png" />
 	<link rel="stylesheet" type="text/css" href="/media/bootstrap/css/bootstrap.css"/>
 	<link rel="stylesheet" type="text/css" href="/media/bootstrap/css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="/media/css/excite-bike/jquery-ui-1.10.3.custom.css">
@@ -13,11 +16,24 @@
 	<script src="/media/js/demo.js "></script>
 	<script src="/media/js/bootstrap-collapse.js "></script>
 	<script src="/media/bootstrap/js/bootstrap.js"></script>
-	<style>
-		body{
-		background-color: white
-		}
-	</style>
+
+
+	<script type="text/javascript">
+        $(document).on('ready',function(){
+            $.ajax({
+            	type:"GET",
+              	contentType:"application/json; charset=utf-8",
+              	dateType:"json",
+              	url:"/ws/libro/",
+              	success:function(response){
+              		var i = (response.length-1)-2;
+              		for(i;i<=(response.length-1);i++){
+              			$('#libronuevo').append("<li>"+response[i].fields.nombre_libro+"</li> <br>")				
+					}
+				}	
+			});	
+		});
+	</script>
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-static-top navbar-fixed-top"> 
@@ -30,32 +46,40 @@
             <span class="icon-bar"></span>
           </a>
 <!--b!suI97mJHSsK-->
-			<a class = "brand" href = "{% url 'vista_principal' %}">BOOKSI </a>
+			<a class = "brand" href = "{% url 'vista_principal' %}"> BOOKSI </a>
 			<div class="nav-collapse collapse">
 				<ul class = "nav">
 					{% if user.is_authenticated and user.is_staff and user.is_superuser %}
 						<li><a href="{% url 'vista_administrar'%}">Administrador</a></li>
 					{% endif %}
+					{% if user.is_authenticated and user.usuario.tipo_usuario.nombre != "bibliotecario" %}
+						<li><a href="{% url 'vista_mis_reservas'%}">Mis reservas</a></li>
+					{% endif %}
 					<li><a href = "{% url 'vista_info' %}">Contacto </a></li>
-					<li><a href = "/bibliotecas"><i class="icon-list-alt icon-white"> </i> Reglamento </a></li>
+					<li><a href = "/biblioteca/1/"><i class="icon-list-alt icon-white"> </i> Reglamento </a></li>
 				</ul>
 
 				<ul class="nav pull-right">
 					{% if user.is_authenticated %}
-						<li><a class="navbar pull-right" href = "{% url 'vista_logout' %}">Cerrar Sesion</a></li>
+						<li><a href = "{% url 'vista_logout' %}">Cerrar sesión</a></li>
 					{% else %}
-						<li><a class="navbar pull-right" href = "{% url 'vista_login' %}"><i class="icon-user icon-white"> </i> Iniciar Sesion</a></li>
+						<li><a href = "{% url 'vista_login' %}"><i class="icon-user icon-white"> </i> Iniciar sesión</a></li>
 					{% endif %}
 
-					{% if user.is_authenticated %}
-						<li>
-							Bienvenido {{ user.username }} 
-							{% if user.usuario.photo %}
-							<img class="navbar pull-right img-circle" src = "/media/{{ user.usuario.photo }}" width = "50px"  heigth = "50px"> 
-	           				{% endif %}
 
-						</li>	
+
+					{% if user.is_authenticated %}
+						<li> 
+							{% if user.usuario.photo %}
+								<img class="img-circle" src = "/media/{{ user.usuario.photo }}" width = "45px"  heigth = "45px"> 
+							{% endif %}
+						</li>
+							<li>
+								<a href="/edit/usuario/{{user.usuario.id}}">{{ user.username }}</a> 
+							</li>
            			{% endif %}
+							  
+
 				</ul>
 			</div><!--/.nav-collapse -->
 
@@ -71,21 +95,21 @@
 		   <div class="active item"> <center>
 		    	<img src="/media/images/fondo1.png">
 			    <div class="carousel-caption">
-			    	<h4>Caption 1</h4>
+			    	<a href="/registro/"><h4> Registrarse </h4> </a>
 			    </div></center>
 		    </div>
 
 		    <div class="item"> <center>
 		    	<img src="/media/images/fondo2.png">
 			    <div class="carousel-caption">
-			    	<h4>Caption 2</h4>
+			    	<h4>BOOKSI</h4>
 			    </div></center>
 		    </div>
 
 		    <div class="item"> <center>
 		    	<img src="/media/images/fondo3.png">
 			    <div class="carousel-caption">
-			    	<h4>Caption 3</h4>
+			    	<h4>Contáctenos para más información</h4>
 			    </div></center>
 		    </div>
 		    
@@ -97,8 +121,8 @@
 	
 	<div class="container-fluid">
 			<div class="row-fluid">
-				<div class="span8">
-					<div class="hero-unit">
+				<div class="span9">
+					<div class="well">
 						{% block content %}
 						{% endblock %}
 					</div>
@@ -106,62 +130,37 @@
 				<div class="span3">
 					<div class="well sidebar-nav">
 						<div class="nav nav-list">
-					<center><li  class ="nav-header"><h3>Biblioteca </h3></li>
-  
-            	
-          		</div><!--/.well -->
-          			<div class="well sidebar-nav">
-            			<ul class="nav nav-list">
-            			  <center><li class="nav-header">Ultimos libros</li></center>
-              				<br><p align="justify">
-              				Quijote de la mancha
-              				</p>
-            			</ul>
-          			</div><!--/.well -->
-          		<div class="well sidebar-nav">
-            		<ul class="nav nav-list">
-            		  <center><li class="nav-header">Redes sociales</li></center>
-            		  <br><p align="justify">
+							<center><li  class ="nav-header"><h4>Biblioteca </h4></li>
+	          			</div><!--/.well -->
+	          			<div class="well sidebar-nav">
+	            			<ul class="nav nav-list" id="libronuevo">
+	            			  <center><li class="nav-header"><h4>Nuevos libros</h4> </li></center>
+	            			</ul>
+          				</div><!--/.well -->
 
-
-            	        <img src="/media/imagenes/social_facebook.png" width = "40px"  heigth = "40px">
-            			<a href="https://www.google.com.co/">facebook.com/Biblioteca</a>
-						<br>            			
-            			<img src="/media/imagenes/social_twitter.png" width = "40px"  heigth = "40px">
-            			<a href="https://www.google.com.co/">@bibliotecas12</a>
-
-
-
-            		  </p>
-            		</ul>
-				</div><!--/.well -->
-				<div class="well sidebar-nav">
-            		<ul class="nav nav-list">
-            		<center><b><li class="nav-header"></li></b>
-            		<p align="justify">
-						{% if user.is_authenticated %}
-							<a class ="brand" href="{% url 'vista_logout' %}"><h4>Cerrar Sesion</h4></a>
-							<a class ="brand" href="{% url 'vista_administrar'%}"><h4>Administrador</h4></a>
-						{% else %}	
-							<a class ="brand" href="{% url 'vista_login' %}"><h4>Iniciar Sesion</h4></a>
-							<a href="/registro/"><h4> Registrarse</h4> </a></center>	
-						{% endif %}
-						</center>
-					</p>
-            		</ul>
-				</div>
-					
-							<!--h1>Informacion</h1>
-							<div class="alert alert-info">
-								<h5>ADSI 661169</h5>
-								<p><b>Direccion </b> : INEM </p>
-								<p><b>Telefono</b> : 314 636 09 66</p>
-								<b>The black's - Cauca</b-->
+	          			<div class="well sidebar-nav">
+		            		<ul class="nav nav-list">
+		            		  <center><li class="nav-header"><h4>Redes sociales</h4></li></center>
+		            		  
+		            		  <p align="justify">
+		            	        <img src="/media/imagenes/social_facebook.png"  width = "40px"  heigth = "40px">
+		            			<a href="https://www.facebook.com/booksiapp" target="_blank">Booksi</a>
+								<br>            			
+								<br>            			
+		            			<img src="/media/imagenes/social_twitter.png" width = "40px"  heigth = "40px">
+		            			<a href="https://www.twitter.com/booksi" target="_blank">@booksi</a>
+		            		  </p>
+		            		</ul>
+						</div><!--/.well -->
 							</div>
 						</div>
 					</div>
 				</div>
 				<br>
+				      <hr>
+      <footer class="well" align="center">
+        &copy; SENA CTPI 2015 ADSI <b>661169</b>
+      </footer>
 			</div>
 		</div> 
 	</body>

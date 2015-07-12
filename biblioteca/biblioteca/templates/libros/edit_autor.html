@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Editar Autor
+	Editar autor
 {% endblock %}
 
 {% block content %}
@@ -18,8 +18,8 @@
     });
   });
   </script>
-  
-	<form action="." method="POST">
+  <center> <h4> Editar autor </h4> </center>
+	<form action="." method="POST"align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" class="btn btn-success" value="Guardar Cambios">

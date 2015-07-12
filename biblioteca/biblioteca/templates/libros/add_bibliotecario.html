@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}	
-	Agregar Bibliotecario
+	Agregar bibliotecario
 {% endblock %}
 
 {% block content %}
@@ -17,8 +17,8 @@
     });
   });
   </script>
-
-	<form action="." method="POST" >
+<center><h4> Registrar bibliotecario </h4> </center>
+	<form action="." method="POST" align="center">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input class="btn btn-success" type="submit" value="Guardar">
@@ -57,5 +57,5 @@ function cargar()
 	<br>
 	
 	{{ info }}
-	<a href="/bibliotecarios/">Mostrar la lista de Bibliotecarios</a>
+	<a href="/bibliotecarios/">Mostrar la lista de bibliotecarios</a>
 {% endblock %}

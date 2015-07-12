@@ -1,25 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-consultas
+Consultas
 {% endblock %}
 
 {% block content %}
 
-<div class="alert alert-success">
-	<h3>Pagina de consultas</h3>
-</div>
+	<div class="alert alert-success">
+		<h4>Página de consultas</h4>
+	</div>
 
-
-
-<div class="bs-docs-example">
-            
-			  	<li><a class ="brand"href = "{% url 'vista_consultar_disponibles' %}">Consulta de Libros Titulo, Autor o Categoria</a></li>
-
-          <li><a class ="brand"href = "{% url 'vista_consultar_codigo' %}">Consulta de Libros por codigo</a></li>
-
-        
-            
-</div>
+	<div class="bs-docs-example">
+		<li><a class ="brand"href = "{% url 'vista_consultar_disponibles' %}">Consulta de libros título, autor o categoría</a></li>
+		<li><a class ="brand"href = "{% url 'vista_consultar_codigo' %}">Consulta de libros por código</a></li>
+	</div>
 
 {% endblock %} 

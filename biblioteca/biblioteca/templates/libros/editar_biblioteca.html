@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Editar Biblioteca 
+	Editar biblioteca 
 {% endblock %}
 
 {% block content %}
 
 	
+	<center> <h4> Editar biblioteca </h4> </center>
 	<form action="." method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form.as_p}}
-		<button type="submit" class="btn btn-success">Guardar Cambios </button>
+		<button type="submit" class="btn btn-success">Guardar cambios </button>
 		<input class="btn btn-danger" type="reset" value="Limpiar">
 		
 	</form>

@@ -318,7 +318,11 @@ def bibliotecas_view (request):
 	return render_to_response('home/biblioteca.html',ctx, context_instance = RequestContext(request))
 
 def single_biblioteca_view(request, id_biblioteca):
-	b= Biblioteca.objects.get (id = id_biblioteca)
+	try:
+		b= Biblioteca.objects.get (id = id_biblioteca)
+	except:
+		b=None
+
 	ctx = {'biblioteca': b }
 	return render_to_response('home/single_biblioteca.html',ctx,context_instance = RequestContext(request))
 

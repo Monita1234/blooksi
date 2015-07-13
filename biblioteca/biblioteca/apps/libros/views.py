@@ -465,7 +465,7 @@ def edit_usuario_view(request, id_usua):
 		m=True
 		mensaje = ""
 		fecha_nac=""
-		info = ""
+		mensaje = ""
 		usua = Usuario.objects.get(pk = id_usua)
 	
 		if request.method == "POST":
@@ -481,12 +481,12 @@ def edit_usuario_view(request, id_usua):
 			formulario_user = edit_user_form(request.POST, instance = usua.user)
 			if formulario.is_valid() and formulario_user.is_valid():
 				y = formulario.cleaned_data['fecha_nac']
-				if  y.year  <  x :
+				if  y.year  <=  x :
 					edit_usua = formulario.save(commit = False)
 					edit_usua.save()
 					usua.user.set_password(formulario_user.cleaned_data['clave'])
 					formulario_user.save()
-					info = "Guardado Satisfactoriamente"
+					mensaje = "Guardado Satisfactoriamente"
 					return HttpResponseRedirect('/')
 			else:
 				mensaje = mensaje	
@@ -496,7 +496,7 @@ def edit_usuario_view(request, id_usua):
 			else:
 				formulario = add_usuario_form(instance = usua)
 			formulario_user = edit_user_form(instance = usua.user)
-		ctx = {'form':formulario, 'informacion':info, 'form_user': formulario_user,'now':now, 'mensaje':mensaje}
+		ctx = {'form':formulario, 'informacion':mensaje, 'form_user': formulario_user,'now':now, 'mensaje':mensaje}
 		return render_to_response('libros/edit_usuario.html', ctx,context_instance = RequestContext(request))
 	else:
 		return HttpResponseRedirect ('/')
@@ -914,7 +914,7 @@ def register_view(request):
 				
 					x = date.today()
 					y = form_b.cleaned_data['fecha_nac']
-					if  y.year  <  x.year - 7 : 
+					if  y.year  <=  x.year - 7 : 
 						try:
 							u = User.objects.create_user(username = usuario,email = email, password = password_one)
 							u.save() #guarda el objeto
@@ -932,7 +932,7 @@ def register_view(request):
 				else:
 					mensaje = "Error! La fecha de nacimiento debe ser menor  a la fecha actual"	
 			else:
-				info = "falló"
+				mensaje = "falló llene todos los campos"
 
 		else:
 			form_a = RegisterForm()
@@ -966,26 +966,29 @@ def register_bibliotecario_view(request):
 						y = form_b.cleaned_data['fecha_nac']
 						if  y.year  <=  x.year - 18: 
 							try:
-								u = User.objects.create_user(username = usuario,email = email, password = password_one)
-								b = form_b.save(commit=False)
 								tipo = Tipo_Usuario.objects.get(nombre='bibliotecario')
-								b.tipo_usuario = tipo
-								u.is_staff = True
-								u.is_superuser = True
-								u.save() #guarda el objeto USER
-								b.user = u 
-								b.save() #guarda el objeto USUARIO
+								if tipo:
+									u = User.objects.create_user(username = usuario,email = email, password = password_one)
+									b = form_b.save(commit=False)
+									b.tipo_usuario = tipo
+									u.is_staff = True
+									u.is_superuser = True
+									u.save() #guarda el objeto USER
+									b.user = u 
+									b.save() #guarda el objeto USUARIO
+									ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+									return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
 							except:
-								info = "No se puede crear un bibliotecario porque no existe un tipo bibliotecario"
-							ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
-							return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
+								info = "No se puede crear un bibliotecario porque no existe un tipo de usuario 'bibliotecario'"
+								#ctx = {'form_a':form_a, 'form_b':form_b, 'now':now, 'm':m}
+								#return render_to_response('home/register_b.html/', ctx,context_instance = RequestContext(request))
 							#return render_to_response('home/confirmacion.html',context_instance = RequestContext(request))
 						else:
 							info ="Lo sentimos pero no puedes registrar un bibliotecario menor de 18 años"	
 					else:
 						info = "Error! La Fecha de nacimiento debe ser menor  a la fecha actual"	
 				else:
-					info = "fallo"	
+					info = "fallo llene todos los campos"	
 			else:
 				form_a = RegisterForm()
 				form_b = add_bibliotecario_form(prefix = "b")

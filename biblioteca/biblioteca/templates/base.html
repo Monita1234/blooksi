@@ -55,7 +55,7 @@
 					{% if user.is_authenticated and user.usuario.tipo_usuario.nombre != "bibliotecario" %}
 						<li><a href="{% url 'vista_mis_reservas'%}">Mis reservas</a></li>
 					{% endif %}
-					<li><a href = "{% url 'vista_info' %}">Contacto </a></li>
+					<li><a href = "{% url 'vista_contacto' %}">Contacto </a></li>
 					<li><a href = "/biblioteca/1/"><i class="icon-list-alt icon-white"> </i> Reglamento </a></li>
 				</ul>
 
@@ -93,7 +93,9 @@
 	  	<div class="carousel-inner">
 		    
 		   <div class="active item"> <center>
-		    	<img src="/media/images/fondo1.png">
+		    	<a href="/registro/">
+		    		<img src="/media/images/fondo1.png">
+				</a>
 			    <div class="carousel-caption">
 			    	<a href="/registro/"><h4> Registrarse </h4> </a>
 			    </div></center>
@@ -143,12 +145,12 @@
 		            		  <center><li class="nav-header"><h4>Redes sociales</h4></li></center>
 		            		  
 		            		  <p align="justify">
-		            	        <img src="/media/imagenes/social_facebook.png"  width = "40px"  heigth = "40px">
+		            	        <img src="/media/images/social_facebook.png"  width = "40px"  heigth = "40px">
 		            			<a href="https://www.facebook.com/booksiapp" target="_blank">Booksi</a>
 								<br>            			
 								<br>            			
-		            			<img src="/media/imagenes/social_twitter.png" width = "40px"  heigth = "40px">
-		            			<a href="https://www.twitter.com/booksi" target="_blank">@booksi</a>
+		            			<img src="/media/images/social_twitter.png" width = "40px"  heigth = "40px">
+		            			<a href="https://twitter.com/booksiapp" target="_blank">@booksi</a>
 		            		  </p>
 		            		</ul>
 						</div><!--/.well -->

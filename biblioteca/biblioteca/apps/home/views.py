@@ -398,7 +398,7 @@ def contacto_view(request):
 			title = formulario.cleaned_data['titulo'] # copia el titulo ingresado en title
 			text  = formulario.cleaned_data['texto']  # copia el texto ingresado en text
 			''' Bloque configuracion de envio por GMAIL'''
-			to_admin = 'jmbonilla97@misena.edu.co'
+			to_admin = 'booksiapp@gmail.com'
 			html_content = "Informacion recibida de %s <br> ---Mensaje--- <br> %s"%(email,text)
 			msg = EmailMultiAlternatives('correo de contacto', html_content, 'from@server.com',[to_admin])
 			msg.attach_alternative(html_content,'text/html') #definimos el contenido como HTML

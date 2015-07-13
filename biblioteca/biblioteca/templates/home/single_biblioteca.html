@@ -22,20 +22,19 @@
 		{% endif %}
 
 		{% if biblioteca.vision %}
-
 			<p><b>Visión: </b></p>
-				<p>{{ biblioteca.vision }}</p>
-		
+			<p>{{ biblioteca.vision }}</p>
 		{% endif %}
-
 			<p><b>Reglamento: </b></p>
-				<p>{{ biblioteca.reglamento }}</p>
+			<p>{{ biblioteca.reglamento }}</p>
 
-	{% if user.is_authenticated and user.is_staff and user.is_superuser %}	
+	{% if user.is_authenticated and user.is_staff and user.is_superuser and bliblioteca %}	
 		<td><a class ="btn btn-warning" href="/edit/biblioteca/{{ biblioteca.id }}"> <li class= "icon-pencil"></li> Editar </a></td>
-		
 	{% endif %}	
-	<a class="btn btn-inverse" href="/administrar/">Regresar</a>
+	{% if user.is_authenticated and user.is_staff and user.is_superuser  %}	
+		<a <a class="btn btn-info"  href="/add/biblioteca/{{e.id}}"> <li class= "icon-plus"></li> Agregar biblioteca</a>	
+	{% endif %}
+		<a class="btn btn-inverse" href="/">Ir al inicio</a>
 </div>
 {%endblock%}
 

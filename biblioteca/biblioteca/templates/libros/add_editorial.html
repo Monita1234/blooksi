@@ -9,7 +9,7 @@
 		{% csrf_token %}
 		{{ form.as_p}}
 		<input class="btn btn-success" type="submit" value="Guardar">
-		<input class="btn btn" type="reset" value="Limpiar">
+		<input class="btn btn-default" type="reset" value="Limpiar">
 		<a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" href = "/editoriales/{{p.id}}">Cancelar</a>
 	</form>
 

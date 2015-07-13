@@ -23,7 +23,7 @@
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" class="btn btn-success" value="Guardar Cambios">
-		<a class="btn btn-default" data-dismiss="modal" aria-hidden="true" href = "/autores/{{p.id}}">Cancelar</a>
+		<a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" href = "/autores/{{p.id}}">Cancelar</a>
 	</form>
 	<br>
 

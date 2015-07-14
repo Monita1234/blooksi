@@ -177,5 +177,8 @@ class add_buscar_form(forms.ModelForm):
 		exclude = {'resultados'}
 
 #BUSCAR LIBRO POR TITULO, AUTOR O CATEGORIAS vero y sofi
-class buscar_form(forms.Form):
-	busqueda	= forms.CharField(widget = forms.TextInput())
+class buscar_form(forms.ModelForm):
+	class Meta:
+		model 	= Busqueda
+
+		exclude = {'resultados'}

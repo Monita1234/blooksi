@@ -1067,3 +1067,52 @@ def consultar_codigo_view(request):
 
 def info_view (request):
 	return render_to_response('home/info.html', context_instance = RequestContext(request))
+
+
+def consultar_disponibles_view(request):
+	#if request.user.is_authenticated and request.user.is_staff:
+
+		libros = []
+		categorias = []
+		autores = []
+		editoriales = []
+		busqueda = ""
+		mensaje =""
+		mensaje_error = False
+		info = "inicializando"
+		if request.method == "POST": #si es POST
+			formulario = buscar_form(request.POST)
+			busqueda = request.POST['busqueda']	
+			if formulario.is_valid():
+			#agregar	
+				busqueda = formulario.cleaned_data['busqueda']
+				add = formulario.save(commit =False)
+				#add.save() # guarda la informacion
+				info = "Guardado Satisfactoriamente"
+				#buscar
+				try:
+					editoriales = Libro.objects.filter(editorial__nombre__iexact = busqueda, disponibilidad = True)
+					libros= Libro.objects.filter(nombre_libro__icontains= busqueda, disponibilidad = True)
+					autores = Libro.objects.filter(autor__nombre_autor__icontains = busqueda, disponibilidad = True)
+
+					cat = Categoria.objects.get(nombre__iexact=busqueda)
+					categorias = Libro.objects.filter(categoria = cat, disponibilidad = True)
+					#codigo = Libro.objects.get(codigo= int(busqueda)) 
+				except:
+					print "QQQQQQQQQQQQQQQQQQQQQQQ", libros, categorias, autores , editoriales 
+					if editoriales and libros and autores and categorias:
+						pass
+					else:
+						mensaje_error = True
+					#libro = Libro.objects.all(request.POST)
+				if libros or categorias or autores or editoriales:
+					add.resultados=True
+				else:
+					add.resultados=False
+				add.save()
+				print "-------------------------\n"
+				print editoriales
+		else:
+			formulario = add_buscar_form()
+		ctx = {'form':formulario, 'informacion': info, 'mensaje':mensaje, 'mensaje_error':mensaje_error, 'libro':libros, 'categoria':categorias, 'autor':autores, 'editorial':editoriales, 'busqueda':busqueda}
+		return render_to_response('libros/add_buscar.html', ctx,context_instance = RequestContext(request))

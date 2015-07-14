@@ -1,151 +1,225 @@
 {% extends 'base.html' %}
-{% block title %} Buscar {% endblock %}
-{% block content %} 
 
-	
-<!-- LLamando al formulario  VERONICA DOMINGUEZ Y SOFIA ALVAREZ -->
-Ingrese el título, autor o categoría a buscar
-	<form action="." method="POST">
-		{% csrf_token %}
-		{{ form.as_p }}
-<button type = "submit" class = "btn btn-success" >Buscar </button>
-	</form>
-	
-	{% if buscar1 or buscar2 or buscar3 %}
-
-
-
-			
-
-							{% if buscar1%}
-							<h4>Se encontraron los siguientes libros relacionados con el título ingresado</h4>
-							<table  class = "table table-hover ">
-								
-									<tbody>
-										<theader>
-											<tr>
-												<th> Título </th>
-												<th> Autor </th>
-											
-												<th> Categoría(s) </th>
-											</tr>
-										</theader> 
-										
-								
-											{% for c in buscar1 %}
-												
-												<tr><td>{{c.nombre_libro}}</td>
-												<td>{{c.autor}}</td>
-												
-												{% for l in c.categoria.all %} 	
-													<td>{{ l }}</n></td>
-												{% endfor %}
-												<td><a class ="btn btn-primary" href="/reservar/{{ c.id }}"> Reservar libro </a></td>
-												</tr>
-											{% endfor %}
-										{% endif%}
-									<tbody>
-							</table>
-
-
-							<!--Para autor -->
-									{% if buscar3 %}
-										<h4>Se encontraron los siguientes libros relacionados con el nombre del autor ingresado</h4>
-
-										<table  class = "table table-hover ">
-											<tbody>						
-													<theader>
-														
-															<tr>
-																<td><h4>Nombre</h4></td>
-															
-																<td><h4>Categoría(s)</h4></td>
-															</tr>
-														
-													</theader>
-													{% for a in buscar3 %} 
-														<tr><td>{{a.nombre_libro}}</td>
-														
-														{% for n in a.categoria.all %} 
-															<td>{{ n }}</td>
-														{% endfor %}
-														<td><a class ="btn btn-primary" href="/reservar/{{ a.id }}"> Reservar libro </a></td>
-
-														</tr>				
-													{% endfor %}
-											</tbody>
-										</table>
-									{% endif%}
-
-
-							<!--Para categorias -->
-											{% if buscar2 %}
-												<h4>Se encontraron los siguientes libros relacionados con la categoría ingresada</h4>
-												<table  class = "table table-hover ">
-													<tbody>
-														<theader>
-															
-																<tr>
-																	<td><h4>Nombre</h4></td>
-																	<td><h4>Autor</h4></td>
-																	
-																	<td><h4>Categoría(s)</h4></td>
-																</tr>
-															
-														</theader>
-													{% for z in buscar2 %} 
-
-
-														<tr><td>{{z.nombre_libro}}</td>
-														<td>{{z.autor}}</td>
-														<td>{{z.editorial}}</td>
-														
-														{% for b in z.categoria.all %} 
-																<td>{{ b }}</td>
-															{% endfor %}
-														<td><td><a class ="btn btn-primary" href="/reservar/{{ z.id }}"> Reservar libro </a></td></td>
-														</tr>
-													{% endfor %}
-													</tbody>
-												</table>
-											{% endif %}
-									
-
-					
-
-					<!--<a class = "btn btn-info" href="/libro/{{p.id}}"><li class="icon-search"></li> Ver </a>-->
-			
-					
-		
-	{% else %}
-		{% if mensaje  %}
-
-			
-				<div class="alert alert-danger" class "alert fade in">
-					<button type="button " class="close" data-dismiss="alert">&times;</button>
-				
-					<strong>
-				
-						<center>{{ mensaje }}</center>
-					</strong>
-				</div>
-		
-		{% endif %}		
-
-	{% endif %}
-	
-		
+{% block title %}
+	Busqueda
 {% endblock %}
 
+{% block content %}
 
-				
+	<h3>Busqueda de libros disponibles </h3>
+		<div align="center" class ="alert alert-info">
+	      	<p> Ingrese el titulo, autor o categoria del libro que desea buscar</p>
+	    </div>
+	<form action="." method="POST" align="center">
+	 	
+		{% csrf_token %}
+		{{form.as_p}}
+		<input class="btn btn-large btn-success" type="submit" value ="Buscar"/>
+		
+	</form>
 
 
 
 
 
-
-
-
+	{% if info_enviado %}
+	    
+	  	<form action="." method="POST" align="center">
+			{% csrf_token %}                                               
+			{{ form.as_p }}
+			<input type="submit" value="Generar Reporte" class = "btn btn-success"/>
+		</form>
+	{% endif %}
 
 		
+
+	{% if libro or autor or editorial or categoria %}
+	
+
+		{% if libro   %}
+			<h3>Se encontraron los siguientes libros disponibles relacionados con: "{{busqueda}}"</h3>
+				<table  class = "table table-hover ">
+					<tbody>
+						<tr>
+							<tr>
+								
+									<theader>
+											<tr>
+												<th><h4>Libro</h4> </th>	
+											</tr>
+											<tr>
+												<th> Nombre </th>
+												<th> Versión </th>
+												<th> Disponibilidad </th>
+												
+											</tr>
+									</theader> 
+									{% for l in libro %}
+									<tr>
+										<td>{{l.nombre_libro}}</td>
+										<td>{{l.version}}</td>
+										
+										<td>
+
+											{% if l.disponibilidad %}
+            									Disponible
+            									<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+            								{% else %}
+            									No Disponible
+            								{% endif %}
+										</td>
+
+									
+									<tr>
+								{% endfor %}
+							</tr>
+						</tr>
+					</tbody>
+				</table>
+		{% endif %}
+			{% if autor  %}
+				<h3>Se encontraron los siguientes libros relacionados con el Autor: "{{busqueda}}"</h3>
+					<table  class = "table table-hover ">
+						<tbody>
+							<tr>
+								<tr>
+									<theader>
+			 									<tr>
+													<th><h4> Autor</h4> </th>	
+												</tr>
+												<tr>
+													<th> Nombre del libro </th>	
+													<th> Versión </th>
+													<th> Autor</th>
+													<th> Disponibilidad</th>
+
+													
+
+												</tr>
+									</theader>
+									{% for a in autor %}
+									<tr> 
+										
+										<td>{{a.nombre_libro}}</td>
+										<td>{{a.version}}</td>
+										<td>{{a.autor}}</td>
+										<td>
+
+											{% if a.disponibilidad %}
+												Disponible
+												<td><a  class="btn btn-primary" href="#"> Reservar Libro </a></td>
+											{% else %}
+												No Disponible
+											{% endif %}
+										</td>
+
+									</tr>
+									{% endfor %}
+									
+								</tr>
+							</tr>
+						</tbody>
+					</table>
+			{% endif %}
+			
+				{% if categoria  %}
+				<h3>Se encontraron los siguientes libros relacionados con la categoría: "{{busqueda}}"</h3>
+					<table  class = "table table-hover ">
+						<tbody>
+							<tr>
+								<tr>
+									<theader>
+			 									<tr>
+													<th><h4> Categorías</h4> </th>	
+												</tr>
+												<tr>
+													
+													<th>Nombre del libro</th>
+													<th>Versión</th>
+													<th>Disponibilidad</th>
+													
+
+												</tr>
+									</theader>
+									{% for c in categoria %} 
+									<tr>
+										
+									
+										
+										<td>{{c.nombre_libro}}</td>
+										<td>{{c.version}}</td>
+										<td>
+
+											{% if c.disponibilidad %}
+												Disponible
+												<td><a  class="btn btn-primary" href="#"> Reservar Libro </a></td>
+											{% else %}
+												No Disponible
+											{% endif %}
+										</td>
+
+									</tr>	
+									{% endfor %}
+								</tr>
+							</tr>
+						</tbody>
+					</table>
+				{% endif %}
+	
+				{% if editorial  %}		
+					<h3>Se encontraron los siguientes libros relacionados con la editorial: "{{busqueda}}"</h3>
+						<table  class = "table table-hover ">
+							<tbody>
+								<tr>
+									<tr>
+										<theader>
+				 									<tr>
+														<th><h4> Editoriales</h4> </th>	
+													</tr>
+													<tr>
+														<th> Nombre del libro</th>	
+														<th> Versión </th>
+														<th> Editorial</th>
+														<th> Disponibilidad</th>
+														
+													</tr>
+										</theader>
+										{% for e in editorial %} 
+										<tr>
+											<td>{{e.nombre_libro}}</td>
+											<td>{{e.version}}</td>
+											<td>{{e.editorial}}</td>
+											<td>
+
+											{% if e.disponibilidad %}
+												Disponible
+												<td> <a class ="btn btn-primary" href="/reservar/{{ libro.id }}"> Reservar Libro </a></p> </td>
+											{% else %}
+												No Disponible
+											{% endif %}
+										</td>
+
+										</tr>	
+										{% endfor %}
+									</tr>
+								</tr>
+							</tbody>
+						</table>
+						
+				{% endif %}	
+				{%else%}
+		
+		{% if mensaje_error  %}
+			<div class="alert alert-info">
+			<strong align ="center">
+			<h3>El libro no se encuentra disponible</h3>
+			</strong>
+			</div>
+		{% endif %}
+	{% endif %}
+	
+
+							
+
+	
+{% endblock %}

@@ -1,4 +1,4 @@
-#-*-coding: utf-8-*-
+-*-coding: utf-8-*-
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from biblioteca.apps.libros.forms import *#add_prestamo_form, add_autor_form, delete_prestamo_form, edit_prestamo_form, edit_autor_form, add_editorial_form, add_categoria_form, add_bibliotecario_form, edit_bibliotecario_form, add_usuario_form, edit_usuario_form, add_ciudad_form, edit_ciudad_form, add_tipo_usuario_form, agregar_libro_form, agregar_biblioteca_form
@@ -474,12 +474,12 @@ def edit_usuario_view(request, id_usua):
 					x = date.today().year - 18
 					mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 18 años"
 					formulario = add_bibliotecario_form(request.POST, request.FILES, instance=usua)
-					#tipo_usuario 	= formulario.cleaned_data['tipo_usuario']	
+					#tipo_usuario 	= formulario.cleaned_data['tipo_usuario']		
 				else:
-					x = date.today().year -7
-					mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 7 años"	
-					formulario = add_usuario_form(request.POST, request.FILES, instance=usua)
-			else:	
+					x = date.today().year - 7
+					mensaje =" Lo sentimos pero no puedes editar tu información porque debe ser mayor de 7 años"		
+					formulario = add_usuario_form(request.POST, request.FILES, instance=usua)	
+			else:
 				x = date.today().year - 7
 				mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 7 años"		
 				formulario = add_usuario_form(request.POST, request.FILES, instance=usua)

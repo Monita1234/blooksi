@@ -760,7 +760,7 @@ def generar_pdf_busquedas_view(request):
 
     reportes.append(titulo2)
     d.add(legend)
-    #reportes.append(d)
+    reportes.append(d)
     doc.build(reportes)
     response.write(buff.getvalue())
     buff.close()

@@ -41,8 +41,7 @@
 						<td><p>{{ t.fecha_prestamo}}</td></p>
 						<td><p>{{ t.fecha_devolucion}}</td></p>
 						<td><p>{{ t.estado_prestamo}}</td></p>
-						{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-							<td><a class ="btn btn-success" href="/aprobar/prestamo/{{ t.id }}">  </li> Aprobar  préstamo del libro </a></td>
+						{% if user.is_authenticated and t.estado_prestamo == 'Reservado' %}
 							<td><a class ="btn btn-danger" href="/cancelar/prestamo/{{ t.id }}">  </li> Cancelar  préstamo del libro </a></td>
 						{% endif %}
 						

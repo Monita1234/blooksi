@@ -683,7 +683,7 @@ def generar_pdf_busquedas_view(request):
 
 
     
-'''#GRAFICAS DE PASTEL
+#GRAFICAS DE PASTEL
     titulo2 = Paragraph("Búsquedas y número de veces realizadas", estilo['title'])
 
     d = Drawing(400, 200)
@@ -746,7 +746,7 @@ def generar_pdf_busquedas_view(request):
     
     
 
-    reportes.append(t)'''
+    reportes.append(t)
 
     
     reportes.append(Spacer(0, inch*.1))
@@ -760,7 +760,7 @@ def generar_pdf_busquedas_view(request):
 
     reportes.append(titulo2)
     d.add(legend)
-    reportes.append(d)
+    #reportes.append(d)
     doc.build(reportes)
     response.write(buff.getvalue())
     buff.close()

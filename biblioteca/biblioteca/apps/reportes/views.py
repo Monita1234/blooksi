@@ -457,7 +457,7 @@ def reporte_busqueda_view(request):
                                 #print "===============",j.busqueda
                                 if j.busqueda == i.get("busqueda") and j.fecha >= fecha_inicio and j.fecha <= fecha_final:
                                     c = c + 1
-                                   # print c
+                                    #print c
                             lista.append(c)
                             c=0     
                         #print lista , len(lista)
@@ -603,12 +603,12 @@ def generar_pdf_busquedas_view(request):
     li = zip(b,lista)               
     '''
     for i in b:
-        print "________________",i.get("busqueda")
+        #print "________________",i.get("busqueda")
         for j in t:
-            print "===============",j.busqueda
+            #print "===============",j.busqueda
             if j.busqueda == i.get("busqueda"):
                 c = c + 1
-                print c
+                #print c
         lista.append(c)
         c=0
         li = zip(b,lista)

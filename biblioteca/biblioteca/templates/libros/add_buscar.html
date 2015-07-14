@@ -63,11 +63,14 @@
 
 											{% if l.disponibilidad %}
             									Disponible
+			    								
             								{% else %}
             									No Disponible
             								{% endif %}
 										</td>
-    									<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+    									{% if l.disponibilidad and user.is_authenticated and user.usuario.tiene_prestamo == False %}
+	    									<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+        								{% endif %}
 									
 									
 									<tr>
@@ -111,7 +114,9 @@
 												No Disponible
 											{% endif %}
 										</td>
-										<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+    									{% if a.disponibilidad and user.is_authenticated and user.usuario.tiene_prestamo == False %}
+	    									<td><a  class="btn btn-primary" href="/reservar/{{a.id}}"> Reservar libro </a></td>
+        								{% endif %}
 
 									</tr>
 									{% endfor %}
@@ -152,11 +157,15 @@
 
 											{% if c.disponibilidad %}
 												Disponible
+												
 											{% else %}
 												No Disponible
 											{% endif %}
 										</td>
-										<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+    									{% if c.disponibilidad and user.is_authenticated and user.usuario.tiene_prestamo == False %}
+	    									<td><a  class="btn btn-primary" href="/reservar/{{c.id}}"> Reservar libro </a></td>
+        								{% endif %}
+
 									</tr>	
 									{% endfor %}
 								</tr>
@@ -196,7 +205,9 @@
 												No Disponible
 											{% endif %}
 											</td>
-											<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
+    									{% if e.disponibilidad and user.is_authenticated and user.usuario.tiene_prestamo == False %}
+	    									<td><a  class="btn btn-primary" href="/reservar/{{e.id}}"> Reservar libro </a></td>
+        								{% endif %}
 
 										</tr>	
 										{% endfor %}

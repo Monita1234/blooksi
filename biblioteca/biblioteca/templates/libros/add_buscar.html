@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Agregar busqueda
+	Buscar Libro
 {% endblock %}
 
 {% block content %}
@@ -63,11 +63,11 @@
 
 											{% if l.disponibilidad %}
             									Disponible
-            									<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
             								{% else %}
             									No Disponible
             								{% endif %}
 										</td>
+    									<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
 									
 									
 									<tr>
@@ -107,11 +107,11 @@
 
 											{% if a.disponibilidad %}
 												Disponible
-												<td><a  class="btn btn-primary" href="#"> Reservar libro </a></td>
 											{% else %}
 												No Disponible
 											{% endif %}
 										</td>
+										<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
 
 									</tr>
 									{% endfor %}
@@ -152,12 +152,11 @@
 
 											{% if c.disponibilidad %}
 												Disponible
-												<td><a  class="btn btn-primary" href="#"> Reservar libro </a></td>
 											{% else %}
 												No Disponible
 											{% endif %}
 										</td>
-
+										<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
 									</tr>	
 									{% endfor %}
 								</tr>
@@ -193,11 +192,11 @@
 
 											{% if e.disponibilidad %}
 												Disponible
-												<td> <a class ="btn btn-primary" href="/reservar/{{ libro.id }}"> Reservar libro </a></p> </td>
 											{% else %}
 												No Disponible
 											{% endif %}
-										</td>
+											</td>
+											<td><a  class="btn btn-primary" href="/reservar/{{l.id}}"> Reservar libro </a></td>
 
 										</tr>	
 										{% endfor %}

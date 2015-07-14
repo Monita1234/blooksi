@@ -743,10 +743,10 @@ def generar_pdf_busquedas_view(request):
                                ) for i in xrange(len(pc.data))]
      
     d.add(pc) 
-    '''
+    
     
 
-    reportes.append(t)
+    reportes.append(t)'''
 
     
     reportes.append(Spacer(0, inch*.1))

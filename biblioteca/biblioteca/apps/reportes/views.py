@@ -110,7 +110,7 @@ def reporte_libros_mes_view(request):
 
 
 def generar_pdf_libros_mes(request):
-    print "Genero el PDF"
+    #print "Genero el PDF"
     fecha_libro = b
     mes = 0
     anio = 0
@@ -148,7 +148,7 @@ def generar_pdf_libros_mes(request):
     j = mes
     
     all_libros = [(p.libro.nombre_libro, p.fecha_devolucion, p.fecha_prestamo) for p in Prestamo.objects.filter(fecha_prestamo__month = mes, fecha_prestamo__year = anio)]
-    print all_libros
+    #print all_libros
 
     t = Table([headings] + all_libros)
     t.setStyle(TableStyle(
@@ -279,7 +279,7 @@ def reporte_usuarios_mes_view(request):
         return HttpResponseRedirect('/')
 
 def generar_pdf_usuarios_mes(request):
-    print "Genero el PDF"
+    #print "Genero el PDF"
     mes =0
     anio =0
     story =[]
@@ -335,7 +335,7 @@ def generar_pdf_usuarios_mes(request):
 
     
     allreportes = [(i.fecha_prestamo, i.usuario.nombre, i.libro.nombre_libro, i.fecha_devolucion) for i in Prestamo.objects.filter(fecha_prestamo__month =mes,fecha_prestamo__year = anio)]
-    print allreportes
+    #print allreportes
 
     t = Table([headings] + allreportes)
     t.setStyle(TableStyle(
@@ -436,7 +436,7 @@ def reporte_busqueda_view(request):
     #try
     if request.method == "POST": #Envio de informacion por POST
         reportes = reporte_busqueda_form(request.POST)
-        print "---------------"
+        #print "---------------"
         #try:
         if reportes.is_valid():
             info_enviado = True
@@ -454,17 +454,17 @@ def reporte_busqueda_view(request):
                         for i in b:
                             #print "________________",i.get("busqueda")
                             for j in t:
-                                print "===============",j.busqueda
+                                #print "===============",j.busqueda
                                 if j.busqueda == i.get("busqueda") and j.fecha >= fecha_inicio and j.fecha <= fecha_final:
                                     c = c + 1
-                                    print c
+                                   # print c
                             lista.append(c)
                             c=0     
-                        print lista , len(lista)
+                        #print lista , len(lista)
 
                         li = zip(b,lista)               
-                        print li 
-                        print "_________________________________\n",b 
+                        #print li 
+                        #print "_________________________________\n",b 
 
                         if li == []:
                             mensaje = "No hay reportes en las fechas ingresadas"
@@ -483,7 +483,7 @@ def reporte_busqueda_view(request):
             mensaje2="Los campos no deben estar vacios para generar su reporte "
         
 
-            print "---------------", busqueda#.count()
+            #print "---------------", busqueda#.count()
             #S= busqueda.count()
 
     else: #GET
@@ -503,7 +503,7 @@ def reporte_busqueda_view(request):
 x = date.today()
 
 def generar_pdf_busquedas_view(request):
-    print "Genero el PDF"
+    #print "Genero el PDF"
     fecha_m = ""
     resultados=[]
     fecha_a = ""
@@ -559,7 +559,7 @@ def generar_pdf_busquedas_view(request):
 
     listar=[]
     for r in b:
-        print "llllllllllllllllll",r,"\n"
+        #print "llllllllllllllllll",r,"\n"
 
         if r['resultados'] == False:
             r['resultados']="No se encontró"
@@ -571,7 +571,7 @@ def generar_pdf_busquedas_view(request):
 
 
 
-    print "lisygyujgyjgjhbjh", listar
+    #print "lisygyujgyjgjhbjh", listar
 
 
   
@@ -590,15 +590,15 @@ def generar_pdf_busquedas_view(request):
 
 
     for i in b:
-        print "________________",i.get("busqueda")
+        #print "________________",i.get("busqueda")
         for j in t:
-            print "===============",j.busqueda
+            #print "===============",j.busqueda
             if j.busqueda == i.get("busqueda") and j.fecha >= fecha_inicio and j.fecha <= fecha_final:
                 c = c + 1
-                print c
+                #print c
         lista.append(c)
         c=0     
-    print lista , len(lista)
+    #print lista , len(lista)
 
     li = zip(b,lista)               
     '''
@@ -622,7 +622,7 @@ def generar_pdf_busquedas_view(request):
     allreportes = [ i.values() for i in b]
 
    
-    print allreportes
+    #print allreportes
 
 
     t = Table([headings] + allreportes)
@@ -691,7 +691,7 @@ def generar_pdf_busquedas_view(request):
     pc.x = 125
     pc.y = 25
     pc.data = lista
-    print lista
+    #print lista
     #pc.data = [7, 1, 1, 1, 1, 2]
 
     #pc.labels = [ str(i.values()) for i in Busqueda.objects.filter(fecha__range=(fecha_inicio, fecha_final)).values('busqueda').distinct()]

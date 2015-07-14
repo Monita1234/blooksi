@@ -106,7 +106,8 @@ def cancelar_prestamo_view (request, id_prestar):
 
 		#dev = cancelar prestamo
 		reservado.save()
-		return HttpResponseRedirect('/prestamos/')
+		if request.user.is_authenticated and request.user.is_staff:
+			return HttpResponseRedirect('/prestamos/')
 	else:
 		return HttpResponseRedirect ('/')
 #PASO 4 VISTA PARA RETORNAR  LIBRO EN EL CUAL CAMBIE EL ESTADO DEL LIBRO A DISPONIBLE

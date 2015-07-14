@@ -89,7 +89,7 @@ def aprobar_prestamo_view (request, id_prestar):
 		return HttpResponseRedirect ('/')
 #PASO 3 puede servir par a los 2 usuarios que reservan BLIBLIOTECARIO y USUARIO REGISTRADO
 def cancelar_prestamo_view (request, id_prestar):
-	if request.user.is_authenticated and request.user.is_staff:
+	if request.user.is_authenticated:
 		reservado = Prestamo.objects.get(id = id_prestar) 
 		reservado.estado_prestamo = "Cancelado"
 		

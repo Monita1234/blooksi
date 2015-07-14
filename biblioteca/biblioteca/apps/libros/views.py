@@ -1,4 +1,4 @@
--*-coding: utf-8-*-
+#-*-coding: utf-8-*-
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from biblioteca.apps.libros.forms import *#add_prestamo_form, add_autor_form, delete_prestamo_form, edit_prestamo_form, edit_autor_form, add_editorial_form, add_categoria_form, add_bibliotecario_form, edit_bibliotecario_form, add_usuario_form, edit_usuario_form, add_ciudad_form, edit_ciudad_form, add_tipo_usuario_form, agregar_libro_form, agregar_biblioteca_form

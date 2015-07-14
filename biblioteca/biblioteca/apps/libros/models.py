@@ -4,7 +4,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-tipo_Id = (
+tipo_id = (
 	('cedula', 'CC'),
 	('ti', 'T.I'),
 	('pasaporte', 'Pasaporte'),

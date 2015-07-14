@@ -452,7 +452,7 @@ def reporte_busqueda_view(request):
                         t = Busqueda.objects.all()
                         b = Busqueda.objects.values('busqueda', 'resultados').filter(fecha__range=(fecha_inicio, fecha_final)).distinct()
                         for i in b:
-                            print "________________",i.get("busqueda")
+                            #print "________________",i.get("busqueda")
                             for j in t:
                                 print "===============",j.busqueda
                                 if j.busqueda == i.get("busqueda") and j.fecha >= fecha_inicio and j.fecha <= fecha_final:

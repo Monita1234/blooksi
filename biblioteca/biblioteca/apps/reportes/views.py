@@ -683,7 +683,7 @@ def generar_pdf_busquedas_view(request):
 
 
     
-#GRAFICAS DE PASTEL
+'''#GRAFICAS DE PASTEL
     titulo2 = Paragraph("Búsquedas y número de veces realizadas", estilo['title'])
 
     d = Drawing(400, 200)
@@ -743,7 +743,7 @@ def generar_pdf_busquedas_view(request):
                                ) for i in xrange(len(pc.data))]
      
     d.add(pc) 
-    
+    '''
     
 
     reportes.append(t)

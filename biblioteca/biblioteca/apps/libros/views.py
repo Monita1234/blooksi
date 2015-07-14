@@ -470,11 +470,16 @@ def edit_usuario_view(request, id_usua):
 	
 		if request.method == "POST":
 			if request.user.usuario.tipo_usuario.nombre == "bibliotecario":
-				x = date.today().year - 18
-				mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 18 años"
-				formulario = add_bibliotecario_form(request.POST, request.FILES, instance=usua)
-				#tipo_usuario 	= formulario.cleaned_data['tipo_usuario']		
-			else:
+				if usua.tipo_usuario.nombre == "bibliotecario":
+					x = date.today().year - 18
+					mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 18 años"
+					formulario = add_bibliotecario_form(request.POST, request.FILES, instance=usua)
+					#tipo_usuario 	= formulario.cleaned_data['tipo_usuario']	
+				else:
+					x = date.today().year -7
+					mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 7 años"	
+					formulario = add_usuario_form(request.POST, request.FILES, instance=usua)
+			else:	
 				x = date.today().year - 7
 				mensaje =" Lo sentimos pero no puedes registrarte porque debe ser mayor de 7 años"		
 				formulario = add_usuario_form(request.POST, request.FILES, instance=usua)

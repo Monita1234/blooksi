@@ -300,7 +300,7 @@ def generar_pdf_usuarios_mes(request):
                             )
     reportes = []
     styles = getSampleStyleSheet()
-    fichero_imagen="biblioteca/media/images/Reports-banner.jpg" 
+    fichero_imagen="biblioteca/media/images/reportes.jpg" 
 
     imagen_logo=Image(os.path.realpath(fichero_imagen),width=400,height=100)
     story.append(imagen_logo)
@@ -533,11 +533,10 @@ def generar_pdf_busquedas_view(request):
                             )
     reportes = []
     styles = getSampleStyleSheet()
-    fichero_imagen="biblioteca/media/images/Reports-banner.jpg"
+    fichero_imagen="biblioteca/media/images/reportes.jpg"
 
     imagen_logo=Image(os.path.realpath(fichero_imagen),width=400,height=100)
     reportes.append(imagen_logo)
-    
 
     header = Paragraph("Fecha del reporte: "+str(date.today()), styles['Heading1'])
     
